@@ -1,4 +1,4 @@
-var Ulna = require('Ulna');
+var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
 var dispatcher = require('../dispatcher.js');

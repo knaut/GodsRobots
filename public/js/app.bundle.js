@@ -1,935 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-Ulna = {};
-
-if (typeof window === 'undefined') {
-	Ulna.env = 'node'
-} else {
-	Ulna.env = 'browser'
-}
-
-Ulna.extend = require('./src/extend.js');
-Ulna.toType = require('./src/toType.js');
-Ulna.Dispatcher = require('./src/Dispatcher.js');
-Ulna.Component = require('./src/Component.js');
-Ulna.Services = require('./src/Services.js');
-
-if (Ulna.env === 'browser') {
-	Ulna.Router = require('./src/Router.js');
-} else {
-	Ulna.Router = null;
-}
-
-module.exports = Ulna;
-},{"./src/Component.js":2,"./src/Dispatcher.js":3,"./src/Router.js":5,"./src/Services.js":6,"./src/extend.js":7,"./src/toType.js":8}],2:[function(require,module,exports){
-var _ = require('underscore');
-var nerve = require('nerve-templates');
-var extend = require('./extend.js');
-
-var Component = function(obj) {
-	this.type = 'component';
-	this.eventsBound = false;
-	this.children = [];
-	this.normalized = null;
-	this.$root = [];
-
-	for (var prop in obj) {
-		this[prop] = obj[prop];
-	}
-	
-	this.initialize.call(this);
-
-	// we bind dispatcher listeners on construction.
-	// we use initialize/deinitialize for dom-related setup and teardown
-	if (this.listen) {
-		this.bindListen();	
-	}
-}
-
-var methods = {
-	initialize: function() {
-		// fires on construction
-		this.normalized = this.normalize( this.template );	
-		this.stringified = this.stringify.normalized( this.normalized );
-	},
-
-	// DOM
-	bindRoot: function() {
-		
-		if (this.root.indexOf('<<') > -1 && this.root.indexOf('>>') > -1) {
-		
-			if (typeof this.parent !== 'undefined') {
-				this.$root = this.parent.$root.find( $( this.interpolate( this.root) ) );
-			} else {
-				this.$root = $( this.interpolate( this.root) );
-			}
-			
-		} else {
-
-			if (typeof this.parent !== 'undefined') {
-
-				this.$root = this.parent.$root.find( this.root );
-			} else {
-				this.$root = $(this.root);
-			}
-		}
-
-
-		return this.$root;
-	},
-
-	unbindRoot: function() {
-		this.$root = [];
-		
-		return this.$root;
-	},
-
-	bindEvents: function() {
-		// backbone-style hash pairs for easy event config
-
-
-		this.eventsBound = true;
-
-		for (var key in this.events) {
-			var culledKey = this.cullEventKey(key);
-
-			// shortcut to just binding the root
-			if (culledKey[1] === 'root') {
-				// bind the root event based on the event type and the handler we supplied
-				this.$root.on(culledKey[0], this.events[key].bind(this));
-			} else {
-				this.$root.find(culledKey[1]).on(culledKey[0], this.events[key].bind(this));
-			}
-		}
-
-		return this.eventsBound;
-	},
-
-	unbindEvents: function() {
-		
-		this.eventsBound = false;
-
-		for (var key in this.events) {
-			var culledKey = this.cullEventKey(key);
-
-			// shortcut to just binding the root
-			if (culledKey[1] === 'root') {
-				// bind the root event based on the event type and the handler we supplied
-				this.$root.off(culledKey[0]);
-			} else {
-				this.$root.find(culledKey[1]).off(culledKey[0]);
-			}
-		}
-
-		return this.eventsBound;
-	},
-
-	cullEventKey: function(key) {
-		var reg = /[a-z|A-Z]*/;
-		var eventString = key.match(reg)[0];
-		var selector = key.replace(eventString + ' ', '');
-
-		return [eventString, selector];
-	},
-
-	bindToDOM: function() {
-		this.bindRoot();
-		this.bindEvents();
-
-		return this.eventsBound;
-	},
-
-	unbindFromDOM: function() {
-		this.unbindEvents();
-		this.unbindRoot();
-
-		return this.eventsBound;
-	},
-
-	render: function() {
-		return this.stringify.normalized( this.normalized );
-	},
-
-	renderToDOM: function() {
-		this.$root.html( this.render() );
-
-		return this.$root;
-	},
-
-	unrenderFromDOM: function() {
-		this.$root.empty();
-
-		return this.$root;
-	},
-
-	rerender: function() {
-		// assume we are bound to the dom and recieved new data
-		// unbind, reset children, re-render template, then re-bind
-		this.unbindEvents();
-		this.unbindDescendants();
-		this.children = [];
-		this.initialize();
-		this.renderToDOM();
-		this.bind();
-
-		return this.$root;
-	},
-
-	bind: function() {
-		this.bindToDOM();
-		this.bindDescendants();
-
-		return this.eventsBound;
-	},
-
-	unbind: function() {
-		this.unbindFromDOM();
-		this.unbindDescendants();
-
-		return this.eventsBound;
-	},
-
-	// FLUX
-	bindListen: function() {
-		// backbone-style hashes for flux-style action configuration
-		for (var action in this.listen) {
-			this.dispatcher.register(action, this, this.listen[action].bind(this));
-		}
-	},
-
-	cloneData: function() {
-		var clone = {};
-
-		for (var prop in this.data) {
-			clone[prop] = this.data[prop];
-		}
-
-		return clone;
-	},
-
-	setData: function( obj ) {
-		var newData = {};
-		var currData = this.cloneData();
-
-		for (var prop in currData) {
-			newData[prop] = obj[prop];	
-		}
-
-		this.data = newData;
-
-		return this.data;
-	},
-
-	// CHILDREN
-	bindChildren: function() {
-		if (!this.children.length) return false;
-
-		for (var c = 0; this.children.length > c; c++) {
-			this.children[c].bindToDOM();
-		}
-
-		return this.children;
-	},
-
-	unbindChildren: function() {
-		if (!this.children.length) return false;
-
-		for (var c = 0; this.children.length > c; c++) {
-			this.children[c].unbindFromDOM();
-		}
-
-		return this.children;
-	},
-
-	renderChildrenToDOM: function() {
-		if (!this.children.length) return false;
-
-		for (var c = 0; this.children.length > c; c++) {
-			this.children[c].bindRoot();
-			this.children[c].renderToDOM();
-			this.children[c].bindEvents();
-		}
-
-		return this.$root;
-	},
-
-	unrenderChildrenFromDOM: function() {
-		if (!this.children.length) return false;
-
-		for (var c = 0; this.children.length > c; c++) {
-			this.children[c].unbindEvents();
-			this.children[c].unrenderFromDOM();
-			this.children[c].unbindRoot();
-		}
-
-		return this.$root;
-	},
-
-	bindDescendants: function() {
-		if (!this.children.length) return false;
-
-		for (var c = 0; this.children.length > c; c++) {
-			this.children[c].bind();
-		}
-	},
-
-	unbindDescendants: function() {
-		if (!this.children.length) return false;
-
-		for (var c = 0; this.children.length > c; c++) {
-			this.children[c].unbind();
-		}
-	}
-}
-
-// we need to use the nerve object like a mixin
-// every component should have access to its library
-
-for (var prop in nerve) {
-	Component.prototype[prop] = nerve[prop];
-}
-
-_.extend(Component.prototype, methods);
-
-Component.extend = extend;
-
-module.exports = Component;
-},{"./extend.js":7,"nerve-templates":10,"underscore":24}],3:[function(require,module,exports){
-var underscore = require('underscore');
-var Events = require('./Events.js');
-var extend = require('./extend.js');
-
-var Dispatcher = function(options) {
-	if (options && options.actions) {
-		if (typeof options.actions === 'string') {
-			this.createAction(options.actions);
-		} else {
-			this.createActions(options.actions);
-		}
-	}
-
-	Object.defineProperty(this, '_actions', {
-		enumerable: false,
-		value: {}
-	});
-
-	underscore.extend(this._actions, Events);
-
-	this.initialize.apply(this, arguments);
-}
-
-Dispatcher.prototype = {
-	initialize: function() {},
-
-	_prepareAction: function(name, callbacks) {
-		var action = {};
-		if (underscore.isString(name)) {
-			action.name = name;
-			if (callbacks) {
-				if (underscore.isFunction(callbacks)) {
-					action.beforeEmit = callbacks;
-				} else {
-					for (var c in callbacks) {
-						if (callbacks.hasOwnProperty(c)) {
-							action[c] = callbacks[c];
-						}
-					}
-				}
-			}
-		} else {
-			action = name;
-		}
-		return action;
-	},
-
-	createAction: function(name, callbacks) {
-		var action = this._prepareAction(name, callbacks);
-		var dispatch;
-		var emit = function(payload) {
-			this._triggerAction(action.name, payload);
-		}.bind(this);
-		var beforeEmit = function(payload) {
-			action.beforeEmit(payload, function(newPayload) {
-				emit(newPayload);
-			});
-		};
-		var shouldEmit = function(fn) {
-			return function(payload) {
-				if (action.shouldEmit(payload)) {
-					fn(payload);
-				}
-			};
-		};
-		if (action.shouldEmit) {
-			if (action.beforeEmit) {
-				dispatch = shouldEmit(beforeEmit);
-			} else {
-				dispatch = shouldEmit(emit);
-			}
-		} else if (action.beforeEmit) {
-			dispatch = beforeEmit;
-		} else {
-			dispatch = emit;
-		}
-		Object.defineProperty(this, action.name, {
-			enumerable: false,
-			value: dispatch
-		});
-	},
-
-	createActions: function(actions) {
-		var action;
-		for (action in actions) {
-			if (actions.hasOwnProperty(action)) {
-				this.createAction(actions[action]);
-			}
-		}
-	},
-
-	register: function(action, listener, method) {
-		if (!listener) {
-			throw new Error('The listener is undefined!');
-		}
-		method = (typeof(method) === 'function') ? method : listener[method || action];
-		if (typeof(method) !== 'function') {
-			throw new Error('Cannot register callback `' + method +
-				'` for the action `' + action +
-				'`: the method is undefined on the provided listener object!');
-		}
-		this._actions.on(action, method.bind(listener));
-	},
-
-	registerStore: function(actions, listener, methods) {
-		var isUniqueCallback = (typeof methods) === 'string' || (typeof methods) === 'function';
-		var actionsNames;
-		if (underscore.isArray(actions)) {
-			methods = methods || actions;
-			if (!isUniqueCallback && actions.length !== methods.length) {
-				throw new RangeError('The # of callbacks differs from the # of action names!');
-			}
-		} else if (underscore.isObject(actions)) {
-			actionsNames = Object.keys(actions);
-			methods = actionsNames.map(function(actionName) {
-				return actions[actionName];
-			});
-			actions = actionsNames;
-		}
-		for (var i = 0, action;
-			(action = actions[i]); i++) {
-			this.register(action, listener, isUniqueCallback ? methods : methods[i]);
-		}
-	},
-
-	dispatch: function(actionName, payload) {
-		if (this.hasOwnProperty(actionName)) {
-			return this[actionName](payload);
-		}
-		throw new Error('There is not an action called `' + actionName + '`');
-	},
-
-	_triggerAction: function(actionName, payload) {
-		this._actions.trigger(actionName, payload);
-	}
-};
-
-Dispatcher.extend = extend;
-
-module.exports = Dispatcher;
-},{"./Events.js":4,"./extend.js":7,"underscore":24}],4:[function(require,module,exports){
-var Events = (function() {
-	// Events, stolen from Backbone
-	// only needed for Dispatcher at this point
-
-	// Events
-	// ---------------
-	// A module that can be mixed in to *any object* in order to provide it with
-	// custom events. You may bind with `on` or remove with `off` callback
-	// functions to an event; `trigger`-ing an event fires all callbacks in
-	// succession.
-	//
-	//     var object = {};
-	//     _.extend(object, Events);
-	//     object.on('expand', function(){ alert('expanded'); });
-	//     object.trigger('expand');
-	//
-
-	var Events = {};
-	// Regular expression used to split event strings.
-	var eventSplitter = /\s+/;
-
-	// Iterates over the standard `event, callback` (as well as the fancy multiple
-	// space-separated events `"change blur", callback` and jQuery-style event
-	// maps `{event: callback}`), reducing them by manipulating `memo`.
-	// Passes a normalized single event name and callback, as well as any
-	// optional `opts`.
-	var eventsApi = function(iteratee, memo, name, callback, opts) {
-		var i = 0,
-			names;
-		if (name && typeof name === 'object') {
-			// Handle event maps.
-			if (callback !== void 0 && 'context' in opts && opts.context === void 0) opts.context = callback;
-			for (names = _.keys(name); i < names.length; i++) {
-				memo = iteratee(memo, names[i], name[names[i]], opts);
-			}
-		} else if (name && eventSplitter.test(name)) {
-			// Handle space separated event names.
-			for (names = name.split(eventSplitter); i < names.length; i++) {
-				memo = iteratee(memo, names[i], callback, opts);
-			}
-		} else {
-			memo = iteratee(memo, name, callback, opts);
-		}
-		return memo;
-	};
-
-	// Bind an event to a `callback` function. Passing `"all"` will bind
-	// the callback to all events fired.
-	Events.on = function(name, callback, context) {
-		return internalOn(this, name, callback, context);
-	};
-
-	// An internal use `on` function, used to guard the `listening` argument from
-	// the public API.
-	var internalOn = function(obj, name, callback, context, listening) {
-		obj._events = eventsApi(onApi, obj._events || {}, name, callback, {
-			context: context,
-			ctx: obj,
-			listening: listening
-		});
-
-		if (listening) {
-			var listeners = obj._listeners || (obj._listeners = {});
-			listeners[listening.id] = listening;
-		}
-
-		return obj;
-	};
-
-	// Inversion-of-control versions of `on`. Tell *this* object to listen to
-	// an event in another object... keeping track of what it's listening to.
-	Events.listenTo = function(obj, name, callback) {
-		if (!obj) return this;
-		var id = obj._listenId || (obj._listenId = _.uniqueId('l'));
-		var listeningTo = this._listeningTo || (this._listeningTo = {});
-		var listening = listeningTo[id];
-
-		// This object is not listening to any other events on `obj` yet.
-		// Setup the necessary references to track the listening callbacks.
-		if (!listening) {
-			var thisId = this._listenId || (this._listenId = _.uniqueId('l'));
-			listening = listeningTo[id] = {
-				obj: obj,
-				objId: id,
-				id: thisId,
-				listeningTo: listeningTo,
-				count: 0
-			};
-		}
-
-		// Bind callbacks on obj, and keep track of them on listening.
-		internalOn(obj, name, callback, this, listening);
-		return this;
-	};
-
-	// The reducing API that adds a callback to the `events` object.
-	var onApi = function(events, name, callback, options) {
-		if (callback) {
-			var handlers = events[name] || (events[name] = []);
-			var context = options.context,
-				ctx = options.ctx,
-				listening = options.listening;
-			if (listening) listening.count++;
-
-			handlers.push({
-				callback: callback,
-				context: context,
-				ctx: context || ctx,
-				listening: listening
-			});
-		}
-		return events;
-	};
-
-	// Remove one or many callbacks. If `context` is null, removes all
-	// callbacks with that function. If `callback` is null, removes all
-	// callbacks for the event. If `name` is null, removes all bound
-	// callbacks for all events.
-	Events.off = function(name, callback, context) {
-		if (!this._events) return this;
-		this._events = eventsApi(offApi, this._events, name, callback, {
-			context: context,
-			listeners: this._listeners
-		});
-		return this;
-	};
-
-	// Tell this object to stop listening to either specific events ... or
-	// to every object it's currently listening to.
-	Events.stopListening = function(obj, name, callback) {
-		var listeningTo = this._listeningTo;
-		if (!listeningTo) return this;
-
-		var ids = obj ? [obj._listenId] : _.keys(listeningTo);
-
-		for (var i = 0; i < ids.length; i++) {
-			var listening = listeningTo[ids[i]];
-
-			// If listening doesn't exist, this object is not currently
-			// listening to obj. Break out early.
-			if (!listening) break;
-
-			listening.obj.off(name, callback, this);
-		}
-		if (_.isEmpty(listeningTo)) this._listeningTo = void 0;
-
-		return this;
-	};
-
-	// The reducing API that removes a callback from the `events` object.
-	var offApi = function(events, name, callback, options) {
-		// No events to consider.
-		if (!events) return;
-
-		var i = 0,
-			listening;
-		var context = options.context,
-			listeners = options.listeners;
-
-		// Delete all events listeners and "drop" events.
-		if (!name && !callback && !context) {
-			var ids = _.keys(listeners);
-			for (; i < ids.length; i++) {
-				listening = listeners[ids[i]];
-				delete listeners[listening.id];
-				delete listening.listeningTo[listening.objId];
-			}
-			return;
-		}
-
-		var names = name ? [name] : _.keys(events);
-		for (; i < names.length; i++) {
-			name = names[i];
-			var handlers = events[name];
-
-			// Bail out if there are no events stored.
-			if (!handlers) break;
-
-			// Replace events if there are any remaining.  Otherwise, clean up.
-			var remaining = [];
-			for (var j = 0; j < handlers.length; j++) {
-				var handler = handlers[j];
-				if (
-					callback && callback !== handler.callback &&
-					callback !== handler.callback._callback ||
-					context && context !== handler.context
-				) {
-					remaining.push(handler);
-				} else {
-					listening = handler.listening;
-					if (listening && --listening.count === 0) {
-						delete listeners[listening.id];
-						delete listening.listeningTo[listening.objId];
-					}
-				}
-			}
-
-			// Update tail event if the list has any events.  Otherwise, clean up.
-			if (remaining.length) {
-				events[name] = remaining;
-			} else {
-				delete events[name];
-			}
-		}
-		if (_.size(events)) return events;
-	};
-
-	// Bind an event to only be triggered a single time. After the first time
-	// the callback is invoked, it will be removed. When multiple events are
-	// passed in using the space-separated syntax, the event will fire once for every
-	// event you passed in, not once for a combination of all events
-	Events.once = function(name, callback, context) {
-		// Map the event into a `{event: once}` object.
-		var events = eventsApi(onceMap, {}, name, callback, _.bind(this.off, this));
-		return this.on(events, void 0, context);
-	};
-
-	// Inversion-of-control versions of `once`.
-	Events.listenToOnce = function(obj, name, callback) {
-		// Map the event into a `{event: once}` object.
-		var events = eventsApi(onceMap, {}, name, callback, _.bind(this.stopListening, this, obj));
-		return this.listenTo(obj, events);
-	};
-
-	// Reduces the event callbacks into a map of `{event: onceWrapper}`.
-	// `offer` unbinds the `onceWrapper` after it has been called.
-	var onceMap = function(map, name, callback, offer) {
-		if (callback) {
-			var once = map[name] = _.once(function() {
-				offer(name, once);
-				callback.apply(this, arguments);
-			});
-			once._callback = callback;
-		}
-		return map;
-	};
-
-	// Trigger one or many events, firing all bound callbacks. Callbacks are
-	// passed the same arguments as `trigger` is, apart from the event name
-	// (unless you're listening on `"all"`, which will cause your callback to
-	// receive the true name of the event as the first argument).
-	Events.trigger = function(name) {
-		if (!this._events) return this;
-
-		var length = Math.max(0, arguments.length - 1);
-		var args = Array(length);
-		for (var i = 0; i < length; i++) args[i] = arguments[i + 1];
-
-		eventsApi(triggerApi, this._events, name, void 0, args);
-		return this;
-	};
-
-	// Handles triggering the appropriate event callbacks.
-	var triggerApi = function(objEvents, name, cb, args) {
-		if (objEvents) {
-			var events = objEvents[name];
-			var allEvents = objEvents.all;
-			if (events && allEvents) allEvents = allEvents.slice();
-			if (events) triggerEvents(events, args);
-			if (allEvents) triggerEvents(allEvents, [name].concat(args));
-		}
-		return objEvents;
-	};
-
-	// A difficult-to-believe, but optimized internal dispatch function for
-	// triggering events. Tries to keep the usual cases speedy (most internal
-	// Backbone events have 3 arguments).
-	var triggerEvents = function(events, args) {
-		var ev, i = -1,
-			l = events.length,
-			a1 = args[0],
-			a2 = args[1],
-			a3 = args[2];
-		switch (args.length) {
-			case 0:
-				while (++i < l)(ev = events[i]).callback.call(ev.ctx);
-				return;
-			case 1:
-				while (++i < l)(ev = events[i]).callback.call(ev.ctx, a1);
-				return;
-			case 2:
-				while (++i < l)(ev = events[i]).callback.call(ev.ctx, a1, a2);
-				return;
-			case 3:
-				while (++i < l)(ev = events[i]).callback.call(ev.ctx, a1, a2, a3);
-				return;
-			default:
-				while (++i < l)(ev = events[i]).callback.apply(ev.ctx, args);
-				return;
-		}
-	};
-
-	// Aliases for backwards compatibility.
-	Events.bind = Events.on;
-	Events.unbind = Events.off;
-
-	module.exports = Events;
-
-})();
-},{}],5:[function(require,module,exports){
-var _ = require('underscore');
-var extend = require('./extend.js');
-
-var Router = function(obj) {
-	this.type = 'router';
-	this.eventsBound = false;
-	this.location = false;
-
-	for (var prop in obj) {
-		this[prop] = obj[prop];
-	}
-	
-	if (this.routes) {
-		this.bindRoutes();	
-	}
-
-	if (this.events) {
-		this.bindEvents();
-	}
-	
-	this.initialize.call(this);
-
-	if (this.listen) {
-		this.bindListen();	
-	}
-}
-
-var methods = {
-	initialize: function() {
-		this.location = window.location.pathname;
-	},
-
-	// FLUX
-	bindListen: function() {
-		// backbone-style hashes for flux-style action configuration
-		for (var action in this.listen) {
-			this.dispatcher.register(action, this, this.listen[action].bind(this));
-		}
-	},
-
-	bindRoutes: function() {
-		for (var route in this.routes) {
-			this.routes[route] = this.routes[route].bind(this);
-		}
-	},
-
-	bindEvents: function() {
-		for (var event in this.events) {
-			// presume only window events
-			window.addEventListener(event, this.events[event].bind(this));
-		}
-	},
-
-	// HISTORY shorthand
-	history: {
-		push: function( obj ) {
-			document.title = obj.title;
-			history.pushState(obj, obj.title, obj.url);	
-		},
-		replace: function( obj ) {
-			document.title = obj.title;
-			history.replaceState(obj, obj.title, obj.url);
-		}
-	}
-};
-
-
-_.extend(Router.prototype, methods);
-
-Router.extend = extend;
-
-module.exports = Router;
-},{"./extend.js":7,"underscore":24}],6:[function(require,module,exports){
-var _ = require('underscore');
-var extend = require('./extend.js');
-
-var Services = function(obj) {
-	this.data = null;
-	this.history = []; 	// could push state changes to an array
-
-	for (var prop in obj) {
-		this[prop] = obj[prop];
-	}
-
-	if (this.listen) {
-		this.bindListen();	
-	}
-
-	if (this.modifiers) {
-		this.bindModifiers();
-	}
-}
-
-var methods = {
-	cloneData: function() {
-		// accept a component as optional, otherwise clone whole state
-		var clone = {};
-
-		for (var prop in this.data) {
-			clone[prop] = this.data[prop];
-		}			
-
-		return clone;
-	},
-
-	cloneState: function() {
-		// accept a component as optional, otherwise clone whole state
-		var clone = {};
-
-		for (var prop in this.state) {
-			clone[prop] = this.state[prop];
-		}			
-
-		return clone;
-	},
-
-	setData: function( obj ) {
-		for (var prop in obj) {
-			if (this.data.hasOwnProperty(prop)) {
-				this.data[prop] = obj[prop]
-			}
-		}
-
-		return this.data;
-	},
-
-	// FLUX
-	bindListen: function() {
-		// backbone-style hashes for flux-style action configuration
-		for (var action in this.listen) {
-			this.dispatcher.register(action, this, this.listen[action].bind(this));
-		}
-	},
-
-	// MODIFIERS
-	bindModifiers: function() {
-		for (var func in this.modifiers) {
-			this.modifiers[func] = this.modifiers[func].bind(this)
-		}
-	}
-}
-
-_.extend(Services.prototype, methods);
-
-Services.extend = extend;
-
-module.exports = Services;
-},{"./extend.js":7,"underscore":24}],7:[function(require,module,exports){
-var _ = require('underscore');
-
-module.exports = function(protoProps, staticProps) {
-	var parent = this;
-	var child;
-
-	if (protoProps && _.has(protoProps, 'constructor')) {
-		child = protoProps.constructor;
-	} else {
-		child = function() {
-			return parent.apply(this, arguments);
-		};
-	}
-
-	_.extend(child, parent, staticProps);
-
-	var Surrogate = function() {
-		this.constructor = child;
-	};
-
-	Surrogate.prototype = parent.prototype;
-	child.prototype = new Surrogate();
-
-	if (protoProps) {
-		_.extend(child.prototype, protoProps);
-	}
-
-	child.__super__ = parent.prototype;
-
-	return child;
-};
-},{"underscore":24}],8:[function(require,module,exports){
-module.exports = function(obj) {
-	// better type checking
-	// https://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/
-	var type = ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
-
-	// for components, we assume they will be capitalized or pascal cased
-	// if (type === 'string') {
-	// 	if (obj.toLowerCase() !== obj) {
-	// 		type = 'component'
-	// 	}
-	// }
-
-	return type;
-}
-},{}],9:[function(require,module,exports){
 //! moment.js
 //! version : 2.15.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -5164,7 +4233,7 @@ module.exports = function(obj) {
     return _moment;
 
 }));
-},{}],10:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 nerve = {};
 nerve.type = 'nerve';
 
@@ -5177,7 +4246,7 @@ nerve.stringify = require('./modules/stringify.js');
 nerve.interpolate = require('./modules/interpolate.js');
 
 module.exports = nerve;
-},{"./modules/interpolate.js":11,"./modules/normalize.js":12,"./modules/parse/css.js":13,"./modules/stringify.js":14,"./modules/toType.js":15}],11:[function(require,module,exports){
+},{"./modules/interpolate.js":3,"./modules/normalize.js":4,"./modules/parse/css.js":5,"./modules/stringify.js":6,"./modules/toType.js":7}],3:[function(require,module,exports){
 module.exports = function(key) {
 	// extract stringified refs based on a custom syntax
 	var reg = /\<\<([a-zA-Z|\.]*)\>\>/g;
@@ -5206,7 +4275,7 @@ module.exports = function(key) {
 
 	return key;
 }
-},{}],12:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = function(struct) {
 	var normalized = [];
 	switch (this.toType(struct)) {
@@ -5319,7 +4388,7 @@ module.exports = function(struct) {
 
 	return normalized;
 }
-},{}],13:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = {
 	selector: function(string) {
 		// parse a CSS selector and normalize it as a a JS object
@@ -5451,7 +4520,7 @@ module.exports = {
 
 
 
-},{}],14:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = {
 	normalized: function(normalized) {
 		// let one do function do one thing:
@@ -5548,7 +4617,7 @@ module.exports = {
 		return string;
 	}
 }
-},{}],15:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = function(obj) {
 	// better type checking
 	// https://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/
@@ -5563,23 +4632,938 @@ module.exports = function(obj) {
 		return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 	}
 }
+},{}],8:[function(require,module,exports){
+Ulna = {};
+
+if (typeof window === 'undefined') {
+	Ulna.env = 'node'
+} else {
+	Ulna.env = 'browser'
+}
+
+Ulna.extend = require('./src/extend.js');
+Ulna.toType = require('./src/toType.js');
+Ulna.Dispatcher = require('./src/Dispatcher.js');
+Ulna.Component = require('./src/Component.js');
+Ulna.Services = require('./src/Services.js');
+
+if (Ulna.env === 'browser') {
+	Ulna.Router = require('./src/Router.js');
+} else {
+	Ulna.Router = null;
+}
+
+module.exports = Ulna;
+},{"./src/Component.js":9,"./src/Dispatcher.js":10,"./src/Router.js":12,"./src/Services.js":13,"./src/extend.js":14,"./src/toType.js":15}],9:[function(require,module,exports){
+var _ = require('underscore');
+var nerve = require('nerve-templates');
+var extend = require('./extend.js');
+
+var Component = function(obj) {
+	this.type = 'component';
+	this.eventsBound = false;
+	this.children = [];
+	this.normalized = null;
+	this.$root = [];
+
+	for (var prop in obj) {
+		this[prop] = obj[prop];
+	}
+	
+	this.initialize.call(this);
+
+	// we bind dispatcher listeners on construction.
+	// we use initialize/deinitialize for dom-related setup and teardown
+	if (this.listen) {
+		this.bindListen();	
+	}
+}
+
+var methods = {
+	initialize: function() {
+		// fires on construction
+		this.normalized = this.normalize( this.template );	
+		this.stringified = this.stringify.normalized( this.normalized );
+	},
+
+	// DOM
+	bindRoot: function() {
+		
+		if (this.root.indexOf('<<') > -1 && this.root.indexOf('>>') > -1) {
+		
+			if (typeof this.parent !== 'undefined') {
+				this.$root = this.parent.$root.find( $( this.interpolate( this.root) ) );
+			} else {
+				this.$root = $( this.interpolate( this.root) );
+			}
+			
+		} else {
+
+			if (typeof this.parent !== 'undefined') {
+
+				this.$root = this.parent.$root.find( this.root );
+			} else {
+				this.$root = $(this.root);
+			}
+		}
+
+
+		return this.$root;
+	},
+
+	unbindRoot: function() {
+		this.$root = [];
+		
+		return this.$root;
+	},
+
+	bindEvents: function() {
+		// backbone-style hash pairs for easy event config
+
+
+		this.eventsBound = true;
+
+		for (var key in this.events) {
+			var culledKey = this.cullEventKey(key);
+
+			// shortcut to just binding the root
+			if (culledKey[1] === 'root') {
+				// bind the root event based on the event type and the handler we supplied
+				this.$root.on(culledKey[0], this.events[key].bind(this));
+			} else {
+				this.$root.find(culledKey[1]).on(culledKey[0], this.events[key].bind(this));
+			}
+		}
+
+		return this.eventsBound;
+	},
+
+	unbindEvents: function() {
+		
+		this.eventsBound = false;
+
+		for (var key in this.events) {
+			var culledKey = this.cullEventKey(key);
+
+			// shortcut to just binding the root
+			if (culledKey[1] === 'root') {
+				// bind the root event based on the event type and the handler we supplied
+				this.$root.off(culledKey[0]);
+			} else {
+				this.$root.find(culledKey[1]).off(culledKey[0]);
+			}
+		}
+
+		return this.eventsBound;
+	},
+
+	cullEventKey: function(key) {
+		var reg = /[a-z|A-Z]*/;
+		var eventString = key.match(reg)[0];
+		var selector = key.replace(eventString + ' ', '');
+
+		return [eventString, selector];
+	},
+
+	bindToDOM: function() {
+		this.bindRoot();
+		this.bindEvents();
+
+		return this.eventsBound;
+	},
+
+	unbindFromDOM: function() {
+		this.unbindEvents();
+		this.unbindRoot();
+
+		return this.eventsBound;
+	},
+
+	render: function() {
+		return this.stringify.normalized( this.normalized );
+	},
+
+	renderToDOM: function() {
+		this.$root.html( this.render() );
+
+		return this.$root;
+	},
+
+	unrenderFromDOM: function() {
+		this.$root.empty();
+
+		return this.$root;
+	},
+
+	rerender: function() {
+		// assume we are bound to the dom and recieved new data
+		// unbind, reset children, re-render template, then re-bind
+		this.unbindEvents();
+		this.unbindDescendants();
+		this.children = [];
+		this.initialize();
+		this.renderToDOM();
+		this.bind();
+
+		return this.$root;
+	},
+
+	bind: function() {
+		this.bindToDOM();
+		this.bindDescendants();
+
+		return this.eventsBound;
+	},
+
+	unbind: function() {
+		this.unbindFromDOM();
+		this.unbindDescendants();
+
+		return this.eventsBound;
+	},
+
+	// FLUX
+	bindListen: function() {
+		// backbone-style hashes for flux-style action configuration
+		for (var action in this.listen) {
+			this.dispatcher.register(action, this, this.listen[action].bind(this));
+		}
+	},
+
+	cloneData: function() {
+		var clone = {};
+
+		for (var prop in this.data) {
+			clone[prop] = this.data[prop];
+		}
+
+		return clone;
+	},
+
+	setData: function( obj ) {
+		var newData = {};
+		var currData = this.cloneData();
+
+		for (var prop in currData) {
+			newData[prop] = obj[prop];	
+		}
+
+		this.data = newData;
+
+		return this.data;
+	},
+
+	// CHILDREN
+	bindChildren: function() {
+		if (!this.children.length) return false;
+
+		for (var c = 0; this.children.length > c; c++) {
+			this.children[c].bindToDOM();
+		}
+
+		return this.children;
+	},
+
+	unbindChildren: function() {
+		if (!this.children.length) return false;
+
+		for (var c = 0; this.children.length > c; c++) {
+			this.children[c].unbindFromDOM();
+		}
+
+		return this.children;
+	},
+
+	renderChildrenToDOM: function() {
+		if (!this.children.length) return false;
+
+		for (var c = 0; this.children.length > c; c++) {
+			this.children[c].bindRoot();
+			this.children[c].renderToDOM();
+			this.children[c].bindEvents();
+		}
+
+		return this.$root;
+	},
+
+	unrenderChildrenFromDOM: function() {
+		if (!this.children.length) return false;
+
+		for (var c = 0; this.children.length > c; c++) {
+			this.children[c].unbindEvents();
+			this.children[c].unrenderFromDOM();
+			this.children[c].unbindRoot();
+		}
+
+		return this.$root;
+	},
+
+	bindDescendants: function() {
+		if (!this.children.length) return false;
+
+		for (var c = 0; this.children.length > c; c++) {
+			this.children[c].bind();
+		}
+	},
+
+	unbindDescendants: function() {
+		if (!this.children.length) return false;
+
+		for (var c = 0; this.children.length > c; c++) {
+			this.children[c].unbind();
+		}
+	}
+}
+
+// we need to use the nerve object like a mixin
+// every component should have access to its library
+
+for (var prop in nerve) {
+	Component.prototype[prop] = nerve[prop];
+}
+
+_.extend(Component.prototype, methods);
+
+Component.extend = extend;
+
+module.exports = Component;
+},{"./extend.js":14,"nerve-templates":2,"underscore":16}],10:[function(require,module,exports){
+var underscore = require('underscore');
+var Events = require('./Events.js');
+var extend = require('./extend.js');
+
+var Dispatcher = function(options) {
+	if (options && options.actions) {
+		if (typeof options.actions === 'string') {
+			this.createAction(options.actions);
+		} else {
+			this.createActions(options.actions);
+		}
+	}
+
+	Object.defineProperty(this, '_actions', {
+		enumerable: false,
+		value: {}
+	});
+
+	underscore.extend(this._actions, Events);
+
+	this.initialize.apply(this, arguments);
+}
+
+Dispatcher.prototype = {
+	initialize: function() {},
+
+	_prepareAction: function(name, callbacks) {
+		var action = {};
+		if (underscore.isString(name)) {
+			action.name = name;
+			if (callbacks) {
+				if (underscore.isFunction(callbacks)) {
+					action.beforeEmit = callbacks;
+				} else {
+					for (var c in callbacks) {
+						if (callbacks.hasOwnProperty(c)) {
+							action[c] = callbacks[c];
+						}
+					}
+				}
+			}
+		} else {
+			action = name;
+		}
+		return action;
+	},
+
+	createAction: function(name, callbacks) {
+		var action = this._prepareAction(name, callbacks);
+		var dispatch;
+		var emit = function(payload) {
+			this._triggerAction(action.name, payload);
+		}.bind(this);
+		var beforeEmit = function(payload) {
+			action.beforeEmit(payload, function(newPayload) {
+				emit(newPayload);
+			});
+		};
+		var shouldEmit = function(fn) {
+			return function(payload) {
+				if (action.shouldEmit(payload)) {
+					fn(payload);
+				}
+			};
+		};
+		if (action.shouldEmit) {
+			if (action.beforeEmit) {
+				dispatch = shouldEmit(beforeEmit);
+			} else {
+				dispatch = shouldEmit(emit);
+			}
+		} else if (action.beforeEmit) {
+			dispatch = beforeEmit;
+		} else {
+			dispatch = emit;
+		}
+		Object.defineProperty(this, action.name, {
+			enumerable: false,
+			value: dispatch
+		});
+	},
+
+	createActions: function(actions) {
+		var action;
+		for (action in actions) {
+			if (actions.hasOwnProperty(action)) {
+				this.createAction(actions[action]);
+			}
+		}
+	},
+
+	register: function(action, listener, method) {
+		if (!listener) {
+			throw new Error('The listener is undefined!');
+		}
+		method = (typeof(method) === 'function') ? method : listener[method || action];
+		if (typeof(method) !== 'function') {
+			throw new Error('Cannot register callback `' + method +
+				'` for the action `' + action +
+				'`: the method is undefined on the provided listener object!');
+		}
+		this._actions.on(action, method.bind(listener));
+	},
+
+	registerStore: function(actions, listener, methods) {
+		var isUniqueCallback = (typeof methods) === 'string' || (typeof methods) === 'function';
+		var actionsNames;
+		if (underscore.isArray(actions)) {
+			methods = methods || actions;
+			if (!isUniqueCallback && actions.length !== methods.length) {
+				throw new RangeError('The # of callbacks differs from the # of action names!');
+			}
+		} else if (underscore.isObject(actions)) {
+			actionsNames = Object.keys(actions);
+			methods = actionsNames.map(function(actionName) {
+				return actions[actionName];
+			});
+			actions = actionsNames;
+		}
+		for (var i = 0, action;
+			(action = actions[i]); i++) {
+			this.register(action, listener, isUniqueCallback ? methods : methods[i]);
+		}
+	},
+
+	dispatch: function(actionName, payload) {
+		if (this.hasOwnProperty(actionName)) {
+			return this[actionName](payload);
+		}
+		throw new Error('There is not an action called `' + actionName + '`');
+	},
+
+	_triggerAction: function(actionName, payload) {
+		this._actions.trigger(actionName, payload);
+	}
+};
+
+Dispatcher.extend = extend;
+
+module.exports = Dispatcher;
+},{"./Events.js":11,"./extend.js":14,"underscore":16}],11:[function(require,module,exports){
+var Events = (function() {
+	// Events, stolen from Backbone
+	// only needed for Dispatcher at this point
+
+	// Events
+	// ---------------
+	// A module that can be mixed in to *any object* in order to provide it with
+	// custom events. You may bind with `on` or remove with `off` callback
+	// functions to an event; `trigger`-ing an event fires all callbacks in
+	// succession.
+	//
+	//     var object = {};
+	//     _.extend(object, Events);
+	//     object.on('expand', function(){ alert('expanded'); });
+	//     object.trigger('expand');
+	//
+
+	var Events = {};
+	// Regular expression used to split event strings.
+	var eventSplitter = /\s+/;
+
+	// Iterates over the standard `event, callback` (as well as the fancy multiple
+	// space-separated events `"change blur", callback` and jQuery-style event
+	// maps `{event: callback}`), reducing them by manipulating `memo`.
+	// Passes a normalized single event name and callback, as well as any
+	// optional `opts`.
+	var eventsApi = function(iteratee, memo, name, callback, opts) {
+		var i = 0,
+			names;
+		if (name && typeof name === 'object') {
+			// Handle event maps.
+			if (callback !== void 0 && 'context' in opts && opts.context === void 0) opts.context = callback;
+			for (names = _.keys(name); i < names.length; i++) {
+				memo = iteratee(memo, names[i], name[names[i]], opts);
+			}
+		} else if (name && eventSplitter.test(name)) {
+			// Handle space separated event names.
+			for (names = name.split(eventSplitter); i < names.length; i++) {
+				memo = iteratee(memo, names[i], callback, opts);
+			}
+		} else {
+			memo = iteratee(memo, name, callback, opts);
+		}
+		return memo;
+	};
+
+	// Bind an event to a `callback` function. Passing `"all"` will bind
+	// the callback to all events fired.
+	Events.on = function(name, callback, context) {
+		return internalOn(this, name, callback, context);
+	};
+
+	// An internal use `on` function, used to guard the `listening` argument from
+	// the public API.
+	var internalOn = function(obj, name, callback, context, listening) {
+		obj._events = eventsApi(onApi, obj._events || {}, name, callback, {
+			context: context,
+			ctx: obj,
+			listening: listening
+		});
+
+		if (listening) {
+			var listeners = obj._listeners || (obj._listeners = {});
+			listeners[listening.id] = listening;
+		}
+
+		return obj;
+	};
+
+	// Inversion-of-control versions of `on`. Tell *this* object to listen to
+	// an event in another object... keeping track of what it's listening to.
+	Events.listenTo = function(obj, name, callback) {
+		if (!obj) return this;
+		var id = obj._listenId || (obj._listenId = _.uniqueId('l'));
+		var listeningTo = this._listeningTo || (this._listeningTo = {});
+		var listening = listeningTo[id];
+
+		// This object is not listening to any other events on `obj` yet.
+		// Setup the necessary references to track the listening callbacks.
+		if (!listening) {
+			var thisId = this._listenId || (this._listenId = _.uniqueId('l'));
+			listening = listeningTo[id] = {
+				obj: obj,
+				objId: id,
+				id: thisId,
+				listeningTo: listeningTo,
+				count: 0
+			};
+		}
+
+		// Bind callbacks on obj, and keep track of them on listening.
+		internalOn(obj, name, callback, this, listening);
+		return this;
+	};
+
+	// The reducing API that adds a callback to the `events` object.
+	var onApi = function(events, name, callback, options) {
+		if (callback) {
+			var handlers = events[name] || (events[name] = []);
+			var context = options.context,
+				ctx = options.ctx,
+				listening = options.listening;
+			if (listening) listening.count++;
+
+			handlers.push({
+				callback: callback,
+				context: context,
+				ctx: context || ctx,
+				listening: listening
+			});
+		}
+		return events;
+	};
+
+	// Remove one or many callbacks. If `context` is null, removes all
+	// callbacks with that function. If `callback` is null, removes all
+	// callbacks for the event. If `name` is null, removes all bound
+	// callbacks for all events.
+	Events.off = function(name, callback, context) {
+		if (!this._events) return this;
+		this._events = eventsApi(offApi, this._events, name, callback, {
+			context: context,
+			listeners: this._listeners
+		});
+		return this;
+	};
+
+	// Tell this object to stop listening to either specific events ... or
+	// to every object it's currently listening to.
+	Events.stopListening = function(obj, name, callback) {
+		var listeningTo = this._listeningTo;
+		if (!listeningTo) return this;
+
+		var ids = obj ? [obj._listenId] : _.keys(listeningTo);
+
+		for (var i = 0; i < ids.length; i++) {
+			var listening = listeningTo[ids[i]];
+
+			// If listening doesn't exist, this object is not currently
+			// listening to obj. Break out early.
+			if (!listening) break;
+
+			listening.obj.off(name, callback, this);
+		}
+		if (_.isEmpty(listeningTo)) this._listeningTo = void 0;
+
+		return this;
+	};
+
+	// The reducing API that removes a callback from the `events` object.
+	var offApi = function(events, name, callback, options) {
+		// No events to consider.
+		if (!events) return;
+
+		var i = 0,
+			listening;
+		var context = options.context,
+			listeners = options.listeners;
+
+		// Delete all events listeners and "drop" events.
+		if (!name && !callback && !context) {
+			var ids = _.keys(listeners);
+			for (; i < ids.length; i++) {
+				listening = listeners[ids[i]];
+				delete listeners[listening.id];
+				delete listening.listeningTo[listening.objId];
+			}
+			return;
+		}
+
+		var names = name ? [name] : _.keys(events);
+		for (; i < names.length; i++) {
+			name = names[i];
+			var handlers = events[name];
+
+			// Bail out if there are no events stored.
+			if (!handlers) break;
+
+			// Replace events if there are any remaining.  Otherwise, clean up.
+			var remaining = [];
+			for (var j = 0; j < handlers.length; j++) {
+				var handler = handlers[j];
+				if (
+					callback && callback !== handler.callback &&
+					callback !== handler.callback._callback ||
+					context && context !== handler.context
+				) {
+					remaining.push(handler);
+				} else {
+					listening = handler.listening;
+					if (listening && --listening.count === 0) {
+						delete listeners[listening.id];
+						delete listening.listeningTo[listening.objId];
+					}
+				}
+			}
+
+			// Update tail event if the list has any events.  Otherwise, clean up.
+			if (remaining.length) {
+				events[name] = remaining;
+			} else {
+				delete events[name];
+			}
+		}
+		if (_.size(events)) return events;
+	};
+
+	// Bind an event to only be triggered a single time. After the first time
+	// the callback is invoked, it will be removed. When multiple events are
+	// passed in using the space-separated syntax, the event will fire once for every
+	// event you passed in, not once for a combination of all events
+	Events.once = function(name, callback, context) {
+		// Map the event into a `{event: once}` object.
+		var events = eventsApi(onceMap, {}, name, callback, _.bind(this.off, this));
+		return this.on(events, void 0, context);
+	};
+
+	// Inversion-of-control versions of `once`.
+	Events.listenToOnce = function(obj, name, callback) {
+		// Map the event into a `{event: once}` object.
+		var events = eventsApi(onceMap, {}, name, callback, _.bind(this.stopListening, this, obj));
+		return this.listenTo(obj, events);
+	};
+
+	// Reduces the event callbacks into a map of `{event: onceWrapper}`.
+	// `offer` unbinds the `onceWrapper` after it has been called.
+	var onceMap = function(map, name, callback, offer) {
+		if (callback) {
+			var once = map[name] = _.once(function() {
+				offer(name, once);
+				callback.apply(this, arguments);
+			});
+			once._callback = callback;
+		}
+		return map;
+	};
+
+	// Trigger one or many events, firing all bound callbacks. Callbacks are
+	// passed the same arguments as `trigger` is, apart from the event name
+	// (unless you're listening on `"all"`, which will cause your callback to
+	// receive the true name of the event as the first argument).
+	Events.trigger = function(name) {
+		if (!this._events) return this;
+
+		var length = Math.max(0, arguments.length - 1);
+		var args = Array(length);
+		for (var i = 0; i < length; i++) args[i] = arguments[i + 1];
+
+		eventsApi(triggerApi, this._events, name, void 0, args);
+		return this;
+	};
+
+	// Handles triggering the appropriate event callbacks.
+	var triggerApi = function(objEvents, name, cb, args) {
+		if (objEvents) {
+			var events = objEvents[name];
+			var allEvents = objEvents.all;
+			if (events && allEvents) allEvents = allEvents.slice();
+			if (events) triggerEvents(events, args);
+			if (allEvents) triggerEvents(allEvents, [name].concat(args));
+		}
+		return objEvents;
+	};
+
+	// A difficult-to-believe, but optimized internal dispatch function for
+	// triggering events. Tries to keep the usual cases speedy (most internal
+	// Backbone events have 3 arguments).
+	var triggerEvents = function(events, args) {
+		var ev, i = -1,
+			l = events.length,
+			a1 = args[0],
+			a2 = args[1],
+			a3 = args[2];
+		switch (args.length) {
+			case 0:
+				while (++i < l)(ev = events[i]).callback.call(ev.ctx);
+				return;
+			case 1:
+				while (++i < l)(ev = events[i]).callback.call(ev.ctx, a1);
+				return;
+			case 2:
+				while (++i < l)(ev = events[i]).callback.call(ev.ctx, a1, a2);
+				return;
+			case 3:
+				while (++i < l)(ev = events[i]).callback.call(ev.ctx, a1, a2, a3);
+				return;
+			default:
+				while (++i < l)(ev = events[i]).callback.apply(ev.ctx, args);
+				return;
+		}
+	};
+
+	// Aliases for backwards compatibility.
+	Events.bind = Events.on;
+	Events.unbind = Events.off;
+
+	module.exports = Events;
+
+})();
+},{}],12:[function(require,module,exports){
+var _ = require('underscore');
+var extend = require('./extend.js');
+
+var Router = function(obj) {
+	this.type = 'router';
+	this.eventsBound = false;
+	this.location = false;
+
+	for (var prop in obj) {
+		this[prop] = obj[prop];
+	}
+	
+	if (this.routes) {
+		this.bindRoutes();	
+	}
+
+	if (this.events) {
+		this.bindEvents();
+	}
+	
+	this.initialize.call(this);
+
+	if (this.listen) {
+		this.bindListen();	
+	}
+}
+
+var methods = {
+	initialize: function() {
+		this.location = window.location.pathname;
+	},
+
+	// FLUX
+	bindListen: function() {
+		// backbone-style hashes for flux-style action configuration
+		for (var action in this.listen) {
+			this.dispatcher.register(action, this, this.listen[action].bind(this));
+		}
+	},
+
+	bindRoutes: function() {
+		for (var route in this.routes) {
+			this.routes[route] = this.routes[route].bind(this);
+		}
+	},
+
+	bindEvents: function() {
+		for (var event in this.events) {
+			// presume only window events
+			window.addEventListener(event, this.events[event].bind(this));
+		}
+	},
+
+	// HISTORY shorthand
+	history: {
+		push: function( obj ) {
+			document.title = obj.title;
+			history.pushState(obj, obj.title, obj.url);	
+		},
+		replace: function( obj ) {
+			document.title = obj.title;
+			history.replaceState(obj, obj.title, obj.url);
+		}
+	}
+};
+
+
+_.extend(Router.prototype, methods);
+
+Router.extend = extend;
+
+module.exports = Router;
+},{"./extend.js":14,"underscore":16}],13:[function(require,module,exports){
+var _ = require('underscore');
+var extend = require('./extend.js');
+
+var Services = function(obj) {
+	this.data = null;
+	this.history = []; 	// could push state changes to an array
+
+	for (var prop in obj) {
+		this[prop] = obj[prop];
+	}
+
+	if (this.listen) {
+		this.bindListen();	
+	}
+
+	if (this.modifiers) {
+		this.bindModifiers();
+	}
+}
+
+var methods = {
+	cloneData: function() {
+		// accept a component as optional, otherwise clone whole state
+		var clone = {};
+
+		for (var prop in this.data) {
+			clone[prop] = this.data[prop];
+		}			
+
+		return clone;
+	},
+
+	cloneState: function() {
+		// accept a component as optional, otherwise clone whole state
+		var clone = {};
+
+		for (var prop in this.state) {
+			clone[prop] = this.state[prop];
+		}			
+
+		return clone;
+	},
+
+	setData: function( obj ) {
+		for (var prop in obj) {
+			if (this.data.hasOwnProperty(prop)) {
+				this.data[prop] = obj[prop]
+			}
+		}
+
+		return this.data;
+	},
+
+	// FLUX
+	bindListen: function() {
+		// backbone-style hashes for flux-style action configuration
+		for (var action in this.listen) {
+			this.dispatcher.register(action, this, this.listen[action].bind(this));
+		}
+	},
+
+	// MODIFIERS
+	bindModifiers: function() {
+		for (var func in this.modifiers) {
+			this.modifiers[func] = this.modifiers[func].bind(this)
+		}
+	}
+}
+
+_.extend(Services.prototype, methods);
+
+Services.extend = extend;
+
+module.exports = Services;
+},{"./extend.js":14,"underscore":16}],14:[function(require,module,exports){
+var _ = require('underscore');
+
+module.exports = function(protoProps, staticProps) {
+	var parent = this;
+	var child;
+
+	if (protoProps && _.has(protoProps, 'constructor')) {
+		child = protoProps.constructor;
+	} else {
+		child = function() {
+			return parent.apply(this, arguments);
+		};
+	}
+
+	_.extend(child, parent, staticProps);
+
+	var Surrogate = function() {
+		this.constructor = child;
+	};
+
+	Surrogate.prototype = parent.prototype;
+	child.prototype = new Surrogate();
+
+	if (protoProps) {
+		_.extend(child.prototype, protoProps);
+	}
+
+	child.__super__ = parent.prototype;
+
+	return child;
+};
+},{"underscore":16}],15:[function(require,module,exports){
+module.exports = function(obj) {
+	// better type checking
+	// https://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/
+	var type = ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+
+	// for components, we assume they will be capitalized or pascal cased
+	// if (type === 'string') {
+	// 	if (obj.toLowerCase() !== obj) {
+	// 		type = 'component'
+	// 	}
+	// }
+
+	return type;
+}
 },{}],16:[function(require,module,exports){
-arguments[4][1][0].apply(exports,arguments)
-},{"./src/Component.js":17,"./src/Dispatcher.js":18,"./src/Router.js":20,"./src/Services.js":21,"./src/extend.js":22,"./src/toType.js":23,"dup":1}],17:[function(require,module,exports){
-arguments[4][2][0].apply(exports,arguments)
-},{"./extend.js":22,"dup":2,"nerve-templates":10,"underscore":24}],18:[function(require,module,exports){
-arguments[4][3][0].apply(exports,arguments)
-},{"./Events.js":19,"./extend.js":22,"dup":3,"underscore":24}],19:[function(require,module,exports){
-arguments[4][4][0].apply(exports,arguments)
-},{"dup":4}],20:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"./extend.js":22,"dup":5,"underscore":24}],21:[function(require,module,exports){
-arguments[4][6][0].apply(exports,arguments)
-},{"./extend.js":22,"dup":6,"underscore":24}],22:[function(require,module,exports){
-arguments[4][7][0].apply(exports,arguments)
-},{"dup":7,"underscore":24}],23:[function(require,module,exports){
-arguments[4][8][0].apply(exports,arguments)
-},{"dup":8}],24:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -7129,7 +7113,7 @@ arguments[4][8][0].apply(exports,arguments)
   }
 }.call(this));
 
-},{}],25:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var Ulna = require('ulna');
 var services = require('../services.js');
 var hyphenate = require('../utils.js').hyphenate;
@@ -7282,7 +7266,7 @@ InfographicChange.prototype = {
 
 module.exports = InfographicChange;
 
-},{"../services.js":69,"../utils.js":70,"ulna":16}],26:[function(require,module,exports){
+},{"../services.js":61,"../utils.js":62,"ulna":8}],18:[function(require,module,exports){
 var Ulna = require('ulna');
 var services = require('../services.js');
 
@@ -7477,7 +7461,7 @@ RouteChange.prototype = {
 }
 
 module.exports = RouteChange;
-},{"../services.js":69,"ulna":16}],27:[function(require,module,exports){
+},{"../services.js":61,"ulna":8}],19:[function(require,module,exports){
 var Ulna = require('ulna');
 var services = require('../services.js');
 
@@ -7625,7 +7609,7 @@ TimelineChange.prototype = {
 }
 
 module.exports = TimelineChange;
-},{"../services.js":69,"moment":9,"ulna":16}],28:[function(require,module,exports){
+},{"../services.js":61,"moment":1,"ulna":8}],20:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('./dispatcher.js');
@@ -7886,7 +7870,7 @@ app = new Ulna.Component({
 });
 
 module.exports = app;
-},{"./components/BioCardList.js":30,"./components/BrandCarousel.js":31,"./components/Curtain.js":33,"./components/Discography.js":35,"./components/Footer.js":36,"./components/Header.js":37,"./components/Hero.js":38,"./components/HotButton.js":39,"./components/InfographicCarousel.js":40,"./components/Modal.js":42,"./components/Nav.js":43,"./components/Photos/PhotoGallery.js":47,"./components/SocialIcons.js":48,"./components/Timeline/Timeline.js":52,"./components/TimelinePrev.js":55,"./components/Typewriter.js":56,"./components/UpcomingCarousel.js":57,"./components/VFrame.js":58,"./dispatcher.js":67,"./router.js":68,"./services.js":69,"ulna":16}],29:[function(require,module,exports){
+},{"./components/BioCardList.js":22,"./components/BrandCarousel.js":23,"./components/Curtain.js":25,"./components/Discography.js":27,"./components/Footer.js":28,"./components/Header.js":29,"./components/Hero.js":30,"./components/HotButton.js":31,"./components/InfographicCarousel.js":32,"./components/Modal.js":34,"./components/Nav.js":35,"./components/Photos/PhotoGallery.js":39,"./components/SocialIcons.js":40,"./components/Timeline/Timeline.js":44,"./components/TimelinePrev.js":47,"./components/Typewriter.js":48,"./components/UpcomingCarousel.js":49,"./components/VFrame.js":50,"./dispatcher.js":59,"./router.js":60,"./services.js":61,"ulna":8}],21:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7966,7 +7950,7 @@ var BioCard = Ulna.Component.extend({
 });
 
 module.exports = BioCard;
-},{"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"ulna":16}],30:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],22:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8007,8 +7991,8 @@ var BioCardList = Ulna.Component.extend({
 });
 
 module.exports = BioCardList;
-},{"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"./BioCard.js":29,"ulna":16}],31:[function(require,module,exports){
-var Ulna = require('Ulna');
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./BioCard.js":21,"ulna":8}],23:[function(require,module,exports){
+var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
 
@@ -8061,7 +8045,7 @@ var BrandCarousel = Ulna.Component.extend({
 });
 
 module.exports = BrandCarousel;
-},{"../dispatcher.js":67,"Ulna":1}],32:[function(require,module,exports){
+},{"../dispatcher.js":59,"ulna":8}],24:[function(require,module,exports){
 var Ulna = require('ulna');
 
 // a card is a generic component designed to display content in a visual manner
@@ -8106,7 +8090,7 @@ var Card = Ulna.Component.extend({
 });
 
 module.exports = Card;
-},{"ulna":16}],33:[function(require,module,exports){
+},{"ulna":8}],25:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 var dispatcher = require('../dispatcher.js');
@@ -8128,7 +8112,7 @@ var Curtain = Ulna.Component.extend({
 });
 
 module.exports = Curtain;
-},{"../actions/RouteChange.js":26,"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"ulna":16}],34:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],26:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8202,7 +8186,7 @@ var DateArticle = Ulna.Component.extend({
 });
 
 module.exports = DateArticle;
-},{"../actions/RouteChange.js":26,"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"./Photos/PhotoCarousel.js":46,"./Videos/VideoCarousel.js":59,"ulna":16}],35:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Photos/PhotoCarousel.js":38,"./Videos/VideoCarousel.js":51,"ulna":8}],27:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8352,8 +8336,8 @@ var Discography = Ulna.Component.extend({
 });
 
 module.exports = Discography;
-},{"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"ulna":16}],36:[function(require,module,exports){
-var Ulna = require('Ulna');
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],28:[function(require,module,exports){
+var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
 var services = require('../services.js');
@@ -8424,7 +8408,7 @@ var Footer = Ulna.Component.extend({
 });
 
 module.exports = Footer;
-},{"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"Ulna":1}],37:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],29:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Logo = require('./Logo.js');
@@ -8456,7 +8440,7 @@ var Header = Ulna.Component.extend({
 });
 
 module.exports = Header;
-},{"./HotButton.js":39,"./Logo.js":41,"./SocialIcons.js":48,"./Typewriter.js":56,"ulna":16}],38:[function(require,module,exports){
+},{"./HotButton.js":31,"./Logo.js":33,"./SocialIcons.js":40,"./Typewriter.js":48,"ulna":8}],30:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Hero = Ulna.Component.extend({
@@ -8480,7 +8464,7 @@ var Hero = Ulna.Component.extend({
 });
 
 module.exports = Hero;
-},{"ulna":16}],39:[function(require,module,exports){
+},{"ulna":8}],31:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('../dispatcher.js');
 var RouteChange = require('../actions/RouteChange.js');
@@ -8518,8 +8502,8 @@ var HotButton = Ulna.Component.extend({
 });
 
 module.exports = HotButton;
-},{"../actions/RouteChange.js":26,"../actions/TimelineChange.js":27,"../dispatcher.js":67,"../services.js":69,"ulna":16}],40:[function(require,module,exports){
-var Ulna = require('Ulna');
+},{"../actions/RouteChange.js":18,"../actions/TimelineChange.js":19,"../dispatcher.js":59,"../services.js":61,"ulna":8}],32:[function(require,module,exports){
+var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
 var dispatcher = require('../dispatcher.js');
@@ -8710,7 +8694,7 @@ var InfographicCarousel = Ulna.Component.extend({
 });
 
 module.exports = InfographicCarousel;
-},{"../actions/InfographicChange.js":25,"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"Ulna":1}],41:[function(require,module,exports){
+},{"../actions/InfographicChange.js":17,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],33:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8732,7 +8716,7 @@ var Logo = Ulna.Component.extend({
 });
 
 module.exports = Logo;
-},{"../dispatcher.js":67,"ulna":16}],42:[function(require,module,exports){
+},{"../dispatcher.js":59,"ulna":8}],34:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8843,7 +8827,7 @@ var Modal = Ulna.Component.extend({
 });
 
 module.exports = Modal;
-},{"../actions/RouteChange.js":26,"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"./Videos/VideoEmbed.js":60,"ulna":16}],43:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Videos/VideoEmbed.js":52,"ulna":8}],35:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8907,7 +8891,7 @@ var Nav = Ulna.Component.extend({
 });
 
 module.exports = Nav;
-},{"../actions/RouteChange.js":26,"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"./NavItem.js":44,"ulna":16}],44:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./NavItem.js":36,"ulna":8}],36:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8974,7 +8958,7 @@ var NavItem = Ulna.Component.extend({
 });
 
 module.exports = NavItem;
-},{"../actions/RouteChange.js":26,"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"ulna":16}],45:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],37:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9014,7 +8998,7 @@ var Photo = Ulna.Component.extend({
 });
 
 module.exports = Photo;
-},{"../../dispatcher.js":67,"../../services.js":69,"../../utils.js":70,"ulna":16}],46:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],38:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9064,7 +9048,7 @@ var PhotoCarousel = Ulna.Component.extend({
 });
 
 module.exports = PhotoCarousel;
-},{"../../dispatcher.js":67,"../../services.js":69,"../../utils.js":70,"./Photo.js":45,"ulna":16}],47:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Photo.js":37,"ulna":8}],39:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9104,8 +9088,8 @@ var PhotoGallery = Ulna.Component.extend({
 });
 
 module.exports = PhotoGallery;
-},{"../../dispatcher.js":67,"../../services.js":69,"../../utils.js":70,"./Photo.js":45,"ulna":16}],48:[function(require,module,exports){
-var Ulna = require('Ulna');
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Photo.js":37,"ulna":8}],40:[function(require,module,exports){
+var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
 
@@ -9155,7 +9139,7 @@ var SocialIcons = Ulna.Component.extend({
 });
 
 module.exports = SocialIcons;
-},{"../dispatcher.js":67,"Ulna":1}],49:[function(require,module,exports){
+},{"../dispatcher.js":59,"ulna":8}],41:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9303,7 +9287,7 @@ module.exports = DateNode;
 
 
 
-},{"../../actions/RouteChange.js":26,"../../actions/TimelineChange.js":27,"../../dispatcher.js":67,"../../services.js":69,"moment":9,"ulna":16}],50:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../actions/TimelineChange.js":19,"../../dispatcher.js":59,"../../services.js":61,"moment":1,"ulna":8}],42:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9376,7 +9360,7 @@ var Month = Ulna.Component.extend({
 });
 
 module.exports = Month;
-},{"../../actions/RouteChange.js":26,"../../dispatcher.js":67,"../../services.js":69,"./DateNode.js":49,"moment":9,"ulna":16}],51:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"./DateNode.js":41,"moment":1,"ulna":8}],43:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 var utils = require('../../utils.js');
@@ -9459,7 +9443,7 @@ var MonthList = Ulna.Component.extend({
 });
 
 module.exports = MonthList;
-},{"../../actions/TimelineChange.js":27,"../../dispatcher.js":67,"../../services.js":69,"../../utils.js":70,"./Month.js":50,"moment":9,"ulna":16}],52:[function(require,module,exports){
+},{"../../actions/TimelineChange.js":19,"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Month.js":42,"moment":1,"ulna":8}],44:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9533,7 +9517,7 @@ var Timeline = Ulna.Component.extend({
 });
 
 module.exports = Timeline;
-},{"../../actions/RouteChange.js":26,"../../dispatcher.js":67,"../../services.js":69,"../DateArticle.js":34,"./Month.js":50,"./MonthList.js":51,"./YearControl.js":53,"moment":9,"ulna":16}],53:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"../DateArticle.js":26,"./Month.js":42,"./MonthList.js":43,"./YearControl.js":45,"moment":1,"ulna":8}],45:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9591,7 +9575,7 @@ var YearControl = Ulna.Component.extend({
 });
 
 module.exports = YearControl;
-},{"../../actions/RouteChange.js":26,"../../dispatcher.js":67,"../../services.js":69,"./YearItem.js":54,"moment":9,"ulna":16}],54:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"./YearItem.js":46,"moment":1,"ulna":8}],46:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9643,7 +9627,7 @@ var YearItem = Ulna.Component.extend({
 });
 
 module.exports = YearItem;
-},{"../../actions/RouteChange.js":26,"../../dispatcher.js":67,"../../services.js":69,"moment":9,"ulna":16}],55:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"moment":1,"ulna":8}],47:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -9744,7 +9728,7 @@ var Timeline = Ulna.Component.extend({
 });
 
 module.exports = Timeline;
-},{"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"moment":9,"ulna":16}],56:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"moment":1,"ulna":8}],48:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Typed = Ulna.Component.extend({
@@ -9797,8 +9781,8 @@ var Typed = Ulna.Component.extend({
 });
 
 module.exports = Typed;
-},{"ulna":16}],57:[function(require,module,exports){
-var Ulna = require('Ulna');
+},{"ulna":8}],49:[function(require,module,exports){
+var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
 var services = require('../services.js');
@@ -9933,7 +9917,7 @@ var UpcomingCarousel = Ulna.Component.extend({
 });
 
 module.exports = UpcomingCarousel;
-},{"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"./Card.js":32,"Ulna":1}],58:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Card.js":24,"ulna":8}],50:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var VFrame = Ulna.Component.extend({
@@ -9947,7 +9931,7 @@ var VFrame = Ulna.Component.extend({
 });
 
 module.exports = VFrame;
-},{"ulna":16}],59:[function(require,module,exports){
+},{"ulna":8}],51:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9995,7 +9979,7 @@ var VideoCarousel = Ulna.Component.extend({
 });
 
 module.exports = VideoCarousel;
-},{"../../dispatcher.js":67,"../../services.js":69,"../../utils.js":70,"./VideoThumb.js":61,"ulna":16}],60:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./VideoThumb.js":53,"ulna":8}],52:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -10016,7 +10000,7 @@ var VideoEmbed = Ulna.Component.extend({
 });
 
 module.exports = VideoEmbed;
-},{"../../dispatcher.js":67,"../../services.js":69,"../../utils.js":70,"ulna":16}],61:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],53:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -10048,7 +10032,7 @@ var VideoThumb = Ulna.Component.extend({
 });
 
 module.exports = VideoThumb;
-},{"../../dispatcher.js":67,"../../services.js":69,"../../utils.js":70,"ulna":16}],62:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],54:[function(require,module,exports){
 module.exports = {
 	bios: [
 		{
@@ -10061,7 +10045,7 @@ module.exports = {
 		}
 	]
 };
-},{}],63:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 var Moment = require('moment');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -10454,7 +10438,7 @@ for (var d = 0; dates.length > d; d++) {
 */
 
 module.exports = dates;
-},{"../../utils.js":70,"moment":9}],64:[function(require,module,exports){
+},{"../../utils.js":62,"moment":1}],56:[function(require,module,exports){
 module.exports = {
 	nav: [
 		{
@@ -10606,7 +10590,7 @@ module.exports = {
 		}
 	]
 };
-},{}],65:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 module.exports = {
 	discography: [
 		{
@@ -10674,7 +10658,7 @@ module.exports = {
 		}
 	]
 };
-},{}],66:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = {
 	title: 'Photos',
 	photos: [
@@ -10728,7 +10712,7 @@ module.exports = {
 		}
 	]
 }
-},{}],67:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 var Ulna = require('ulna');
 var services = require('./services.js');
 
@@ -10794,7 +10778,7 @@ var dispatcher = new Ulna.Dispatcher({
 });
 
 module.exports = dispatcher;	
-},{"./services.js":69,"ulna":16}],68:[function(require,module,exports){
+},{"./services.js":61,"ulna":8}],60:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('./dispatcher.js');
 // var services = require('./services.js');
@@ -10841,7 +10825,7 @@ var router = new Ulna.Router({
 });
 
 module.exports = router;
-},{"./actions/RouteChange.js":26,"./actions/TimelineChange.js":27,"./dispatcher.js":67,"ulna":16}],69:[function(require,module,exports){
+},{"./actions/RouteChange.js":18,"./actions/TimelineChange.js":19,"./dispatcher.js":59,"ulna":8}],61:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('./dispatcher.js');
 var utils = require('./utils.js');
@@ -10869,7 +10853,7 @@ var services = new Ulna.Services({
 });
 
 module.exports = services;
-},{"./data/about/index.js":62,"./data/events/index.js":63,"./data/index.js":64,"./data/music/index.js":65,"./data/photos/index.js":66,"./dispatcher.js":67,"./utils.js":70,"moment":9,"ulna":16}],70:[function(require,module,exports){
+},{"./data/about/index.js":54,"./data/events/index.js":55,"./data/index.js":56,"./data/music/index.js":57,"./data/photos/index.js":58,"./dispatcher.js":59,"./utils.js":62,"moment":1,"ulna":8}],62:[function(require,module,exports){
 var Moment = require('moment');
 
 module.exports = {
@@ -11114,4 +11098,4 @@ module.exports = {
 	}
 }
 
-},{"moment":9}]},{},[28]);
+},{"moment":1}]},{},[20]);

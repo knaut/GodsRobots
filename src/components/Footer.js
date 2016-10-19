@@ -1,4 +1,4 @@
-var Ulna = require('Ulna');
+var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
 var services = require('../services.js');
