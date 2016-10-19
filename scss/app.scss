@@ -1,0 +1,99 @@
+@import "./global.scss";
+
+@import "./components/header.scss";
+@import "./components/carousel.scss";
+@import "./components/brands.scss";
+@import "./components/social_icons.scss";
+@import "./components/typedwriter.scss";
+@import "./components/vframe.scss";
+@import "./components/nav.scss";
+@import "./components/cards.scss";
+@import "./components/timeline.scss";
+@import "./components/footer.scss";
+@import "./components/discography.scss";
+@import "./components/photos.scss";
+@import "./components/modal.scss";
+@import "./components/hero.scss";
+@import "./components/curtain.scss";
+@import "./components/videos.scss";
+
+
+#app-root {
+	overflow-y: auto;
+	height: 100%;
+	position: relative;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	background: $knBlueDark;
+	margin: 0;
+	@include Roboto(100);
+	height: 100%;
+
+	#main-wrap {
+		min-height: 100%;
+
+		ul {
+			// width: 100%;
+			text-align: center;
+			#join-mailing-list, #watch-video {
+				display: inline-block;
+				padding: 30px 15px;
+				text-align: center;
+				button {
+					border: 2px solid $knWhite;
+					border-radius: 0;
+					background: rgba(243, 244, 245, 0.0);
+					transition: .1s background ease-in-out;
+					span {
+						@include Roboto(400, uppercase, 5px);
+						color: rgba(243, 244, 245, 1.0);
+						transition: .1s color ease-in-out;
+					}
+					&:hover {
+						background: $knWhite;
+						span {
+							color: $knBlueShade3;
+							text-shadow: none;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+#main {
+	&.page-index {
+		top: 100%; 
+		position: absolute; 
+		width: 100%;
+	}
+	
+	#main-content {
+		padding-top: 70px;
+	}
+}
+
+
+// global layout class for general formatting on articles
+.layout {
+	background: #222;
+	padding: 25px;
+	h1 {
+		@include RobotoCondensed;
+		color: #fff;
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+	img {
+		width: 100%;
+		border: 1px solid #444;
+	}
+}
+

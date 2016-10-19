@@ -1,0 +1,65 @@
+@mixin breakpoint($point){
+  
+  @if ($point == lg){
+    @media (min-width: 1200px){ @content }
+  }
+  @else if ($point == md){
+    @media   (max-width: 1199px){ @content }
+  }
+  
+  @else if ($point == sm){
+    @media   (max-width: 991px){ @content }
+  }
+
+  @else if ($point == xs){
+    @media (max-width: 767px)  { @content }
+  }
+
+  @else if ($point == xxs){
+    @media (max-width: 640px)  { @content }
+  }
+
+  @else if ($point == xxxs){
+    @media  (max-width: 480px){ @content }
+  }
+}
+
+$grRedWash: rgba(100, 10, 0, 0.8);
+$grYellowWash: rgba(255, 235, 0, 0.6);
+$grYellow: #FFEB00;
+
+$knBlueDark: #021016;
+$knBlue: #061F26;
+$knBlueLight: #1D3740;
+$knGrayLight: #B9BFC1;
+$knWhite: #F3F4F5;
+
+$knBlueShade1: #5DB0CC;
+$knBlueShade2: #40798C;
+$knBlueShade3: #23424D;
+
+$knBlueWash: rgba(8, 49, 84, 0.75);
+
+$knPurpleWash: rgba(89, 40, 255, 0.75);
+
+$knPurple: #5928FF;
+$knPurpleDarkWash: rgba(22, 10, 64, 0.75);
+
+@mixin RobotoCondensed( $weight: 400, $transform: auto, $kerning: auto ) {
+	font-family: 'Roboto Condensed', sans-serif;
+	font-weight: $weight;
+	text-transform: $transform;
+	letter-spacing: $kerning;
+}
+
+@mixin Roboto( $weight: 400, $transform: auto, $kerning: auto ) {
+	font-family: 'Roboto', sans-serif;
+	font-weight: $weight;
+	text-transform: $transform;
+	letter-spacing: $kerning;
+}
+
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+}

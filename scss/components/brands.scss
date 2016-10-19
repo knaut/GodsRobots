@@ -1,0 +1,39 @@
+#brands {
+	background: rgba(25,25,25,1.0);
+	padding: 50px 0 50px;
+	h1 {
+		@include Roboto(100);
+		margin-bottom: 50px;
+		text-align: center;
+	}
+}
+
+#brand-carousel {
+	padding-top: 20px;
+	h1 {
+		@include Roboto(100);
+		font-size: 28px;
+		text-align: center;
+	}
+	ul {
+		white-space: nowrap;
+		max-width: 100%;
+		overflow-x: scroll;
+		padding: 25px 0;
+	}
+	li {
+		list-style: none;
+		display: inline-block;
+		white-space: nowrap;
+		margin: 0 20px;
+	}
+	img {
+		max-height: 35px;
+		opacity: 0.65;
+		transition: 0.2s opacity ease-in-out;
+		&:hover {
+			opacity: 1;
+			cursor: pointer;
+		}
+	}
+}

@@ -1,0 +1,19 @@
+#footer {
+	background: #202020;
+	padding: 25px;
+	text-align: center;
+	a {
+		display: block;
+		@include RobotoCondensed(200, auto, 1px);
+		font-size: 18px;
+		padding: 7px 5px;
+		transition: 0.5s all ease-in-out;
+		
+		&:link {
+			text-decoration: none;
+		}
+		&:hover {
+			color: $grYellow;
+		}
+	}
+}

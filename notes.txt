@@ -1,0 +1,14 @@
+Home/Index
+- splash logo / call to action
+- upcoming events
+- contact section
+?- sample tracks / player
+
+
+- About the artist
+- Music and Discography
+- Videos and Photos
+- Event catalogue as nodes on a visual timeline
+- Social media links and/or integrated feeds
+- Press links page
+Artist contact page

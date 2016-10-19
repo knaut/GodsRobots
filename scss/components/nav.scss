@@ -1,0 +1,133 @@
+#nav-wrap {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+	nav {
+		@include Roboto(400, uppercase, 5px);
+		ul, li {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		ul {
+			text-align: center;
+			opacity: 1;
+			transition: 0.25s opacity ease-in-out;
+		}
+		li {
+			margin: 25px 0;
+			display: inline-block;
+		}
+		a {
+			padding: 10px;
+			margin: 10px;
+			cursor: pointer;
+			border-bottom: 2px solid rgba(255, 255, 255, 0);
+			transition: 0.25s all ease-in-out;
+			text-decoration: none;
+			&:hover {
+				text-decoration: none;
+				border-bottom: 2px solid rgba(255, 255, 255, 1);
+			}
+		}
+		#nav-expander {
+			z-index: 50;
+			opacity: 0;
+			transition: .25s all ease-in-out;
+
+			position: absolute;
+			top: 0;
+			padding-top: 20px;
+			left: 50%;
+			margin-left: -25px;
+
+			display: none;
+			height: 50px;
+			width: 50px;
+			border-radius: 25px;
+			border: 2px solid rgba(255, 255, 255, 0.5);
+			background: rgba(0,0,0,0.25);
+
+			&:hover {
+				background: rgba(0,0,0,0.5);
+			}
+
+
+			&:before {
+				content: '';
+				display: block;
+				height: 2px;
+				width: 30px;
+				border-radius: 2px;
+				background: rgba(255,255,255,.75);
+				position: absolute;
+				top: 50%;
+				left: 8px;
+				margin-top: -1px;
+				transform: rotate(0);
+				transition: 0.5s all ease-in-out;
+			}
+			&:after {
+				content: '';
+				display: block;
+				height: 2px;
+				width: 30px;
+				border-radius: 2px;
+				background: rgba(255,255,255,.75);
+				position: absolute;
+				top: 50%;
+				left: 8px;
+				margin-top: -1px;
+				transform: rotate(90deg);
+				transition: 0.5s all ease-in-out;
+			}
+			&:hover {
+				cursor: pointer;
+				border-color: rgba(255, 255, 255, 1);
+				&:before {
+					background: rgba(255,255,255, 1);
+				}
+				&:after {
+					background: rgba(255,255,255, 1);
+				}
+			}
+		}
+	}
+	@include breakpoint(xs) {
+		nav {
+			ul {
+				opacity: 0;
+				display: none;
+			}
+			#nav-expander {
+				display: block;
+				opacity: 1;
+			}
+		}
+	}
+}
+
+@include breakpoint(sm) {
+	#nav-wrap {
+		nav {
+			#nav-expander {
+				position: fixed;
+				top: 0;
+				padding-top: 20px;
+			}
+		}
+	}
+}
+
+@include breakpoint(md) {
+	#nav-wrap {
+		nav {
+			#nav-expander {
+				position: fixed;
+				top: 0;
+				margin-top: 20px;
+			}
+		}
+	}
+}

@@ -1,0 +1,23 @@
+#social-icons {
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		li {
+			padding: 0;
+			margin: 0;
+			display: inline-block;
+			a {
+				margin: 20px 10px;
+				transform: 1s opacity ease-in-out;
+				&:hover {
+					opacity: 1;
+				}
+				&:not(:hover) {
+					opacity: 0.5;
+				}
+			}
+		}
+	}
+}

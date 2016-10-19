@@ -1,0 +1,261 @@
+@mixin tile-gallery() {
+	h1 {
+		color: $grYellow;
+	}
+
+	padding: 45px 25px;
+	// override bootstrap
+	& > .col-lg-12 {
+		float: none !important;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		text-align: center;
+
+	}
+	li {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: inline-block;
+		width: 100%;
+		overflow: hidden;
+		margin-top: -5px;
+
+		border: 1px solid #000;
+		transition: 0.3s all ease-in-out;
+		&:hover {
+			border: 1px solid #fff;
+			cursor: pointer;
+		}
+
+		.video-wrap {
+			display: table;
+			height: 100%;
+			position: relative;
+		}
+
+		img {
+			width: auto;
+			position: absolute;
+			top: 0;
+			border: 0;
+			max-height: 100%;
+			min-height: 100%;
+		}
+
+		@include breakpoint(lg) {
+			height: 350px;
+			width: 350px;
+
+			// img {
+			// 	left: -100px;
+			// }
+		}
+
+		@include breakpoint(md) {
+			height: 200px;
+			width: 200px;
+
+			// img {
+			// 	left: -100px;
+			// }
+		}
+
+		@include breakpoint(sm) {
+			height: 300px;
+			width: 300px;
+
+			// img {
+			// 	left: -150px;
+			// }
+		}
+
+		@include breakpoint(xs) {
+			height: 150px;
+			width: 150px;
+
+			// img {
+			// 	left: -75px;
+			// }
+		}
+
+		@include breakpoint(xxxs) {
+			width: 100%;
+			img {
+				top: -55%;
+				max-height: none;
+			}
+		}
+	}
+}
+
+@mixin carousel-gallery() {
+	// padding: 45px 25px;
+	// override bootstrap
+	h1 {
+		font-size: 28px;
+		color: #fff;
+		margin-bottom: 10px;
+	}
+
+	& > div {
+		padding: 0 40px;
+		overflow: hidden;
+	}
+
+	& > .col-lg-12 {
+		float: none !important;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		white-space: nowrap;
+		position: relative;
+	    overflow: hidden;
+	    height: 225px;
+
+	}
+
+	li {
+		margin: 0 15px;
+		border: 1px solid #000;
+		transition: 0.3s all ease-in-out;
+		&:hover {
+			border: 1px solid #fff;
+			cursor: pointer;
+		}
+		&:first-child {
+			margin-left: 0;
+		}
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+		padding: 0;
+		list-style: none;
+		display: inline-block;
+		height: 100%;
+		
+		// width: 100%;
+		
+
+		// overflow: hidden;
+		// margin-top: -5px;
+		// &:
+
+		.video-wrap {
+			// display: table;
+			height: 100%;
+			position: relative;
+		}
+
+		img {
+			height: 100%;
+			// width: auto;
+			// position: absolute;
+			// // top: 0;
+			// border: 0;
+			// max-height: 100%;
+			// min-height: 100%;
+		}
+
+		// @include breakpoint(lg) {
+		// 	height: 350px;
+		// 	width: 350px;
+
+		// 	// img {
+		// 	// 	left: -100px;
+		// 	// }
+		// }
+
+		// @include breakpoint(md) {
+		// 	height: 200px;
+		// 	width: 200px;
+
+		// 	// img {
+		// 	// 	left: -100px;
+		// 	// }
+		// }
+
+		// @include breakpoint(sm) {
+		// 	height: 300px;
+		// 	width: 300px;
+
+		// 	// img {
+		// 	// 	left: -150px;
+		// 	// }
+		// }
+
+		// @include breakpoint(xs) {
+		// 	height: 150px;
+		// 	width: 150px;
+
+		// 	// img {
+		// 	// 	left: -75px;
+		// 	// }
+		// }
+
+		// @include breakpoint(xxxs) {
+		// 	width: 100%;
+		// 	img {
+		// 		top: -55%;
+		// 		max-height: none;
+		// 	}
+		// }
+	}
+}
+
+#video-carousel {
+	position: relative;
+	
+	#video-carousel-inner {
+		position: relative;
+	}
+
+	#video-carousel-next,
+	#video-carousel-prev {
+		height: 40px;
+		width: 40px;
+		position: absolute;
+		top: 50%;
+		margin-top: -20px;
+		font-size: 22px;
+		color: #fff;
+		transition: 0.2s all ease-in-out;
+		// padding: 10px;
+		&:hover {
+			color: $grYellow;
+			cursor: pointer;
+		}
+	}
+	#video-carousel-next {
+		left: 0;
+		&:before {
+			position: absolute;
+		    top: 10px;
+		    left: 0;
+		}
+	}
+	#video-carousel-prev {
+		right: 0;
+		&:before {
+			position: absolute;
+		    top: 10px;
+		    right: 0;
+		}
+	}
+}
+
+#video-gallery.tile-gallery {
+	@include tile-gallery;
+}
+
+#video-carousel.carousel-gallery {
+	@include carousel-gallery;
+}

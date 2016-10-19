@@ -1,0 +1,88 @@
+// card styles
+
+.card-wrap {
+	position: relative;
+	overflow: hidden;
+
+	.card {
+		background-size: cover;
+		overflow: hidden;
+
+	}
+}
+
+#upcoming-carousel-inner {
+	.card {
+
+		height: 400px;
+
+		h1.title {
+			width: 100%;
+			background: rgba(0,0,0,0.5);
+			padding: 20px;
+			margin: 0 auto;
+			text-align: center;
+			text-transform: uppercase;;
+			letter-spacing: 4px;
+		}
+
+		p.summary {
+			background: rgba(0,0,0,0.75);
+			padding: 25px;
+			margin: 0;
+			position: absolute;
+			bottom: 0;
+			text-align: center;
+			width: 100%;
+
+			white-space: normal;
+		}
+
+		span.upcoming {
+			@include RobotoCondensed(100, uppercase, 3px);
+			font-size: 24px;
+
+			background: $knPurpleDarkWash;
+			position: absolute;
+			top: 32px;
+			left: -95px;
+			transform: rotate(-45deg);
+			padding: 15px 100px;
+
+			// text-transform: uppercase;
+			// letter-spacing: 3px;
+		}
+		
+		img {
+			display: none;
+		}
+	}
+}
+
+@include breakpoint(sm) {
+	#upcoming-carousel-inner {
+		.card {
+			span.upcoming {
+				font-size: 14px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+		}
+	}
+}
+
+@include breakpoint(md) {
+	#upcoming-carousel-inner {
+		.card {
+			height: 625px;
+		}	
+	}
+}
+
+@include breakpoint(lg) {
+	#upcoming-carousel-inner {
+		.card {
+			height: 850px;
+		}	
+	}
+}

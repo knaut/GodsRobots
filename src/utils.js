@@ -1,0 +1,243 @@
+var Moment = require('moment');
+
+module.exports = {
+	hyphenate: function( string ) {
+		// simple hyphenation util
+
+		var reg = /([a-zA-Z\S]*)/g;
+		var match = string.match(reg);
+		var arr = [];
+		var punc = /(\W)/g;
+		for (var s = 0; match.length > s; s++) {
+			var ms = match[s].toLowerCase();
+			if (ms !== '') {
+				ms = ms.replace(punc, '');
+				arr.push(ms)
+			}
+		}
+		var hyphenated = arr.join('-');
+		
+		return hyphenated;
+	},
+
+	capitalize: function( string ) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	},
+
+	buildDateUID: function( date ) {
+		// build a unique id for a given Moment
+		// use a standard ISO format, like YYYYMMDDThhmm
+
+		return date.format('YYYYMMDDThhmm');
+	},
+
+	buildMonthUID: function( date ) {
+		// build unique ID for a given Moment month
+		return date.format('YYYYMM');
+	},
+
+	buildDateURL: function( date ) {
+		/* take a nested date obj like:
+			{
+				name: 'Test Date',
+				startDate: new Moment({
+					year: 1970,
+					month: 2,
+					day: 1,
+					hour: 12,
+					minute: 0
+				})
+			}
+
+			return a stringified format we can use as a route URL like:
+			/timeline/1970/02/01/test-date
+		*/
+
+		return string = '/timeline/' + date.startDate.format('YYYY/MM/DD/') + this.hyphenate(date.name);
+
+	},
+
+	getDateByISO: function( events, string ) {
+		// assume events is a flat collection with nested Moment objects
+		// based on an ISO string, like "20160702T0700", return the matching date
+		var date = false;
+		for (var e = 0; events.length > e; e++) {
+			var testISO = this.buildDateUID( events[e].startDate );
+			if (testISO === string) {
+				date = events[e];
+			}
+		}
+		return date;
+	},
+
+	getYears: function( events ) {
+
+		// assume events is a flat collection with nested Moment objects
+		// should return an array with all available years
+
+		var years = [];
+
+		for (var y = 0; events.length > y; y++) {
+			var year = events[y].startDate.toObject().years;
+			
+			// add if we've just started our loop
+			if (years.length === 0) {
+				years.push( year );
+			} else {
+
+				// make sure we don't add duplicates
+				for (var i = 0; years.length > i; i ++) {
+
+					var hasYear = false;
+					
+					if (years[i] == year) {
+						hasYear = true;
+					}
+				}
+
+				// if we don't have this year yet, push it
+				if (!hasYear) {
+					years.push( year )
+				}
+			}
+		}
+
+		return years;
+	},
+
+	getMonthsForYear: function( events, year ) {
+		// given a year and a flat collection of events where the events are nested Moment objects,
+		// return all months in that year.
+
+		var months = [];
+
+		for (var m = 0; events.length > m; m++) {
+			var eventYear = events[m].startDate.toObject().years;
+			
+			// only accept event events that match our given year
+			if (eventYear == year) {
+
+				var date = events[m];
+				var monthNum = date.startDate.toObject().months;
+				var monthName = date.startDate.format('MMM');
+
+				months.push(monthName);
+
+			}
+		}
+
+		return months;
+	},
+
+	getDatesForYear: function( events, year ) {
+		// take a year and a flat collection of events where there are nested Moment objects
+		// and return that year's dates
+
+		var dates = [];
+
+		for ( var d = 0; events.length > d; d++ ) {
+			// match our year
+			if (year == events[d].startDate.toObject().years) {
+				dates.push(events[d]);
+			}
+		}
+
+		return dates;
+	},
+
+	formatDatesByMonth: function( events ) {
+		// accept a flat collection of events with nested Moment objects
+		// and return a new array where events are contained in an object
+		// whose key is the name of those associated events' month
+		/* ex:
+		[
+			{
+				'October': [
+					{
+						name: 'Some Date'
+						startDate: new Moment()
+					}
+				]
+			}
+		]
+		*/
+		
+		// create a collection with just months
+		var arr = [];
+
+		months = [];
+		for (var i = 0; events.length > i; i++) {
+			var month = events[i].startDate.toObject().months;
+			
+			// add by default if it's the first iteration
+			if (months.length === 0) {
+				months.push(month);
+			} else {
+				// add this month only if it doesn't match anything in our collection so far
+				var hasThisMonth = false;
+				for (var m = 0; months.length > m; m++) {
+					if (months[m] === month) {
+						hasThisMonth = true;
+					}
+				}
+
+				if (!hasThisMonth) {
+					months.push(month)
+				}
+			}
+		}
+
+		// gather events that match our month(s)
+		for (var m = 0; months.length > m; m++) {
+			// gather events for this month
+			var monthKey = Moment({ month: months[m] }).format('MMMM');
+			
+			var monthEvents = [];
+
+			for (var d = 0; events.length > d; d++) {
+				// only match events with this month
+				if (months[m] === events[d].startDate.toObject().months) {
+					monthEvents.push(events[d]);
+				}
+			}
+
+			monthObj = {};
+			monthObj[monthKey] = monthEvents;
+
+			arr.push(monthObj);
+		}
+		return arr;
+	},
+
+	getFirstDateInMonths: function( months ) {
+		/* assume months is an array of nested objects like:
+		[ 
+			{ 
+				'October': [
+					{ name: 'Some Event' }
+				] 
+			}
+		]
+		get the first date of the first month
+		*/
+
+		var monthKey = Object.keys(months[0])[0];
+		return months[0][monthKey][0];
+	},
+
+	calcNodeDistance: function( nodeDate ) {
+		/*
+			nodes should have some information that determines their placement on the timeline
+			get the length of a given month (in days)
+			given the node's date, calculate its lateral placement on the timeline
+		*/
+		// assume relative distance (height or width) based on percentages
+		var distance = 100;
+		var daysInMonths = 30; // nothing fancy for now
+		var ratio = distance / daysInMonths;
+
+		var nodeDistance = ratio * nodeDate;
+
+		return nodeDistance;
+	}
+}

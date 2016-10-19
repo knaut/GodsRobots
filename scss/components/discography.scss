@@ -1,0 +1,58 @@
+#discography {
+	.col-lg-12 {
+		h1:first-of-type {
+			color: $grYellow;
+		}	
+	}
+	.col-sm-8 {
+		h1 {
+			font-size: 24px;
+			text-transform: uppercase;
+			margin: 0;
+		}
+		date {
+			@include RobotoCondensed;
+			color: #ccc;
+			font-size: 20px;
+			padding: 5px 0 15px 0;
+			display: block;
+		}
+		ul {
+			margin: 0;
+			padding: 0;
+			li {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				.audio-track {
+					text-align: left;
+					height: 32px;
+					width: 100%;
+					display: table;
+					border-top: 1px solid #444;
+					background: #181818;
+					padding: 0 0 0 10px;
+					span:first-child {
+						@include Roboto;
+						display: table-cell;
+						margin-right: 10px;
+						vertical-align: middle;
+					}
+					span:not(:first-child) {
+						display: none;
+					}
+					audio {
+						display: table-cell;
+						float: right;
+					}
+				}
+				&:last-child {
+					.audio-track {
+						border-bottom: 1px solid #444;
+					}
+				}
+			}
+		}
+	}
+	
+}

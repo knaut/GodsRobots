@@ -1,0 +1,327 @@
+#timeline-bg {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: -100;
+	transform: translateX(-50%) translateY(-50%);
+	background: url('/media/images/timeline_bg_test_3.jpg') no-repeat;
+	background-size: cover;
+}
+
+#timeline-year-control {
+	padding: 15px 0;
+	background: rgba(0,0,0,0.3);
+	#timeline-year-control-content {
+		text-align: center;
+		a {
+			cursor: pointer;
+			text-decoration: none;
+			@include RobotoCondensed(200, auto, 1px);
+			font-size: 22px;
+			transition: 0.2s all ease-in-out;
+			&:link {
+				text-decoration: none;
+			}
+			&:hover {
+				color: $grYellow;
+			}
+		}
+		ul {
+			margin: 0;
+			padding: 0;
+			display: inline;
+			li {
+				margin: 0;
+				padding: 0 15px;
+				list-style: none;
+				display: inline-block;
+				&.active {
+					a {
+						color: $grYellow;
+					}
+				}
+			}
+		}
+
+		#timeline-year-control-next {
+			margin-right: 25px;
+			font-size: 16px;
+			text-transform: uppercase;
+			top: -2px;
+			position: relative;
+		}
+
+		#timeline-year-control-prev {
+			margin-left: 25px;
+			font-size: 16px;
+			text-transform: uppercase;
+			top: -2px;
+			position: relative;
+		}
+
+	}
+}
+
+#timeline-months {
+	margin: 0;
+	padding: 25px 0 50px;
+	background: rgba(5,5,5,0.8);
+
+	bottom: 0;
+    top: 130px;
+    position: absolute;
+
+    overflow-y: auto;
+
+    transition: 0.25s all ease-in-out;
+
+	& > ul {
+		margin: 0 auto;
+		padding: 0;
+	}
+
+	// month level
+	.timeline-month {
+		margin: 0;
+		padding: 0 25px;
+		list-style: none;
+
+		// month title
+		.timeline-month-title {
+			@include RobotoCondensed(200, uppercase, 1px);
+			font-size: 24px;
+			color: #a0a0a0;
+			text-align: left;
+			padding: 15px 0 10px 0;
+			margin: 0;
+		}
+
+		// month dates list
+		.timeline-month-nodes {
+			margin: 0;
+			padding: 0;
+			position: relative;
+			height: 40px;
+    		margin-bottom: 10px;
+
+			&:after {
+				content: '';
+				display: block;
+				width: 100%;
+				height: 5px;
+				background: $grYellowWash;
+				position: absolute;
+				bottom: 0;
+				border-radius: 5px;
+				z-index: 1;
+			}
+
+			// date nodes
+			.timeline-nodes {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				position: absolute;
+				display: inline-block;
+				height: 100%;
+
+				& > div {
+					height: 100%;
+					display: table;
+				}
+
+				a {
+					@include RobotoCondensed(200, auto, 0);
+					font-size: 20px;
+					color: $grYellow;
+					transition: 0.2s all ease-in-out;
+					display: table-cell;
+
+					vertical-align: middle;
+
+					height: 40px;
+					width: 40px;
+					z-index: 10;
+				    top: 18px;
+				    position: relative;
+
+					span {
+						display: none;
+					}
+
+					&:link {
+						text-decoration: none;
+					}
+
+					&:hover {
+						color: #fff;
+						&:before {
+							// background: #fff;
+						}
+					}
+
+					&.selected {
+						&:before {
+							background: #fff;
+						}
+					}
+
+					&:before {
+						content: '';
+						display: inline-block;
+						width: 20px;
+						height: 20px;
+						background: $grYellow;
+						border-radius: 15px;
+						position: absolute;
+						left: 50%;
+						bottom: -7px;
+						margin-left: -10px;
+						top: 9px;
+
+						// transition: 0.2s all ease-in-out;
+					}
+				}
+			}
+		}
+
+		// active state for the month line
+		// can add this in back later
+		// .active {
+		// 	.timeline-month-title {
+		// 		color: #fff;
+		// 	}
+		// 	.timeline-month-nodes {
+		// 		&:after {
+		// 			background: rgba(255,255,255,0.8);
+		// 		}
+		// 	}
+		// }
+	}
+}
+
+.timeline-popover {
+	opacity: 0;
+	padding: 10px 15px;
+	background: darken($grYellow, 10);
+	position: absolute;
+	transition: 0.25s opacity ease-in-out;
+	border: 1px solid #000;
+
+	top: -120%;
+    left: 10px;
+    
+    z-index: 0;
+
+    &:after {
+    	content: '';
+    	border-top: 10px solid darken($grYellow, 10);
+    	border-left: 10px solid rgba(0,0,0,0);
+    	border-right: 10px solid rgba(0,0,0,0);
+    	border-bottom: 0;
+    	position: absolute;
+    	top: 100%;
+    	left: 0;
+    }
+
+    h1 {
+    	@include Roboto();
+    	padding: 0 10px 0 0;
+    	font-size: 14px;
+    	white-space: nowrap;
+    	margin: 0;
+    	color: #000;
+    }
+
+    date {
+    	color: #000;
+    	font-weight: bold;
+    }
+
+	img.timeline-popover-hero {
+		max-width: 100%;
+	}
+
+	&.active {
+		opacity: 1;
+		z-index: 10;
+	}
+
+	&.selected {
+		opacity: 1;
+		z-index: 10;
+		background: #fff;
+
+		&:after {
+	    	content: '';
+	    	border-top: 10px solid #fff;
+	    	border-left: 10px solid rgba(0,0,0,0);
+	    	border-right: 10px solid rgba(0,0,0,0);
+	    	border-bottom: 0;
+	    	position: absolute;
+	    	top: 100%;
+	    	left: 0;
+	    }
+	}
+
+	.timeline-popover-hero {
+		max-height: 125px;
+		overflow: hidden;
+
+		img {
+			width: 100%;
+		}
+	}
+}
+
+#timeline-content {
+	background: rgba(0,0,0,0.85);
+	bottom: 0;
+    top: 130px;
+    position: absolute;
+    transition: 0.25s all ease-in-out;
+    
+    overflow-y: auto;
+
+    h1 {
+    	@include RobotoCondensed(400, uppercase, -1px);
+    	font-size: 48px;
+    	color: $grYellow;
+    	margin: 30px 0 0 0;
+    }
+
+    date {
+    	@include RobotoCondensed(400, uppercase, 0);
+    	font-size: 20px;
+    	color: #fff;
+    }
+
+    p {
+    	font-size: 18px;
+    }
+}
+
+#timeline-wrap {
+	// position: absolute;
+	height: 100%;
+	top: 0;
+	
+	// left: 50%;
+
+	// @include breakpoint(lg) {
+	// 	margin-left: -( 1170px / 2 );
+	// 	width: 1170px;
+	// }
+}
+
+
+
+
+
+
+
+
