@@ -15,8 +15,8 @@
     "hapi": "^6.11.1",
     "joi": "^4.9.0",
     "moment": "^2.15.1",
-    "nerve-templates": "0.0.9",
-    "ulna": "0.0.5",
+    "nerve-templates": "*",
+    "ulna": "*",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
