@@ -31,6 +31,13 @@ module.exports = {
 		return date.format('YYYYMMDDThhmm');
 	},
 
+	buildShortDateUID: function( date ) {
+		// build a unique id for a given Moment
+		// use a standard short ISO format, like YYYYMMDD
+
+		return date.format('YYYYMMDD');
+	},
+
 	buildMonthUID: function( date ) {
 		// build unique ID for a given Moment month
 		return date.format('YYYYMM');
@@ -55,6 +62,29 @@ module.exports = {
 
 		return string = '/timeline/' + date.startDate.format('YYYY/MM/DD/') + this.hyphenate(date.name);
 
+	},
+
+	getDateByURL: function( events, url ) {
+		// assume events is a flat collection with nested Moment objects
+		// a url is a string with timestamp hidden inside, eg: '2016/07/12/some-event-name'
+		// extract the timestamp from the url and return the event that matches
+
+		var arr = url.split('/');
+		var iso = [ arr[0], arr[1], arr[2] ].join('');
+		var date = this.getDateByPartialISO( events, iso );
+
+		return date;
+	},
+
+	getDateByPartialISO: function( events, string ) {
+		var date = false;
+		for (var e = 0; events.length > e; e++) {
+			var testShortISO = this.buildShortDateUID( events[e].startDate );
+			if (testShortISO === string) {
+				date = events[e];
+			}
+		}
+		return date;
 	},
 
 	getDateByISO: function( events, string ) {

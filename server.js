@@ -13,6 +13,7 @@ server.start(function() {
 
 // load the app
 var app = require('./src/app.js');
+var services = require('./src/services.js');
 
 server.route({
 	path: '/',
@@ -29,23 +30,15 @@ server.route({
 	}
 });
 
-// server.route({
-// 	path: '/about',
-// 	method: 'GET',
-// 	handler: function(request, reply) {
-// 		// set the app's active root on its data
-// 		app.data.active = 'about';
-
-// 		// reinitialize the app and its components
-// 		app.initialize();
-
-// 		// modify our server-side DOM with the html generated from our component chain
-// 		$(app.root).html( app.stringified );
-
-// 		// reply with the updated html
-// 		reply( $.html() );
-// 	}
-// });
+server.route({
+	path: '/timeline/{date*}',
+	method: 'GET',
+	handler: function(request, reply) {
+		console.log( request.params.date );
+		console.log( services.utils.getDateByURL( services.data.events, request.params.date ) );
+		
+	}
+});
 
 // server.route({
 // 	path: '/music',
