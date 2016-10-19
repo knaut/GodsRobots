@@ -58,10 +58,9 @@ var methods = {
 		if (this.root.indexOf('<<') > -1 && this.root.indexOf('>>') > -1) {
 		
 			if (typeof this.parent !== 'undefined') {
-				// console.log('interpolate', this.interpolate(this.root))
 				this.$root = this.parent.$root.find( $( this.interpolate( this.root) ) );
 			} else {
-				this.$root = $( this.interpolate( this.root ) );
+				this.$root = $( this.interpolate( this.root) );
 			}
 			
 		} else {
@@ -8712,7 +8711,7 @@ var InfographicCarousel = Ulna.Component.extend({
 
 module.exports = InfographicCarousel;
 },{"../actions/InfographicChange.js":25,"../dispatcher.js":67,"../services.js":69,"../utils.js":70,"Ulna":1}],41:[function(require,module,exports){
-var Ulna = require('Ulna');
+var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
 
@@ -8733,7 +8732,7 @@ var Logo = Ulna.Component.extend({
 });
 
 module.exports = Logo;
-},{"../dispatcher.js":67,"Ulna":1}],42:[function(require,module,exports){
+},{"../dispatcher.js":67,"ulna":16}],42:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 

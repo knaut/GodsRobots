@@ -23,5 +23,12 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-sass": "^1.1.0",
     "load-grunt-tasks": "^3.4.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-browserify": "^4.0.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-sass": "^1.1.0",
+    "load-grunt-tasks": "^3.4.0"
   }
 }
