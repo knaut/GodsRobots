@@ -581,14 +581,17 @@
     font-weight: 400;
     text-transform: auto;
     letter-spacing: auto;
-    padding: 0 10px 0 0;
+    padding: 0;
     font-size: 14px;
     white-space: nowrap;
     margin: 0;
-    color: #000; }
+    color: #000;
+    text-align: center; }
   .timeline-popover date {
     color: #000;
-    font-weight: bold; }
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: center; }
   .timeline-popover img.timeline-popover-hero {
     max-width: 100%; }
   .timeline-popover.active {
