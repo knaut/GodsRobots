@@ -112,7 +112,7 @@ var DateNode = Ulna.Component.extend({
 				isSelected = '.selected';
 			}
 
-			var anchorKey = 'a[href="' + this.data.date.startDate.format('/YYYY/MM/DD/') + services.utils.hyphenate(this.data.date.name) + '"]' + isSelected;
+			var anchorKey = 'a[href="/timeline' + this.data.date.startDate.format('/YYYY/MM/DD/') + services.utils.hyphenate(this.data.date.name) + '"]' + isSelected;
 			var obj = {};
 			var objKey = '#timeline-popover-' + this.data.date.id;
 

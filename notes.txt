@@ -1,3 +1,8 @@
+/*
+
+
+
+
 Home/Index
 - splash logo / call to action
 - upcoming events
@@ -12,3 +17,31 @@ Home/Index
 - Social media links and/or integrated feeds
 - Press links page
 Artist contact page
+
+
+
+
+
+serverside, an app needs a state
+
+clientside, an app needs a state
+
+serverside, we generate it from the requested url (string request)
+
+clientside, we can retrieve it by:
+		parsing the window location (same method as serverside)
+		using a payload state supplied to us in the markup from the server
+		asking the server for it over ajax
+
+		in our app, option 1 is the fastest/cleanest
+
+
+
+
+
+
+
+
+
+
+*/

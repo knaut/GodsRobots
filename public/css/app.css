@@ -1072,18 +1072,19 @@ body {
           border-radius: 0;
           background: rgba(243, 244, 245, 0);
           transition: .1s background ease-in-out; }
-          body #main-wrap ul #join-mailing-list button span, body #main-wrap ul #watch-video button span {
+          body #main-wrap ul #join-mailing-list button a, body #main-wrap ul #watch-video button a {
             font-family: 'Roboto', sans-serif;
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 5px;
             color: #f3f4f5;
             transition: .1s color ease-in-out; }
+            body #main-wrap ul #join-mailing-list button a:hover, body #main-wrap ul #watch-video button a:hover {
+              color: #23424D;
+              text-shadow: none;
+              text-decoration: none; }
           body #main-wrap ul #join-mailing-list button:hover, body #main-wrap ul #watch-video button:hover {
             background: #F3F4F5; }
-            body #main-wrap ul #join-mailing-list button:hover span, body #main-wrap ul #watch-video button:hover span {
-              color: #23424D;
-              text-shadow: none; }
 
 #main.page-index {
   top: 100%;

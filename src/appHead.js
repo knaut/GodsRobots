@@ -17,8 +17,8 @@ var appHead = '<!DOCTYPE html>' +
 		'<script src="/js/libs/typed.min.js"></script>' +
 		'<script type="text/javascript">' +
 			'console.log("initialize");' +
-			'app.bind();' +
-			'app.dispatcher.dispatch("ON_LOAD", {});' +
+			// 'app.bind();' +
+			// 'app.dispatcher.dispatch("ON_LOAD", {});' +
 		'</script>' +
 	'</body>' +
 '</html>';

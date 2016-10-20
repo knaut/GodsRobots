@@ -26,10 +26,22 @@ var HotButton = Ulna.Component.extend({
 	},
 
 	template: {
-		'button[type="button"].btn.btn-default': {
-			span: function() {
-				return this.data.text;
-			}
+		'button[type="button"].btn.btn-default': function() {
+			var anchor = {};
+			var anchorKey = 'a[href="' + services.utils.buildDateURL( 
+				services.utils.getFirstDateInMonths( 
+					services.utils.formatDatesByMonth( 
+						services.utils.getDatesForYear( 
+							services.data.events,
+							services.utils.getYears( services.data.events )[0]
+						)
+					)
+				)
+			) + '"]';
+
+			anchor[anchorKey] = 'Enter The Timeline';
+
+			return anchor;
 		}
 	}
 });

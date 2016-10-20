@@ -12,7 +12,7 @@ server.start(function() {
 });
 
 // load the app
-var app = require('./src/app.js');
+var App = require('./src/app.js');
 var services = require('./src/services.js');
 
 server.route({
@@ -20,7 +20,7 @@ server.route({
 	method: 'GET',
 	handler: function(request, reply) {
 		// initialize the app and its components
-		app.initialize();
+		var app = new App();
 
 		// modify our server-side DOM with the html generated from our component chain
 		$(app.root).html( app.stringified );
@@ -34,9 +34,50 @@ server.route({
 	path: '/timeline/{date*}',
 	method: 'GET',
 	handler: function(request, reply) {
-		console.log( request.params.date );
-		console.log( services.utils.getDateByURL( services.data.events, request.params.date ) );
+		// get url from request, generate an app state object we can initialize an App from
+		/* something like:
+			{
+				routeKey: {
+					routeContent
+				}
+			}
+
+			{
+				timeline: {
+					years: years,
+					activeYear: activeYear,
+					dates: datesByMonths,
+					activeDate: firstDate,
+				}
+			}
+
+			this is the densest state object based on the current component structure
+		*/
 		
+		var url = request.params.date;
+
+		var date = services.utils.getDateByPartialISO( services.data.events, services.utils.buildShortISOfromURL( url ) );
+		
+		var timelineState = {
+			years: services.utils.getYears( services.data.events ),
+			activeYear: date.startDate.year(),
+			dates: services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, date.startDate.year() ) ) ,
+			activeDate: date
+		};
+
+		var appState = {
+			timeline: timelineState
+		};
+
+		var app = new App({
+			data: appState
+		});
+		
+		// modify our server-side DOM with the html generated from our component chain
+		$(app.root).html( app.stringified );
+
+		// reply with the updated html
+		reply( $.html() );
 	}
 });
 

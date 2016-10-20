@@ -64,13 +64,17 @@ module.exports = {
 
 	},
 
+	buildShortISOfromURL: function( string ) {
+		var arr = string.split('/');
+		var iso = [ arr[0], arr[1], arr[2] ].join('');
+		return iso;
+	},
+
 	getDateByURL: function( events, url ) {
 		// assume events is a flat collection with nested Moment objects
 		// a url is a string with timestamp hidden inside, eg: '2016/07/12/some-event-name'
 		// extract the timestamp from the url and return the event that matches
-
-		var arr = url.split('/');
-		var iso = [ arr[0], arr[1], arr[2] ].join('');
+		var iso = this.buildShortISOfromURL( events, url);
 		var date = this.getDateByPartialISO( events, iso );
 
 		return date;
@@ -270,4 +274,5 @@ module.exports = {
 
 		return nodeDistance;
 	}
+
 }

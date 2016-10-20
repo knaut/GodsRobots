@@ -49,17 +49,20 @@ body {
 					border-radius: 0;
 					background: rgba(243, 244, 245, 0.0);
 					transition: .1s background ease-in-out;
-					span {
+					a {
 						@include Roboto(400, uppercase, 5px);
 						color: rgba(243, 244, 245, 1.0);
 						transition: .1s color ease-in-out;
+
+						&:hover {
+							color: $knBlueShade3;
+							text-shadow: none;
+							text-decoration: none;
+						}
 					}
 					&:hover {
 						background: $knWhite;
-						span {
-							color: $knBlueShade3;
-							text-shadow: none;
-						}
+						
 					}
 				}
 			}
