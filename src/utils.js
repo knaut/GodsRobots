@@ -273,6 +273,20 @@ module.exports = {
 		var nodeDistance = ratio * nodeDate;
 
 		return nodeDistance;
-	}
+	},
+
+	getFirstDate: function( events ) {
+		// get the first date chronologically regardless of the collection's order
+		return this.getFirstDateInMonths( 
+					this.formatDatesByMonth( 
+						this.getDatesForYear( 
+							events,
+							this.getYears( events )[0]
+						)
+					)
+				)
+	},
+
+
 
 }

@@ -29,14 +29,7 @@ var HotButton = Ulna.Component.extend({
 		'button[type="button"].btn.btn-default': function() {
 			var anchor = {};
 			var anchorKey = 'a[href="' + services.utils.buildDateURL( 
-				services.utils.getFirstDateInMonths( 
-					services.utils.formatDatesByMonth( 
-						services.utils.getDatesForYear( 
-							services.data.events,
-							services.utils.getYears( services.data.events )[0]
-						)
-					)
-				)
+				services.utils.getFirstDate( services.data.events )
 			) + '"]';
 
 			anchor[anchorKey] = 'Enter The Timeline';

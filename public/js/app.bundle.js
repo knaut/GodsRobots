@@ -8301,14 +8301,7 @@ var HotButton = Ulna.Component.extend({
 		'button[type="button"].btn.btn-default': function() {
 			var anchor = {};
 			var anchorKey = 'a[href="' + services.utils.buildDateURL( 
-				services.utils.getFirstDateInMonths( 
-					services.utils.formatDatesByMonth( 
-						services.utils.getDatesForYear( 
-							services.data.events,
-							services.utils.getYears( services.data.events )[0]
-						)
-					)
-				)
+				services.utils.getFirstDate( services.data.events )
 			) + '"]';
 
 			anchor[anchorKey] = 'Enter The Timeline';
@@ -11129,7 +11122,21 @@ module.exports = {
 		var nodeDistance = ratio * nodeDate;
 
 		return nodeDistance;
-	}
+	},
+
+	getFirstDate: function( events ) {
+		// get the first date chronologically regardless of the collection's order
+		return this.getFirstDateInMonths( 
+					this.formatDatesByMonth( 
+						this.getDatesForYear( 
+							events,
+							this.getYears( events )[0]
+						)
+					)
+				)
+	},
+
+
 
 }
 
