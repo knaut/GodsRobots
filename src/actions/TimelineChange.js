@@ -128,7 +128,7 @@ TimelineChange.prototype = {
 	titlify: function( date ) {
 		// take our services data and timestamp string and construct a usable window title
 		// ex: 'GODS ROBOTS - Timeline - My Event, Oct 28th, 2016'
-
+		console.log(date)
 		var string = services.data.header.title + services.data.header.delimiter + 'Timeline' + services.data.header.delimiter;
 
 		var title = string + date.name + ', ' + date.startDate.format('MMM Do, YYYY');

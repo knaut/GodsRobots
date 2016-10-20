@@ -9,10 +9,6 @@ var Modal = require('./components/Modal.js');
 var Curtain = require('./components/Curtain.js');
 var Main = require('./components/Main.js');
 
-if (Ulna.env === 'browser') {
-	var router = require('./router.js');
-}
-
 var App = Ulna.Component.extend({
 	root: '#app-root',
 
@@ -26,7 +22,29 @@ var App = Ulna.Component.extend({
 	listen: {
 		HISTORY_PUSH: function( payload ) {
 			if (payload.route.req === 'timeline') {
-				this.data.active = 'timeline';
+				this.data = {
+					timeline: services.utils.constructTimelineStateFromDate(
+						services.data.events, payload.date
+					)
+				}
+				
+				this.rerender();
+			}
+		},
+		HISTORY_REPLACE: function( payload ) {
+			console.log(payload)
+			if (payload.route.req === 'timeline') {
+				this.data = {
+					timeline: services.utils.constructTimelineStateFromDate(
+						services.data.events, payload.date
+					)
+				}
+				
+				this.rerender();
+			} else if (payload.route.req === 'index') {
+				this.data = {
+					index: {}
+				}
 				this.rerender();
 			}
 		}
@@ -61,5 +79,10 @@ var App = Ulna.Component.extend({
 		}
 	}
 });
+
+if (Ulna.env === 'browser') {
+	var router = require('./router.js');
+	Ulna.App = App;
+}
 
 module.exports = App;

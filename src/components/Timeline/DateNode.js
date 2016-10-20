@@ -66,24 +66,27 @@ var DateNode = Ulna.Component.extend({
 		},
 
 		HISTORY_REPLACE: function( payload ) {
-			/* if a node is inactive and clicked, activate it
-			if it is active and clicked, keep it activated
-			if a node is clicked, turn all other nodes off */
+			if (payload.hasOwnProperty('date')) {
 
-			var isThisNode = services.utils.buildDateUID( this.data.date.startDate ) === services.utils.buildDateUID( payload.date.startDate )
+				/* if a node is inactive and clicked, activate it
+				if it is active and clicked, keep it activated
+				if a node is clicked, turn all other nodes off */
 
-			// do everything we did for HISTORY_PUSH, but opposite
-			if (isThisNode === true && this.data.selected === false && this.$root.length ) {
-				this.data.selected = true;
-				this.mutations.addSelected.call(this);
-			} else {
-				// we've got some other nodes still on though
-				if (this.$root.length) {
-					this.data.selected = false;
-					this.mutations.removeSelected.call(this);	
+				var isThisNode = services.utils.buildDateUID( this.data.date.startDate ) === services.utils.buildDateUID( payload.date.startDate )
+
+				// do everything we did for HISTORY_PUSH, but opposite
+				if (isThisNode === true && this.data.selected === false && this.$root.length ) {
+					this.data.selected = true;
+					this.mutations.addSelected.call(this);
+				} else {
+					// we've got some other nodes still on though
+					if (this.$root.length) {
+						this.data.selected = false;
+						this.mutations.removeSelected.call(this);	
+					}
 				}
-				
 			}
+			
 		}
 	},
 

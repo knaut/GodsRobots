@@ -125,16 +125,12 @@ var Main = Ulna.Component.extend({
 	root: '#main',
 	dispatcher: dispatcher,
 
-	listen: {
-		HISTORY_PUSH: function(payload) {
-			console.log(payload)
-			if (payload.route.req === 'timeline') {
-				this.data.active = payload.route.req;
-				this.data.activeDate = services.utils.buildDateUID( payload.date.startDate );
-				this.rerender();
-			}	
-		}
-	},
+	// listen: {
+	// 	HISTORY_PUSH: function(payload) {
+			
+
+	// 	}
+	// },
 
 	data: {
 		index: {}

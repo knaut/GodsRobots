@@ -15,15 +15,17 @@ var router = new Ulna.Router({
 
 	events: {
 		'popstate': function(event) {
-
+			console.log(event.state)
 			// handle popstates that represent first load
-			if ( event.state === null ) {
+			if ( event.state === null || event.state === 'index' ) {
 				var req = 'index'
+				this.dispatcher.dispatch('HISTORY_REPLACE', new RouteChange( req ) );
 			} else {
 				var req = event.state.req
+				this.dispatcher.dispatch('HISTORY_REPLACE', new TimelineChange( req ) );
 			}
 
-			this.dispatcher.dispatch('HISTORY_REPLACE', new TimelineChange( event.state.req ) );
+			
 		}
 	},
 

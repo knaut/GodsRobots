@@ -33,12 +33,14 @@ var MonthList = Ulna.Component.extend({
 		HISTORY_REPLACE: function( payload ) {
 			console.log('MonthList: HISTORY_REPLACE', this.data, payload)
 
-			// only rerender if the upcoming date's month doesn't match the currently active month
-			if ( services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
-				this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
-				this.data.activeDate = payload.date;
+			if (payload.hasOwnProperty('date')) {
+				// only rerender if the upcoming date's month doesn't match the currently active month
+				if ( services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
+					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
+					this.data.activeDate = payload.date;
 
-				this.rerender();
+					this.rerender();
+				}	
 			}
 			
 		}

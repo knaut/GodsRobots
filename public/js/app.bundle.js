@@ -7592,7 +7592,7 @@ TimelineChange.prototype = {
 	titlify: function( date ) {
 		// take our services data and timestamp string and construct a usable window title
 		// ex: 'GODS ROBOTS - Timeline - My Event, Oct 28th, 2016'
-
+		console.log(date)
 		var string = services.data.header.title + services.data.header.delimiter + 'Timeline' + services.data.header.delimiter;
 
 		var title = string + date.name + ', ' + date.startDate.format('MMM Do, YYYY');
@@ -7621,10 +7621,6 @@ var Modal = require('./components/Modal.js');
 var Curtain = require('./components/Curtain.js');
 var Main = require('./components/Main.js');
 
-if (Ulna.env === 'browser') {
-	var router = require('./router.js');
-}
-
 var App = Ulna.Component.extend({
 	root: '#app-root',
 
@@ -7638,7 +7634,29 @@ var App = Ulna.Component.extend({
 	listen: {
 		HISTORY_PUSH: function( payload ) {
 			if (payload.route.req === 'timeline') {
-				this.data.active = 'timeline';
+				this.data = {
+					timeline: services.utils.constructTimelineStateFromDate(
+						services.data.events, payload.date
+					)
+				}
+				
+				this.rerender();
+			}
+		},
+		HISTORY_REPLACE: function( payload ) {
+			console.log(payload)
+			if (payload.route.req === 'timeline') {
+				this.data = {
+					timeline: services.utils.constructTimelineStateFromDate(
+						services.data.events, payload.date
+					)
+				}
+				
+				this.rerender();
+			} else if (payload.route.req === 'index') {
+				this.data = {
+					index: {}
+				}
 				this.rerender();
 			}
 		}
@@ -7673,6 +7691,11 @@ var App = Ulna.Component.extend({
 		}
 	}
 });
+
+if (Ulna.env === 'browser') {
+	var router = require('./router.js');
+	Ulna.App = App;
+}
 
 module.exports = App;
 },{"./components/Curtain.js":25,"./components/Header.js":29,"./components/Main.js":34,"./components/Modal.js":35,"./components/Nav.js":36,"./dispatcher.js":60,"./router.js":61,"./services.js":62,"ulna":8}],21:[function(require,module,exports){
@@ -8284,7 +8307,8 @@ var HotButton = Ulna.Component.extend({
 	dispatcher: dispatcher,
 
 	events: {
-		'click button': function(e) {
+		'click a': function(e) {
+			e.preventDefault();
 			// we enter the app by requesting the timeline
 			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange() );
 		}
@@ -8658,16 +8682,12 @@ var Main = Ulna.Component.extend({
 	root: '#main',
 	dispatcher: dispatcher,
 
-	listen: {
-		HISTORY_PUSH: function(payload) {
-			console.log(payload)
-			if (payload.route.req === 'timeline') {
-				this.data.active = payload.route.req;
-				this.data.activeDate = services.utils.buildDateUID( payload.date.startDate );
-				this.rerender();
-			}	
-		}
-	},
+	// listen: {
+	// 	HISTORY_PUSH: function(payload) {
+			
+
+	// 	}
+	// },
 
 	data: {
 		index: {}
@@ -9204,24 +9224,27 @@ var DateNode = Ulna.Component.extend({
 		},
 
 		HISTORY_REPLACE: function( payload ) {
-			/* if a node is inactive and clicked, activate it
-			if it is active and clicked, keep it activated
-			if a node is clicked, turn all other nodes off */
+			if (payload.hasOwnProperty('date')) {
 
-			var isThisNode = services.utils.buildDateUID( this.data.date.startDate ) === services.utils.buildDateUID( payload.date.startDate )
+				/* if a node is inactive and clicked, activate it
+				if it is active and clicked, keep it activated
+				if a node is clicked, turn all other nodes off */
 
-			// do everything we did for HISTORY_PUSH, but opposite
-			if (isThisNode === true && this.data.selected === false && this.$root.length ) {
-				this.data.selected = true;
-				this.mutations.addSelected.call(this);
-			} else {
-				// we've got some other nodes still on though
-				if (this.$root.length) {
-					this.data.selected = false;
-					this.mutations.removeSelected.call(this);	
+				var isThisNode = services.utils.buildDateUID( this.data.date.startDate ) === services.utils.buildDateUID( payload.date.startDate )
+
+				// do everything we did for HISTORY_PUSH, but opposite
+				if (isThisNode === true && this.data.selected === false && this.$root.length ) {
+					this.data.selected = true;
+					this.mutations.addSelected.call(this);
+				} else {
+					// we've got some other nodes still on though
+					if (this.$root.length) {
+						this.data.selected = false;
+						this.mutations.removeSelected.call(this);	
+					}
 				}
-				
 			}
+			
 		}
 	},
 
@@ -9392,12 +9415,14 @@ var MonthList = Ulna.Component.extend({
 		HISTORY_REPLACE: function( payload ) {
 			console.log('MonthList: HISTORY_REPLACE', this.data, payload)
 
-			// only rerender if the upcoming date's month doesn't match the currently active month
-			if ( services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
-				this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
-				this.data.activeDate = payload.date;
+			if (payload.hasOwnProperty('date')) {
+				// only rerender if the upcoming date's month doesn't match the currently active month
+				if ( services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
+					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
+					this.data.activeDate = payload.date;
 
-				this.rerender();
+					this.rerender();
+				}	
 			}
 			
 		}
@@ -9581,8 +9606,7 @@ var Moment = require('moment');
 var dispatcher = require('../../dispatcher.js');
 var services = require('../../services.js');
 
-var RouteChange = require('../../actions/RouteChange.js');
-
+var TimelineChange = require('../../actions/TimelineChange.js');
 
 var YearItem = Ulna.Component.extend({
 	root: 'li#timeline-year-control-<<this.data.year>>',
@@ -9596,6 +9620,12 @@ var YearItem = Ulna.Component.extend({
 			this.dispatcher.dispatch('TIMELINE_YEAR_CHANGE', {
 				data: this.data.year
 			});
+
+			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange(
+				services.utils.buildDateUID(
+					services.utils.getFirstDateInYear( services.data.events, this.data.year ).startDate
+				)
+			));
 		}
 	},
 
@@ -9628,7 +9658,7 @@ var YearItem = Ulna.Component.extend({
 });
 
 module.exports = YearItem;
-},{"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"moment":1,"ulna":8}],48:[function(require,module,exports){
+},{"../../actions/TimelineChange.js":19,"../../dispatcher.js":60,"../../services.js":62,"moment":1,"ulna":8}],48:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -10798,15 +10828,17 @@ var router = new Ulna.Router({
 
 	events: {
 		'popstate': function(event) {
-
+			console.log(event.state)
 			// handle popstates that represent first load
-			if ( event.state === null ) {
+			if ( event.state === null || event.state === 'index' ) {
 				var req = 'index'
+				this.dispatcher.dispatch('HISTORY_REPLACE', new RouteChange( req ) );
 			} else {
 				var req = event.state.req
+				this.dispatcher.dispatch('HISTORY_REPLACE', new TimelineChange( req ) );
 			}
 
-			this.dispatcher.dispatch('HISTORY_REPLACE', new TimelineChange( event.state.req ) );
+			
 		}
 	},
 
@@ -11155,9 +11187,32 @@ module.exports = {
 						)
 					)
 				)
+	},
+
+	constructTimelineStateFromURL: function( events, url ) {
+		// var path = window.location.pathname.split('/timeline')[1];
+		var date = this.getDateByURL( events, url );
+
+		var state = {
+			years: this.getYears( events ),
+			activeYear: date.startDate.year(),
+			dates: this.formatDatesByMonth( this.getDatesForYear( events, date.startDate.year() ) ) ,
+			activeDate: date
+		};
+
+		return state;
+	},
+
+	constructTimelineStateFromDate: function( events, event ) {
+		var state = {
+			years: this.getYears( events ),
+			activeYear: event.startDate.year(),
+			dates: this.formatDatesByMonth( this.getDatesForYear( events, event.startDate.year() ) ) ,
+			activeDate: event
+		};
+
+		return state;
 	}
-
-
 
 }
 

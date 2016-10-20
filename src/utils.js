@@ -297,8 +297,31 @@ module.exports = {
 						)
 					)
 				)
+	},
+
+	constructTimelineStateFromURL: function( events, url ) {
+		// var path = window.location.pathname.split('/timeline')[1];
+		var date = this.getDateByURL( events, url );
+
+		var state = {
+			years: this.getYears( events ),
+			activeYear: date.startDate.year(),
+			dates: this.formatDatesByMonth( this.getDatesForYear( events, date.startDate.year() ) ) ,
+			activeDate: date
+		};
+
+		return state;
+	},
+
+	constructTimelineStateFromDate: function( events, event ) {
+		var state = {
+			years: this.getYears( events ),
+			activeYear: event.startDate.year(),
+			dates: this.formatDatesByMonth( this.getDatesForYear( events, event.startDate.year() ) ) ,
+			activeDate: event
+		};
+
+		return state;
 	}
-
-
 
 }
