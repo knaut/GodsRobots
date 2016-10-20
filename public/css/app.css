@@ -437,11 +437,14 @@
       text-transform: auto;
       letter-spacing: 1px;
       font-size: 22px;
-      transition: 0.2s all ease-in-out; }
+      transition: 0.2s all ease-in-out;
+      color: #FFEB00; }
       #timeline-year-control #timeline-year-control-content a:link {
         text-decoration: none; }
       #timeline-year-control #timeline-year-control-content a:hover {
-        color: #FFEB00; }
+        color: #fff; }
+      #timeline-year-control #timeline-year-control-content a.active {
+        color: #fff; }
     #timeline-year-control #timeline-year-control-content ul {
       margin: 0;
       padding: 0;
@@ -1063,28 +1066,31 @@ body {
     min-height: 100%; }
     body #main-wrap ul {
       text-align: center; }
-      body #main-wrap ul #join-mailing-list, body #main-wrap ul #watch-video {
-        display: inline-block;
-        padding: 30px 15px;
-        text-align: center; }
-        body #main-wrap ul #join-mailing-list button, body #main-wrap ul #watch-video button {
-          border: 2px solid #F3F4F5;
-          border-radius: 0;
-          background: rgba(243, 244, 245, 0);
-          transition: .1s background ease-in-out; }
-          body #main-wrap ul #join-mailing-list button a, body #main-wrap ul #watch-video button a {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: #f3f4f5;
-            transition: .1s color ease-in-out; }
-            body #main-wrap ul #join-mailing-list button a:hover, body #main-wrap ul #watch-video button a:hover {
-              color: #23424D;
-              text-shadow: none;
-              text-decoration: none; }
-          body #main-wrap ul #join-mailing-list button:hover, body #main-wrap ul #watch-video button:hover {
-            background: #F3F4F5; }
+
+#call-to-action {
+  display: inline-block;
+  padding: 30px 15px;
+  text-align: center; }
+  #call-to-action button {
+    border: 2px solid #F3F4F5;
+    border-radius: 0;
+    background: rgba(243, 244, 245, 0);
+    transition: .1s background ease-in-out; }
+    #call-to-action button:hover {
+      background: #F3F4F5; }
+  #call-to-action a {
+    color: #f3f4f5;
+    transition: .1s color ease-in-out; }
+    #call-to-action a span {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 5px; }
+    #call-to-action a:hover {
+      text-shadow: none;
+      text-decoration: none; }
+      #call-to-action a:hover button {
+        color: #23424D; }
 
 #main.page-index {
   top: 100%;

@@ -23,11 +23,15 @@
 			@include RobotoCondensed(200, auto, 1px);
 			font-size: 22px;
 			transition: 0.2s all ease-in-out;
+			color: $grYellow;
 			&:link {
 				text-decoration: none;
 			}
 			&:hover {
-				color: $grYellow;
+				color: #fff;
+			}
+			&.active {
+				color: #fff;
 			}
 		}
 		ul {

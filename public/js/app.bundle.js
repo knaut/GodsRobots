@@ -8229,8 +8229,7 @@ var Header = Ulna.Component.extend({
 			'.col-lg-12': {
 				'header#logo.col-lg-12': new Logo(),
 				'ul.col-lg-12': {
-					'li#watch-video': new HotButton({
-						root: '#watch-video',
+					'li#call-to-action': new HotButton({
 						data: {
 							name: 'call-to-action',
 							text: 'Enter the Timeline'
@@ -8298,16 +8297,21 @@ var HotButton = Ulna.Component.extend({
 	},
 
 	template: {
-		'button[type="button"].btn.btn-default': function() {
+		div: function() {
 			var anchor = {};
 			var anchorKey = 'a[href="' + services.utils.buildDateURL( 
 				services.utils.getFirstDate( services.data.events )
 			) + '"]';
 
-			anchor[anchorKey] = 'Enter The Timeline';
+			anchor[anchorKey] = {
+				'button[type="button"].btn.btn-default': {
+					span: 'Enter the Timeline'
+				}
+			}
 
 			return anchor;
 		}
+		
 	}
 });
 
@@ -9471,13 +9475,15 @@ var Timeline = Ulna.Component.extend({
 	},
 	
 	template: {
-		
-		'#timeline-year-control': new YearControl({
-			data: {
-				active: activeYear,
-				years: years
-			}
-		}),
+		// use a function to avoid scope issues when passing down data
+		'#timeline-year-control': function() {
+			return new YearControl({
+				data: {
+					activeYear: this.data.activeYear,
+					years: this.data.years
+				}
+			});
+		},
 		
 		'div#timeline-wrap': function() {
 
@@ -9525,7 +9531,7 @@ var YearControl = Ulna.Component.extend({
 
 	data: {
 		// first year active by default
-		active: services.utils.getYears( services.data.events )[0],
+		activeYear: services.utils.getYears( services.data.events )[0],
 		years: services.utils.getYears( services.data.events )
 	},
 
@@ -9538,7 +9544,8 @@ var YearControl = Ulna.Component.extend({
 				var itemKey = 'li#timeline-year-control-' + this.data.years[y];
 
 				var isYearActive = false;
-				if (this.data.years[y] === this.data.active) {
+
+				if (this.data.years[y] === this.data.activeYear) {
 					isYearActive = true;
 				}
 
@@ -9605,7 +9612,9 @@ var YearItem = Ulna.Component.extend({
 	template: {
 		span: function() {
 			var anchor = {};
-			var anchorKey = 'a[href="/events/' + this.data.year + '"]';
+			var anchorKey = 'a[href="' + services.utils.buildDateURL(
+				services.utils.getFirstDateInYear( services.data.events, this.data.year )
+			) + '"]';
 
 			if (this.data.active) {
 				anchorKey = anchorKey + '.active';
@@ -11135,6 +11144,18 @@ module.exports = {
 					)
 				)
 	},
+
+	getFirstDateInYear: function( events, year ) {
+		// get the first date in a given year
+		return this.getFirstDateInMonths( 
+					this.formatDatesByMonth( 
+						this.getDatesForYear( 
+							events,
+							year
+						)
+					)
+				)
+	}
 
 
 

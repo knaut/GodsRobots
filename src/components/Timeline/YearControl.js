@@ -13,7 +13,7 @@ var YearControl = Ulna.Component.extend({
 
 	data: {
 		// first year active by default
-		active: services.utils.getYears( services.data.events )[0],
+		activeYear: services.utils.getYears( services.data.events )[0],
 		years: services.utils.getYears( services.data.events )
 	},
 
@@ -26,7 +26,8 @@ var YearControl = Ulna.Component.extend({
 				var itemKey = 'li#timeline-year-control-' + this.data.years[y];
 
 				var isYearActive = false;
-				if (this.data.years[y] === this.data.active) {
+
+				if (this.data.years[y] === this.data.activeYear) {
 					isYearActive = true;
 				}
 

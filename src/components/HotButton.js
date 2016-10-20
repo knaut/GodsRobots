@@ -26,16 +26,21 @@ var HotButton = Ulna.Component.extend({
 	},
 
 	template: {
-		'button[type="button"].btn.btn-default': function() {
+		div: function() {
 			var anchor = {};
 			var anchorKey = 'a[href="' + services.utils.buildDateURL( 
 				services.utils.getFirstDate( services.data.events )
 			) + '"]';
 
-			anchor[anchorKey] = 'Enter The Timeline';
+			anchor[anchorKey] = {
+				'button[type="button"].btn.btn-default': {
+					span: 'Enter the Timeline'
+				}
+			}
 
 			return anchor;
 		}
+		
 	}
 });
 

@@ -35,7 +35,9 @@ var YearItem = Ulna.Component.extend({
 	template: {
 		span: function() {
 			var anchor = {};
-			var anchorKey = 'a[href="/events/' + this.data.year + '"]';
+			var anchorKey = 'a[href="' + services.utils.buildDateURL(
+				services.utils.getFirstDateInYear( services.data.events, this.data.year )
+			) + '"]';
 
 			if (this.data.active) {
 				anchorKey = anchorKey + '.active';

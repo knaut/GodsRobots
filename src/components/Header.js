@@ -13,8 +13,7 @@ var Header = Ulna.Component.extend({
 			'.col-lg-12': {
 				'header#logo.col-lg-12': new Logo(),
 				'ul.col-lg-12': {
-					'li#watch-video': new HotButton({
-						root: '#watch-video',
+					'li#call-to-action': new HotButton({
 						data: {
 							name: 'call-to-action',
 							text: 'Enter the Timeline'

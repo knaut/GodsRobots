@@ -33,13 +33,15 @@ var Timeline = Ulna.Component.extend({
 	},
 	
 	template: {
-		
-		'#timeline-year-control': new YearControl({
-			data: {
-				active: activeYear,
-				years: years
-			}
-		}),
+		// use a function to avoid scope issues when passing down data
+		'#timeline-year-control': function() {
+			return new YearControl({
+				data: {
+					activeYear: this.data.activeYear,
+					years: this.data.years
+				}
+			});
+		},
 		
 		'div#timeline-wrap': function() {
 

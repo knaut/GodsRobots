@@ -40,34 +40,38 @@ body {
 		ul {
 			// width: 100%;
 			text-align: center;
-			#join-mailing-list, #watch-video {
-				display: inline-block;
-				padding: 30px 15px;
-				text-align: center;
-				button {
-					border: 2px solid $knWhite;
-					border-radius: 0;
-					background: rgba(243, 244, 245, 0.0);
-					transition: .1s background ease-in-out;
-					a {
-						@include Roboto(400, uppercase, 5px);
-						color: rgba(243, 244, 245, 1.0);
-						transition: .1s color ease-in-out;
-
-						&:hover {
-							color: $knBlueShade3;
-							text-shadow: none;
-							text-decoration: none;
-						}
-					}
-					&:hover {
-						background: $knWhite;
-						
-					}
-				}
-			}
 		}
 	}
+}
+
+#call-to-action {
+	display: inline-block;
+	padding: 30px 15px;
+	text-align: center;
+	button {
+		border: 2px solid $knWhite;
+		border-radius: 0;
+		background: rgba(243, 244, 245, 0.0);
+		transition: .1s background ease-in-out;
+		&:hover {
+			background: $knWhite;
+		}
+	}
+	a {						
+		color: rgba(243, 244, 245, 1.0);
+		transition: .1s color ease-in-out;
+		span {
+			@include Roboto(400, uppercase, 5px);
+		}
+		&:hover {
+			button {
+				color: $knBlueShade3;	
+			}
+			text-shadow: none;
+			text-decoration: none;
+		}
+	}
+	
 }
 
 #main {

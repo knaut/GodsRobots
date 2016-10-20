@@ -287,6 +287,18 @@ module.exports = {
 				)
 	},
 
+	getFirstDateInYear: function( events, year ) {
+		// get the first date in a given year
+		return this.getFirstDateInMonths( 
+					this.formatDatesByMonth( 
+						this.getDatesForYear( 
+							events,
+							year
+						)
+					)
+				)
+	}
+
 
 
 }
