@@ -25,12 +25,12 @@ var monthTemplate = {
 			var itemKey = 'li#timeline-node-' + date.id + '-' + services.utils.buildDateUID(date.startDate) + '.timeline-nodes' + nodeStyle;								
 			var selected = false;
 			
-			if (this.data.active) {
-				if (date.startDate.format('YYYYMMDDThhmm') && this.data.active.startDate.format('YYYYMMDDThhmm')) {
+			if (this.data.active !== false) {
+				if ( services.utils.buildDateUID( this.data.active.startDate ) === services.utils.buildDateUID( date.startDate ) ) {
 					selected = true;
 				}	
 			}
-										
+			
 			item[itemKey] = new DateNode({
 				data: {
 					id: date.id + '-' + services.utils.buildDateUID(date.startDate),
