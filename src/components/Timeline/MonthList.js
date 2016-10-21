@@ -18,36 +18,7 @@ var MonthList = Ulna.Component.extend({
 	},
 
 	listen: {
-		HISTORY_PUSH: function( payload ) {
-			if (payload.hasOwnProperty('date')) {
-				if (services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
-
-					console.log('MonthList: HISTORY_PUSH', this.data, payload)
-
-					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
-					this.data.activeDate = payload.date;
-
-					this.rerender();
-				}
-
-			}
-
-		},
-		HISTORY_REPLACE: function( payload ) {
-			if (payload.hasOwnProperty('date')) {
-				// only rerender if the upcoming date's month doesn't match the currently active month
-				if ( services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
-
-					console.log('MonthList: HISTORY_REPLACE', this.data, payload)
-
-					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
-					this.data.activeDate = payload.date;
-
-					this.rerender();
-				}	
-			}
-			
-		}
+		
 	},
 
 	template: {

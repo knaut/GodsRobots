@@ -15,6 +15,7 @@ var HotButton = Ulna.Component.extend({
 	events: {
 		'click a': function(e) {
 			e.preventDefault();
+			
 			// we enter the app by requesting the timeline
 			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange() );
 		}

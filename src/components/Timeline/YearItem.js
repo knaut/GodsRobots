@@ -28,13 +28,7 @@ var YearItem = Ulna.Component.extend({
 	},
 
 	listen: {
-		TIMELINE_YEAR_CHANGE: function( payload ) {
-			if (payload.data === this.data.year) {
-				this.$root.addClass('active');
-			} else {
-				this.$root.removeClass('active');
-			}
-		}
+		
 	},
 
 	template: {

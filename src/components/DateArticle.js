@@ -13,16 +13,7 @@ var DateArticle = Ulna.Component.extend({
 	dispatcher: dispatcher,
 
 	listen: {
-		HISTORY_PUSH: function( payload ) {
-			this.data = payload.date;
-
-			this.rerender();
-		},
-		HISTORY_REPLACE: function( payload ) {
-			this.data = payload.date;
-
-			this.rerender();
-		}
+		
 	},
 
 	template: {

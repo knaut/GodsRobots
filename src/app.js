@@ -20,33 +20,7 @@ var App = Ulna.Component.extend({
 	},
 
 	listen: {
-		HISTORY_PUSH: function( payload ) {
-			if (payload.route.req === 'timeline') {
-				this.data = {
-					timeline: services.utils.constructTimelineStateFromDate(
-						services.data.events, payload.date
-					)
-				}
-				
-				this.rerender();
-			}
-		},
-		HISTORY_REPLACE: function( payload ) {
-			if (payload.route.req === 'timeline') {
-				this.data = {
-					timeline: services.utils.constructTimelineStateFromDate(
-						services.data.events, payload.date
-					)
-				}
-				
-				this.rerender();
-			} else if (payload.route.req === 'index') {
-				this.data = {
-					index: {}
-				}
-				this.rerender();
-			}
-		}
+		
 	},
 
 	template: {

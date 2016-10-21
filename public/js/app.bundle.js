@@ -7631,33 +7631,7 @@ var App = Ulna.Component.extend({
 	},
 
 	listen: {
-		HISTORY_PUSH: function( payload ) {
-			if (payload.route.req === 'timeline') {
-				this.data = {
-					timeline: services.utils.constructTimelineStateFromDate(
-						services.data.events, payload.date
-					)
-				}
-				
-				this.rerender();
-			}
-		},
-		HISTORY_REPLACE: function( payload ) {
-			if (payload.route.req === 'timeline') {
-				this.data = {
-					timeline: services.utils.constructTimelineStateFromDate(
-						services.data.events, payload.date
-					)
-				}
-				
-				this.rerender();
-			} else if (payload.route.req === 'index') {
-				this.data = {
-					index: {}
-				}
-				this.rerender();
-			}
-		}
+		
 	},
 
 	template: {
@@ -7954,16 +7928,7 @@ var DateArticle = Ulna.Component.extend({
 	dispatcher: dispatcher,
 
 	listen: {
-		HISTORY_PUSH: function( payload ) {
-			this.data = payload.date;
-
-			this.rerender();
-		},
-		HISTORY_REPLACE: function( payload ) {
-			this.data = payload.date;
-
-			this.rerender();
-		}
+		
 	},
 
 	template: {
@@ -8307,6 +8272,7 @@ var HotButton = Ulna.Component.extend({
 	events: {
 		'click a': function(e) {
 			e.preventDefault();
+			
 			// we enter the app by requesting the timeline
 			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange() );
 		}
@@ -9203,47 +9169,7 @@ var DateNode = Ulna.Component.extend({
 	},
 
 	listen: {
-		HISTORY_PUSH: function( payload ) {
-			/* if a node is inactive and clicked, activate it
-			if it is active and clicked, keep it activated
-			if a node is clicked, turn all other nodes off */
-
-			var isThisNode = services.utils.buildDateUID( this.data.date.startDate ) === services.utils.buildDateUID( payload.date.startDate )
-
-			// all nodes get this message, even after they've been removed from DOM
-			// due to a year change.
-			// kind of a hack, but we just don't target any item without a $root, meaning
-			// it's not in the DOM currently			
-
-			if (isThisNode === false && this.data.selected === true && this.$root.length !== 0) {
-				this.data.selected = false;
-				this.mutations.removeSelected.call(this);
-			}
-		},
-
-		HISTORY_REPLACE: function( payload ) {
-			if (payload.hasOwnProperty('date')) {
-
-				/* if a node is inactive and clicked, activate it
-				if it is active and clicked, keep it activated
-				if a node is clicked, turn all other nodes off */
-
-				var isThisNode = services.utils.buildDateUID( this.data.date.startDate ) === services.utils.buildDateUID( payload.date.startDate )
-
-				// do everything we did for HISTORY_PUSH, but opposite
-				if (isThisNode === true && this.data.selected === false && this.$root.length ) {
-					this.data.selected = true;
-					this.mutations.addSelected.call(this);
-				} else {
-					// we've got some other nodes still on though
-					if (this.$root.length) {
-						this.data.selected = false;
-						this.mutations.removeSelected.call(this);	
-					}
-				}
-			}
-			
-		}
+		
 	},
 
 	mutations: {
@@ -9398,36 +9324,7 @@ var MonthList = Ulna.Component.extend({
 	},
 
 	listen: {
-		HISTORY_PUSH: function( payload ) {
-			if (payload.hasOwnProperty('date')) {
-				if (services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
-
-					console.log('MonthList: HISTORY_PUSH', this.data, payload)
-
-					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
-					this.data.activeDate = payload.date;
-
-					this.rerender();
-				}
-
-			}
-
-		},
-		HISTORY_REPLACE: function( payload ) {
-			if (payload.hasOwnProperty('date')) {
-				// only rerender if the upcoming date's month doesn't match the currently active month
-				if ( services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
-
-					console.log('MonthList: HISTORY_REPLACE', this.data, payload)
-
-					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
-					this.data.activeDate = payload.date;
-
-					this.rerender();
-				}	
-			}
-			
-		}
+		
 	},
 
 	template: {
@@ -9632,13 +9529,7 @@ var YearItem = Ulna.Component.extend({
 	},
 
 	listen: {
-		TIMELINE_YEAR_CHANGE: function( payload ) {
-			if (payload.data === this.data.year) {
-				this.$root.addClass('active');
-			} else {
-				this.$root.removeClass('active');
-			}
-		}
+		
 	},
 
 	template: {
