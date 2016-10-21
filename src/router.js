@@ -15,7 +15,6 @@ var router = new Ulna.Router({
 
 	events: {
 		'popstate': function(event) {
-			console.log(event.state)
 			// handle popstates that represent first load
 			if ( event.state === null || event.state === 'index' ) {
 				var req = 'index'

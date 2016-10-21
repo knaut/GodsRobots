@@ -18,24 +18,28 @@ var MonthList = Ulna.Component.extend({
 	},
 
 	listen: {
-		TIMELINE_YEAR_CHANGE: function( payload ) {
-			this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.data ) );
-			this.data.activeDate = services.utils.getFirstDateInMonths( this.data.months );
+		HISTORY_PUSH: function( payload ) {
+			if (payload.hasOwnProperty('date')) {
+				if (services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
 
-			this.rerender();
+					console.log('MonthList: HISTORY_PUSH', this.data, payload)
 
-			// hack? or maybe a hint at composable actions
+					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
+					this.data.activeDate = payload.date;
 
-			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange(
-				services.utils.buildDateUID( this.data.activeDate.startDate )
-			));
+					this.rerender();
+				}
+
+			}
+
 		},
 		HISTORY_REPLACE: function( payload ) {
-			console.log('MonthList: HISTORY_REPLACE', this.data, payload)
-
 			if (payload.hasOwnProperty('date')) {
 				// only rerender if the upcoming date's month doesn't match the currently active month
 				if ( services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
+
+					console.log('MonthList: HISTORY_REPLACE', this.data, payload)
+
 					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
 					this.data.activeDate = payload.date;
 

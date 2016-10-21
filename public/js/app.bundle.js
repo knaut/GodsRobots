@@ -7592,7 +7592,6 @@ TimelineChange.prototype = {
 	titlify: function( date ) {
 		// take our services data and timestamp string and construct a usable window title
 		// ex: 'GODS ROBOTS - Timeline - My Event, Oct 28th, 2016'
-		console.log(date)
 		var string = services.data.header.title + services.data.header.delimiter + 'Timeline' + services.data.header.delimiter;
 
 		var title = string + date.name + ', ' + date.startDate.format('MMM Do, YYYY');
@@ -7644,7 +7643,6 @@ var App = Ulna.Component.extend({
 			}
 		},
 		HISTORY_REPLACE: function( payload ) {
-			console.log(payload)
 			if (payload.route.req === 'timeline') {
 				this.data = {
 					timeline: services.utils.constructTimelineStateFromDate(
@@ -9400,24 +9398,28 @@ var MonthList = Ulna.Component.extend({
 	},
 
 	listen: {
-		TIMELINE_YEAR_CHANGE: function( payload ) {
-			this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.data ) );
-			this.data.activeDate = services.utils.getFirstDateInMonths( this.data.months );
+		HISTORY_PUSH: function( payload ) {
+			if (payload.hasOwnProperty('date')) {
+				if (services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
 
-			this.rerender();
+					console.log('MonthList: HISTORY_PUSH', this.data, payload)
 
-			// hack? or maybe a hint at composable actions
+					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
+					this.data.activeDate = payload.date;
 
-			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange(
-				services.utils.buildDateUID( this.data.activeDate.startDate )
-			));
+					this.rerender();
+				}
+
+			}
+
 		},
 		HISTORY_REPLACE: function( payload ) {
-			console.log('MonthList: HISTORY_REPLACE', this.data, payload)
-
 			if (payload.hasOwnProperty('date')) {
 				// only rerender if the upcoming date's month doesn't match the currently active month
 				if ( services.utils.buildMonthUID( payload.date.startDate ) !== services.utils.buildMonthUID( this.data.activeDate.startDate ) ) {
+
+					console.log('MonthList: HISTORY_REPLACE', this.data, payload)
+
 					this.data.months = services.utils.formatDatesByMonth( services.utils.getDatesForYear( services.data.events, payload.date.startDate.year() ) );
 					this.data.activeDate = payload.date;
 
@@ -9617,9 +9619,9 @@ var YearItem = Ulna.Component.extend({
 		'click a': function(e) {
 			e.preventDefault();
 
-			this.dispatcher.dispatch('TIMELINE_YEAR_CHANGE', {
-				data: this.data.year
-			});
+			// this.dispatcher.dispatch('TIMELINE_YEAR_CHANGE', {
+			// 	data: this.data.year
+			// });
 
 			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange(
 				services.utils.buildDateUID(
@@ -10828,7 +10830,6 @@ var router = new Ulna.Router({
 
 	events: {
 		'popstate': function(event) {
-			console.log(event.state)
 			// handle popstates that represent first load
 			if ( event.state === null || event.state === 'index' ) {
 				var req = 'index'

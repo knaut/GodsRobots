@@ -32,7 +32,6 @@ var App = Ulna.Component.extend({
 			}
 		},
 		HISTORY_REPLACE: function( payload ) {
-			console.log(payload)
 			if (payload.route.req === 'timeline') {
 				this.data = {
 					timeline: services.utils.constructTimelineStateFromDate(

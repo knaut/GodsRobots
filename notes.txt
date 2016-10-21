@@ -38,10 +38,78 @@ clientside, we can retrieve it by:
 
 
 
+ROUTE_CHANGE action:
+	update,
+	route: {
+		title,
+		url,
+		req: string,
+			{
+				routeId
+			}
+	}
+
+
+
+()
+
+if a route change action is like: {
+	title,
+	url,
+	req: routeID
+
+	or 
+
+	req: {
+		routeIDKey: props
+	}
+}
+
+
+we create a nested object structure that mirrors our URLS
+that nested object structure corresponds directly to our app state ->
+ie., payload object is a state object
+
+components can consume it using reducers - as long as the payload object format is consistent
+
+so:
+
+new RouteChange('timeline')
+
+should yield (in req object):
+
+{
+	timeline: {}
+}
+
+new RouteChange({
+	timeline: '20160204T0845'
+})
+
+should yield (in req object):
+
+{
+	timeline: [ date obj ]
+}
 
 
 
 
 
+in full realism, but not pragmatism:
+
+{
+	timeline: {
+		2015: {
+			09: {
+				17: {
+					symbiosis-festival: props
+				}
+			}
+		}
+	}
+}
+
+urls don't branch, so this kind of structure is redundant
 
 */
