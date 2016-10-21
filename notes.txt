@@ -112,4 +112,13 @@ in full realism, but not pragmatism:
 
 urls don't branch, so this kind of structure is redundant
 
+
+
+()
+
+remember,
+components are the ones who judge what data is good for them
+(use the reducer)
+
+
 */

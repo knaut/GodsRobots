@@ -5,7 +5,6 @@ var utils = require('../../utils.js');
 var dispatcher = require('../../dispatcher.js');
 var services = require('../../services.js');
 
-var TimelineChange = require('../../actions/TimelineChange.js');
 var Month = require('./Month.js');
 
 var MonthList = Ulna.Component.extend({

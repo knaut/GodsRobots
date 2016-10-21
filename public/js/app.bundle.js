@@ -7266,349 +7266,94 @@ InfographicChange.prototype = {
 
 module.exports = InfographicChange;
 
-},{"../services.js":62,"../utils.js":63,"ulna":8}],18:[function(require,module,exports){
-var Ulna = require('ulna');
-var services = require('../services.js');
-
-// route changes should be uniform objects
-/*
-	{
-		// can shove optional parameters into the object, but route property should be standard
-		route: {
-			title: 'Route Title',
-			url: '/route-title'
-		},
-		update: true	// optional param if we want to pop history, but not re-render state
-	}
-*/
-
-/* accept any number of parameters, like strings or nested objects
-ie new RouteChange('index') should yield:
-{
-	route: {
-		title: 'Atypical Products',
-		url: '/'
-	},
-	update: true
-}
-
-new RouteChange('about', false) should yield:
-{
-	route: {
-		title: 'Atypical Products - About',
-		url: '/about'
-	},
-	update: false
-}
-
-new RouteChange({
-	portfolio: 'My Content Item'
-}, false);
-
-should return:
-
-{
-	route: {
-		title: 'Atypical Products - Portfolio - My Content Item',
-		url: '/portfolio/my-content-item'
-	},
-	update: false
-}
-
-add in our original input as a request object
-we can use it later at the recieving end to access services
-
-*/
-
-var RouteChange = function( input, update ) {
-	var action = {
-		route: {
-			title: null,
-			url: null,
-			req: null
-		},
-		update: null,
-	}
-
-	// give a default update value
-	action.update = this.setUpdate( update );
-
-	// titlify is recursive, so we'll add the domain title there
-	action.route.title = services.data.header.title + this.titlify(input);
-
-	// generate a url based on our request
-	action.route.url = this.urlify(input);
-
-	// store our original request later
-	// handle null or undefined as index
-	if (input === null || input === undefined) {
-		action.route.req = 'index';
-	} else {
-		action.route.req = input;
-	}
-
-
-	// assign our props to this
-	for (var key in action)	 {
-		this[key] = action[key]
-	}
-}
-
-RouteChange.prototype = {
-	setUpdate: function( update ) {
-		// if it's anything but false, set it to true
-		if (update === false) {
-			return false
-		} else {
-			return true
-		}
-	},
-
-	capitalize: function( string ) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	},
-
-	titlify: function( input ) {
-
-		var string = '';
-
-		switch( Ulna.toType(input) ) {
-			case 'object': 
-
-				var key = Object.keys(input)[0];
-
-				// we backlist certain routes, like index
-				if ( key === 'index' ) {
-					return string;
-				}
-
-				string += ' ' + services.data.header.delimiter + ' ' + this.capitalize(key) + this.titlify( input[key] );					
-				return string;
-			break;
- 
-			case 'string':
-
-				// we backlist certain routes, like index
-				if ( input === 'index' ) {
-					return string;
-				}
-
-				// blacklist empty string
-				if (input.length) {
-					string += ' ' + services.data.header.delimiter + ' ' + this.capitalize(input);	
-				}
-				
-				return string;
-
-			break;
-		}
-		
-		return string;
-	},
-
-	hyphenate: function( string ) {
-		var newString = '';
-
-		for (var s = 0; string.length > s; s++) {
-			if (string[s] === ' ') {
-				newString += '-'
-			} else {
-				newString += string[s].toLowerCase();
-			}
-		}
-
-		return newString;
-	},
-
-	urlify: function( input ) {
-
-		var url = '';
-
-		switch( Ulna.toType(input) ) {
-			case 'object': 
-
-				var key = Object.keys(input)[0];
-
-				if ( key === 'index' ) {
-					return '/';
-				}
-
-				url += '/' + this.hyphenate(key) + this.urlify( input[key] );					
-				return url;
-
-			break;
- 
-			case 'string':
-
-				if ( input === 'index' ) {
-					return '/';
-				}
-
-				// blacklist empty string
-				if (input.length) {
-					url += '/' + this.hyphenate(input);	
-				}
-				
-				return url;
-
-			break;
-		}
-		
-		return url;
-	},
-
-
-}
-
-module.exports = RouteChange;
-},{"../services.js":62,"ulna":8}],19:[function(require,module,exports){
+},{"../services.js":61,"../utils.js":62,"ulna":8}],18:[function(require,module,exports){
 var Ulna = require('ulna');
 var services = require('../services.js');
 
 var Moment = require('moment');
 
-// Timeline Change
-/* 	return a normalized timeline change object
-	it should carry the format needed to be pushed into History API
-	and also an independent date identifier that can be used to recall
-	information from services.
+/* our new RouteChange should be able to accept objects that reflect the app's state
+	ex:
 
-	an example:
+	new RouteChange({
+		timeline: 'someShortID'
+	})
 
-	new TimelineChange('index');
-
-	let's keyword index to yield the very first date in the collection
-	should yield:
-
+	yields:
 	{
-		route: {
-			title: 'GODS ROBOTS - Timeline - My Event Name, Sep 31st, 2016',
-			url: '/timeline/2016/9/31/my-event-name',
-			req: 'index'
+		timeline: {
+			years: [years],
+			activeYear: someYear,
+			dates: [dates],
+			activeDate: someActiveDate
 		}
 	}
 
-	using a standardized ISO datestamp based on moment's formatting capability
-	such as: "20161017T0511"
-	formatting legend: 'YYYYMMDDThhmm'
+	in other words the RouteChange object should return an entire app state in the payload based
+	on the input request. 
+	it should store this app state in the req object, so that when popped, 
+	the state info is still available.
 
-	new TimelineChange( "20161017T0511" )
+	similarly, when a keyword is mentioned:
+	new RouteChange('about')
 
 	should yield:
-
 	{
-		route: {
-			title: 'GODS ROBOTS - Timeline - Fancy Timestamped Event, Oct 17, 2016',
-			url: '/timeline/2016/10/17/fancy-timestamped-event',
-			req: '20161017T0511'
+		about: { aboutProps }
+	}
+
+	urls should be useful:
+	new RouteChange('about/janaka-atugoda')
+
+	yields:
+	{
+		about: {
+			janaka-atugoda: { janakaProps }
 		}
 	}
 
+	objects also make sense:
+	new RouteChange({
+		about: {
+			janaka-atugoda: {}
+		}
+	})
+
+	yields:
+	{
+		about: {
+			janaka-atugoda: { janakaProps }
+		}
+	}
+
+	etc.
 */
-	
 
-var TimelineChange = function( input, update ) {
-	
-	// create a default TimelineChange object
+var RouteChange = function( input, update ) {
 	var action = {
-		route: {
-			title: null,
-			url: null,
-			req: null
-		},
-		date: null,
-		update: null
+		title: null,
+		url: null
+	};
+
+	switch(Ulna.toType(input)) {
+		case 'string': 
+			console.log('RouteChange: string', input)
+		break;
+		case 'object':
+			console.log('RouteChange: object', input)
+		break;
 	}
 
-	// deal with falsey inputs
-	if (!input) {
-		action.route.req = 'timeline';
-	} else {
-		action.route.req = input;
-	}
 
-	// give a default update value
-	action.update = this.setUpdate( update );
-
-	// based on our input, we retrieve a date item from services
-
-	// we need the date info for titlifying and urlifying, which depends on the name of the event
-	// we also store it here so we only run the getter once, and can access the data through 
-	// the history API
-	action.date = this.getDate( action.route.req );
-
-	// construct the title based on date info
-	action.route.title = this.titlify( action.date );
-
-	// construct the url based on date info
-	action.route.url = this.urlify( action.date );
-
-	// assign our props to this
-	for (var key in action)	 {
-		this[key] = action[key]
-	}
+	return action;
 }
 
-TimelineChange.prototype = {
+RouteChange.prototype = {
 
-	getDate: function( string ) {
-
-		// query our services based on our input, which is either
-		// a keyword or an ISO timestamp
-		if ( string === 'timeline' ) {
-			// get the first date in our timeline
-			return this.getFirstDate();
-		} else {
-			// get the date in our timeline that matches our requested
-			var date = services.utils.getDateByISO( services.data.events, string);
-
-			return date;
-		}
-	},
-
-	getFirstDate: function() {
-		// get the first date in a flat collection
-		var firstYearDates = services.utils.getDatesForYear( services.data.events, services.utils.getYears( services.data.events )[0] );
-		var firstMonthDates = services.utils.formatDatesByMonth( firstYearDates )[0];
-		var firstMonthKey = Object.keys( firstMonthDates )[0];
-		var firstDate = firstMonthDates[ firstMonthKey ][0];
-
-		return firstDate;
-	},
-
-	setUpdate: function( update ) {
-		// if it's anything but false, set it to true
-		if (update === false) {
-			return false
-		} else {
-			return true
-		}
-	},
-
-	capitalize: function( string ) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	},
-
-	titlify: function( date ) {
-		// take our services data and timestamp string and construct a usable window title
-		// ex: 'GODS ROBOTS - Timeline - My Event, Oct 28th, 2016'
-		var string = services.data.header.title + services.data.header.delimiter + 'Timeline' + services.data.header.delimiter;
-
-		var title = string + date.name + ', ' + date.startDate.format('MMM Do, YYYY');
-
-		return title;
-	},
-
-	urlify: function( date ) {
-		// take a date and construct a url for it. ex:
-		// /timeline/2016/28/10/my-event-name
-
-		return services.utils.buildDateURL( date );
-	}
 }
 
-module.exports = TimelineChange;
-},{"../services.js":62,"moment":1,"ulna":8}],20:[function(require,module,exports){
+module.exports = RouteChange;
+},{"../services.js":61,"moment":1,"ulna":8}],19:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('./dispatcher.js');
@@ -7670,7 +7415,7 @@ if (Ulna.env === 'browser') {
 }
 
 module.exports = App;
-},{"./components/Curtain.js":25,"./components/Header.js":29,"./components/Main.js":34,"./components/Modal.js":35,"./components/Nav.js":36,"./dispatcher.js":60,"./router.js":61,"./services.js":62,"ulna":8}],21:[function(require,module,exports){
+},{"./components/Curtain.js":24,"./components/Header.js":28,"./components/Main.js":33,"./components/Modal.js":34,"./components/Nav.js":35,"./dispatcher.js":59,"./router.js":60,"./services.js":61,"ulna":8}],20:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7750,7 +7495,7 @@ var BioCard = Ulna.Component.extend({
 });
 
 module.exports = BioCard;
-},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],22:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],21:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7791,7 +7536,7 @@ var BioCardList = Ulna.Component.extend({
 });
 
 module.exports = BioCardList;
-},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./BioCard.js":21,"ulna":8}],23:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./BioCard.js":20,"ulna":8}],22:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -7845,7 +7590,7 @@ var BrandCarousel = Ulna.Component.extend({
 });
 
 module.exports = BrandCarousel;
-},{"../dispatcher.js":60,"ulna":8}],24:[function(require,module,exports){
+},{"../dispatcher.js":59,"ulna":8}],23:[function(require,module,exports){
 var Ulna = require('ulna');
 
 // a card is a generic component designed to display content in a visual manner
@@ -7890,7 +7635,7 @@ var Card = Ulna.Component.extend({
 });
 
 module.exports = Card;
-},{"ulna":8}],25:[function(require,module,exports){
+},{"ulna":8}],24:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 var dispatcher = require('../dispatcher.js');
@@ -7912,7 +7657,7 @@ var Curtain = Ulna.Component.extend({
 });
 
 module.exports = Curtain;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],26:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],25:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7977,7 +7722,7 @@ var DateArticle = Ulna.Component.extend({
 });
 
 module.exports = DateArticle;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Photos/PhotoCarousel.js":39,"./Videos/VideoCarousel.js":52,"ulna":8}],27:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Photos/PhotoCarousel.js":38,"./Videos/VideoCarousel.js":51,"ulna":8}],26:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8127,7 +7872,7 @@ var Discography = Ulna.Component.extend({
 });
 
 module.exports = Discography;
-},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],28:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],27:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8199,7 +7944,7 @@ var Footer = Ulna.Component.extend({
 });
 
 module.exports = Footer;
-},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],29:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],28:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Logo = require('./Logo.js');
@@ -8230,7 +7975,7 @@ var Header = Ulna.Component.extend({
 });
 
 module.exports = Header;
-},{"./HotButton.js":31,"./Logo.js":33,"./SocialIcons.js":41,"./Typewriter.js":49,"ulna":8}],30:[function(require,module,exports){
+},{"./HotButton.js":30,"./Logo.js":32,"./SocialIcons.js":40,"./Typewriter.js":48,"ulna":8}],29:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Hero = Ulna.Component.extend({
@@ -8254,13 +7999,12 @@ var Hero = Ulna.Component.extend({
 });
 
 module.exports = Hero;
-},{"ulna":8}],31:[function(require,module,exports){
+},{"ulna":8}],30:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('../dispatcher.js');
 var RouteChange = require('../actions/RouteChange.js');
 
-// var RouteChange = require('../actions/RouteChange.js');
-var TimelineChange = require('../actions/TimelineChange.js');
+var RouteChange = require('../actions/RouteChange.js');
 
 var services = require('../services.js');
 
@@ -8272,9 +8016,11 @@ var HotButton = Ulna.Component.extend({
 	events: {
 		'click a': function(e) {
 			e.preventDefault();
-			
+
 			// we enter the app by requesting the timeline
-			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange() );
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+				timeline: {}
+			}));
 		}
 	},
 
@@ -8304,7 +8050,7 @@ var HotButton = Ulna.Component.extend({
 });
 
 module.exports = HotButton;
-},{"../actions/RouteChange.js":18,"../actions/TimelineChange.js":19,"../dispatcher.js":60,"../services.js":62,"ulna":8}],32:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"ulna":8}],31:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8496,7 +8242,7 @@ var InfographicCarousel = Ulna.Component.extend({
 });
 
 module.exports = InfographicCarousel;
-},{"../actions/InfographicChange.js":17,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],33:[function(require,module,exports){
+},{"../actions/InfographicChange.js":17,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],32:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8518,7 +8264,7 @@ var Logo = Ulna.Component.extend({
 });
 
 module.exports = Logo;
-},{"../dispatcher.js":60,"ulna":8}],34:[function(require,module,exports){
+},{"../dispatcher.js":59,"ulna":8}],33:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8696,7 +8442,7 @@ var Main = Ulna.Component.extend({
 });
 
 module.exports = Main;
-},{"../dispatcher.js":60,"../services.js":62,"./BioCardList.js":22,"./BrandCarousel.js":23,"./Discography.js":27,"./Footer.js":28,"./Hero.js":30,"./HotButton.js":31,"./InfographicCarousel.js":32,"./Photos/PhotoGallery.js":40,"./Timeline/Timeline.js":45,"./TimelinePrev.js":48,"./UpcomingCarousel.js":50,"./VFrame.js":51,"ulna":8}],35:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"./BioCardList.js":21,"./BrandCarousel.js":22,"./Discography.js":26,"./Footer.js":27,"./Hero.js":29,"./HotButton.js":30,"./InfographicCarousel.js":31,"./Photos/PhotoGallery.js":39,"./Timeline/Timeline.js":44,"./TimelinePrev.js":47,"./UpcomingCarousel.js":49,"./VFrame.js":50,"ulna":8}],34:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8807,7 +8553,7 @@ var Modal = Ulna.Component.extend({
 });
 
 module.exports = Modal;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Videos/VideoEmbed.js":53,"ulna":8}],36:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Videos/VideoEmbed.js":52,"ulna":8}],35:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8871,7 +8617,7 @@ var Nav = Ulna.Component.extend({
 });
 
 module.exports = Nav;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./NavItem.js":37,"ulna":8}],37:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./NavItem.js":36,"ulna":8}],36:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8938,7 +8684,7 @@ var NavItem = Ulna.Component.extend({
 });
 
 module.exports = NavItem;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],38:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],37:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -8978,7 +8724,7 @@ var Photo = Ulna.Component.extend({
 });
 
 module.exports = Photo;
-},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"ulna":8}],39:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],38:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9028,7 +8774,7 @@ var PhotoCarousel = Ulna.Component.extend({
 });
 
 module.exports = PhotoCarousel;
-},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Photo.js":38,"ulna":8}],40:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Photo.js":37,"ulna":8}],39:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9068,7 +8814,7 @@ var PhotoGallery = Ulna.Component.extend({
 });
 
 module.exports = PhotoGallery;
-},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Photo.js":38,"ulna":8}],41:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Photo.js":37,"ulna":8}],40:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -9119,7 +8865,7 @@ var SocialIcons = Ulna.Component.extend({
 });
 
 module.exports = SocialIcons;
-},{"../dispatcher.js":60,"ulna":8}],42:[function(require,module,exports){
+},{"../dispatcher.js":59,"ulna":8}],41:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9127,7 +8873,6 @@ var dispatcher = require('../../dispatcher.js');
 var services = require('../../services.js');
 
 var RouteChange = require('../../actions/RouteChange.js');
-var TimelineChange = require('../../actions/TimelineChange.js');
 
 var DateNode = Ulna.Component.extend({
 	root: 'li#timeline-node-<<this.data.id>>',
@@ -9162,7 +8907,7 @@ var DateNode = Ulna.Component.extend({
 				this.mutations.addSelected.call(this);
 			}
 
-			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange( 
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange( 
 				services.utils.buildDateUID( this.data.date.startDate )
 			));
 		}
@@ -9230,7 +8975,7 @@ module.exports = DateNode;
 
 
 
-},{"../../actions/RouteChange.js":18,"../../actions/TimelineChange.js":19,"../../dispatcher.js":60,"../../services.js":62,"moment":1,"ulna":8}],43:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"moment":1,"ulna":8}],42:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9303,7 +9048,7 @@ var Month = Ulna.Component.extend({
 });
 
 module.exports = Month;
-},{"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"./DateNode.js":42,"moment":1,"ulna":8}],44:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"./DateNode.js":41,"moment":1,"ulna":8}],43:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 var utils = require('../../utils.js');
@@ -9311,7 +9056,6 @@ var utils = require('../../utils.js');
 var dispatcher = require('../../dispatcher.js');
 var services = require('../../services.js');
 
-var TimelineChange = require('../../actions/TimelineChange.js');
 var Month = require('./Month.js');
 
 var MonthList = Ulna.Component.extend({
@@ -9363,7 +9107,7 @@ var MonthList = Ulna.Component.extend({
 });
 
 module.exports = MonthList;
-},{"../../actions/TimelineChange.js":19,"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Month.js":43,"moment":1,"ulna":8}],45:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Month.js":42,"moment":1,"ulna":8}],44:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9439,7 +9183,7 @@ var Timeline = Ulna.Component.extend({
 });
 
 module.exports = Timeline;
-},{"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"../DateArticle.js":26,"./Month.js":43,"./MonthList.js":44,"./YearControl.js":46,"moment":1,"ulna":8}],46:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"../DateArticle.js":25,"./Month.js":42,"./MonthList.js":43,"./YearControl.js":45,"moment":1,"ulna":8}],45:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9498,14 +9242,14 @@ var YearControl = Ulna.Component.extend({
 });
 
 module.exports = YearControl;
-},{"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"./YearItem.js":47,"moment":1,"ulna":8}],47:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"./YearItem.js":46,"moment":1,"ulna":8}],46:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
 var dispatcher = require('../../dispatcher.js');
 var services = require('../../services.js');
 
-var TimelineChange = require('../../actions/TimelineChange.js');
+var RouteChange = require('../../actions/RouteChange.js');
 
 var YearItem = Ulna.Component.extend({
 	root: 'li#timeline-year-control-<<this.data.year>>',
@@ -9520,7 +9264,7 @@ var YearItem = Ulna.Component.extend({
 			// 	data: this.data.year
 			// });
 
-			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange(
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange(
 				services.utils.buildDateUID(
 					services.utils.getFirstDateInYear( services.data.events, this.data.year ).startDate
 				)
@@ -9551,7 +9295,7 @@ var YearItem = Ulna.Component.extend({
 });
 
 module.exports = YearItem;
-},{"../../actions/TimelineChange.js":19,"../../dispatcher.js":60,"../../services.js":62,"moment":1,"ulna":8}],48:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"moment":1,"ulna":8}],47:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -9652,7 +9396,7 @@ var Timeline = Ulna.Component.extend({
 });
 
 module.exports = Timeline;
-},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"moment":1,"ulna":8}],49:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"moment":1,"ulna":8}],48:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Typed = Ulna.Component.extend({
@@ -9705,7 +9449,7 @@ var Typed = Ulna.Component.extend({
 });
 
 module.exports = Typed;
-},{"ulna":8}],50:[function(require,module,exports){
+},{"ulna":8}],49:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -9841,7 +9585,7 @@ var UpcomingCarousel = Ulna.Component.extend({
 });
 
 module.exports = UpcomingCarousel;
-},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Card.js":24,"ulna":8}],51:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Card.js":23,"ulna":8}],50:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var VFrame = Ulna.Component.extend({
@@ -9856,7 +9600,7 @@ var VFrame = Ulna.Component.extend({
 });
 
 module.exports = VFrame;
-},{"ulna":8}],52:[function(require,module,exports){
+},{"ulna":8}],51:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9904,7 +9648,7 @@ var VideoCarousel = Ulna.Component.extend({
 });
 
 module.exports = VideoCarousel;
-},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./VideoThumb.js":54,"ulna":8}],53:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./VideoThumb.js":53,"ulna":8}],52:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9925,7 +9669,7 @@ var VideoEmbed = Ulna.Component.extend({
 });
 
 module.exports = VideoEmbed;
-},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"ulna":8}],54:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],53:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9957,7 +9701,7 @@ var VideoThumb = Ulna.Component.extend({
 });
 
 module.exports = VideoThumb;
-},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"ulna":8}],55:[function(require,module,exports){
+},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],54:[function(require,module,exports){
 module.exports = {
 	bios: [
 		{
@@ -9970,7 +9714,7 @@ module.exports = {
 		}
 	]
 };
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 var Moment = require('moment');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -10363,7 +10107,7 @@ for (var d = 0; dates.length > d; d++) {
 */
 
 module.exports = dates;
-},{"../../utils.js":63,"moment":1}],57:[function(require,module,exports){
+},{"../../utils.js":62,"moment":1}],56:[function(require,module,exports){
 module.exports = {
 	nav: [
 		{
@@ -10515,7 +10259,7 @@ module.exports = {
 		}
 	]
 };
-},{}],58:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 module.exports = {
 	discography: [
 		{
@@ -10583,7 +10327,7 @@ module.exports = {
 		}
 	]
 };
-},{}],59:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = {
 	title: 'Photos',
 	photos: [
@@ -10637,7 +10381,7 @@ module.exports = {
 		}
 	]
 }
-},{}],60:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 var Ulna = require('ulna');
 var services = require('./services.js');
 
@@ -10703,14 +10447,13 @@ var dispatcher = new Ulna.Dispatcher({
 });
 
 module.exports = dispatcher;	
-},{"./services.js":62,"ulna":8}],61:[function(require,module,exports){
+},{"./services.js":61,"ulna":8}],60:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('./dispatcher.js');
 // var services = require('./services.js');
 
 // actions
 var RouteChange = require('./actions/RouteChange.js');
-var TimelineChange = require('./actions/TimelineChange.js');
 
 var router = new Ulna.Router({
 	dispatcher: dispatcher,
@@ -10727,7 +10470,7 @@ var router = new Ulna.Router({
 				this.dispatcher.dispatch('HISTORY_REPLACE', new RouteChange( req ) );
 			} else {
 				var req = event.state.req
-				this.dispatcher.dispatch('HISTORY_REPLACE', new TimelineChange( req ) );
+				this.dispatcher.dispatch('HISTORY_REPLACE', new RouteChange( req ) );
 			}
 
 			
@@ -10735,23 +10478,23 @@ var router = new Ulna.Router({
 	},
 
 	listen: {
-		'HISTORY_PUSH': function( payload ) {
-			// payload should be a standard RouteChange action
-			console.log('Router: HISTORY_PUSH', payload);
+		// 'HISTORY_PUSH': function( payload ) {
+		// 	// payload should be a standard RouteChange action
+		// 	console.log('Router: HISTORY_PUSH', payload);
 
-			this.history.push(payload.route);
-		},
-		'HISTORY_REPLACE': function( payload ) {
-			// payload should still be a standard action
-			console.log('Router: HISTORY_REPLACE', payload);
+		// 	this.history.push(payload.route);
+		// },
+		// 'HISTORY_REPLACE': function( payload ) {
+		// 	// payload should still be a standard action
+		// 	console.log('Router: HISTORY_REPLACE', payload);
 			
-			this.history.replace(payload.route);
-		}
+		// 	this.history.replace(payload.route);
+		// }
 	}
 });
 
 module.exports = router;
-},{"./actions/RouteChange.js":18,"./actions/TimelineChange.js":19,"./dispatcher.js":60,"ulna":8}],62:[function(require,module,exports){
+},{"./actions/RouteChange.js":18,"./dispatcher.js":59,"ulna":8}],61:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('./dispatcher.js');
 var utils = require('./utils.js');
@@ -10779,7 +10522,7 @@ var services = new Ulna.Services({
 });
 
 module.exports = services;
-},{"./data/about/index.js":55,"./data/events/index.js":56,"./data/index.js":57,"./data/music/index.js":58,"./data/photos/index.js":59,"./dispatcher.js":60,"./utils.js":63,"moment":1,"ulna":8}],63:[function(require,module,exports){
+},{"./data/about/index.js":54,"./data/events/index.js":55,"./data/index.js":56,"./data/music/index.js":57,"./data/photos/index.js":58,"./dispatcher.js":59,"./utils.js":62,"moment":1,"ulna":8}],62:[function(require,module,exports){
 var Moment = require('moment');
 
 module.exports = {
@@ -11108,4 +10851,4 @@ module.exports = {
 
 }
 
-},{"moment":1}]},{},[20]);
+},{"moment":1}]},{},[19]);

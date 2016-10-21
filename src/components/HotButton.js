@@ -2,8 +2,7 @@ var Ulna = require('ulna');
 var dispatcher = require('../dispatcher.js');
 var RouteChange = require('../actions/RouteChange.js');
 
-// var RouteChange = require('../actions/RouteChange.js');
-var TimelineChange = require('../actions/TimelineChange.js');
+var RouteChange = require('../actions/RouteChange.js');
 
 var services = require('../services.js');
 
@@ -15,9 +14,11 @@ var HotButton = Ulna.Component.extend({
 	events: {
 		'click a': function(e) {
 			e.preventDefault();
-			
+
 			// we enter the app by requesting the timeline
-			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange() );
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+				timeline: {}
+			}));
 		}
 	},
 

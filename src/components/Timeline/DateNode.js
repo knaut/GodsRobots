@@ -5,7 +5,6 @@ var dispatcher = require('../../dispatcher.js');
 var services = require('../../services.js');
 
 var RouteChange = require('../../actions/RouteChange.js');
-var TimelineChange = require('../../actions/TimelineChange.js');
 
 var DateNode = Ulna.Component.extend({
 	root: 'li#timeline-node-<<this.data.id>>',
@@ -40,7 +39,7 @@ var DateNode = Ulna.Component.extend({
 				this.mutations.addSelected.call(this);
 			}
 
-			this.dispatcher.dispatch('HISTORY_PUSH', new TimelineChange( 
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange( 
 				services.utils.buildDateUID( this.data.date.startDate )
 			));
 		}

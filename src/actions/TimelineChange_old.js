@@ -28,7 +28,9 @@ var Moment = require('moment');
 	such as: "20161017T0511"
 	formatting legend: 'YYYYMMDDThhmm'
 
-	new TimelineChange( "20161017T0511" )
+	new TimelineChange({
+		timeline: "20161017T0511"
+	})
 
 	should yield:
 
@@ -36,7 +38,9 @@ var Moment = require('moment');
 		route: {
 			title: 'GODS ROBOTS - Timeline - Fancy Timestamped Event, Oct 17, 2016',
 			url: '/timeline/2016/10/17/fancy-timestamped-event',
-			req: '20161017T0511'
+			req: {
+				timeline: "20161017T0511"
+			}
 		}
 	}
 
@@ -52,14 +56,15 @@ var TimelineChange = function( input, update ) {
 			url: null,
 			req: null
 		},
-		date: null,
 		update: null
 	}
 
 	// deal with falsey inputs
 	if (!input) {
-		action.route.req = 'timeline';
+		action.route.req = 'index';
 	} else {
+
+		
 		action.route.req = input;
 	}
 
@@ -71,7 +76,7 @@ var TimelineChange = function( input, update ) {
 	// we need the date info for titlifying and urlifying, which depends on the name of the event
 	// we also store it here so we only run the getter once, and can access the data through 
 	// the history API
-	action.date = this.getDate( action.route.req );
+	action.date = this.getDate( action.route.req.timeline );
 
 	// construct the title based on date info
 	action.route.title = this.titlify( action.date );
