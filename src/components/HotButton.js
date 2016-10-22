@@ -2,8 +2,6 @@ var Ulna = require('ulna');
 var dispatcher = require('../dispatcher.js');
 var RouteChange = require('../actions/RouteChange.js');
 
-var RouteChange = require('../actions/RouteChange.js');
-
 var services = require('../services.js');
 
 var HotButton = Ulna.Component.extend({
@@ -15,9 +13,9 @@ var HotButton = Ulna.Component.extend({
 		'click a': function(e) {
 			e.preventDefault();
 
-			// we enter the app by requesting the timeline
+			// we enter the app by requesting the first date timeline
 			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
-				timeline: {}
+				timeline: services.utils.buildDateUID( services.utils.getFirstDate( services.data.events ).startDate )
 			}));
 		}
 	},
