@@ -20,7 +20,19 @@ var App = Ulna.Component.extend({
 	},
 
 	listen: {
-		
+		HISTORY_PUSH: function( payload ) {
+			console.log('App: Payload', payload);
+
+			this.data = payload.route.res;
+
+			this.rerender();
+		},
+
+		HISTORY_REPLACE: function( payload ) {
+			this.data = payload.route.res;
+
+			this.rerender();
+		}
 	},
 
 	template: {

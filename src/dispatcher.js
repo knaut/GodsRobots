@@ -27,7 +27,7 @@ var dispatcher = new Ulna.Dispatcher({
 				var res;
 
 				switch(Ulna.toType( payload.route.req )) {
-					case null || undefined:
+					case 'null' || 'undefined':
 						console.log('Dispatcher Warning: Payload input null or undefined');
 					break;
 					case 'string':

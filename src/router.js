@@ -19,7 +19,7 @@ var router = new Ulna.Router({
 				var req = 'index'
 				this.dispatcher.dispatch('HISTORY_REPLACE', new RouteChange( req ) );
 			} else {
-				var req = event.state.req
+				var req = event.state.req;
 				this.dispatcher.dispatch('HISTORY_REPLACE', new RouteChange( req ) );
 			}
 
@@ -28,18 +28,19 @@ var router = new Ulna.Router({
 	},
 
 	listen: {
-		// 'HISTORY_PUSH': function( payload ) {
-		// 	// payload should be a standard RouteChange action
-		// 	console.log('Router: HISTORY_PUSH', payload);
+		HISTORY_PUSH: function( payload ) {
+			// payload should be a standard RouteChange action
+			console.log('Router: HISTORY_PUSH', payload);
 
-		// 	this.history.push(payload.route);
-		// },
-		// 'HISTORY_REPLACE': function( payload ) {
-		// 	// payload should still be a standard action
-		// 	console.log('Router: HISTORY_REPLACE', payload);
+			this.history.push(payload.route);
+
+		},
+		HISTORY_REPLACE: function( payload ) {
+			// payload should still be a standard action
+			console.log('Router: HISTORY_REPLACE', payload);
 			
-		// 	this.history.replace(payload.route);
-		// }
+			this.history.replace(payload.route);
+		}
 	}
 });
 

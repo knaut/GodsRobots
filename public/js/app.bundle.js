@@ -7526,7 +7526,19 @@ var App = Ulna.Component.extend({
 	},
 
 	listen: {
-		
+		HISTORY_PUSH: function( payload ) {
+			console.log('App: Payload', payload);
+
+			this.data = payload.route.res;
+
+			this.rerender();
+		},
+
+		HISTORY_REPLACE: function( payload ) {
+			this.data = payload.route.res;
+
+			this.rerender();
+		}
 	},
 
 	template: {
@@ -10559,7 +10571,7 @@ var dispatcher = new Ulna.Dispatcher({
 				var res;
 
 				switch(Ulna.toType( payload.route.req )) {
-					case null || undefined:
+					case 'null' || 'undefined':
 						console.log('Dispatcher Warning: Payload input null or undefined');
 					break;
 					case 'string':
@@ -10674,7 +10686,7 @@ var router = new Ulna.Router({
 				var req = 'index'
 				this.dispatcher.dispatch('HISTORY_REPLACE', new RouteChange( req ) );
 			} else {
-				var req = event.state.req
+				var req = event.state.req;
 				this.dispatcher.dispatch('HISTORY_REPLACE', new RouteChange( req ) );
 			}
 
@@ -10683,18 +10695,19 @@ var router = new Ulna.Router({
 	},
 
 	listen: {
-		// 'HISTORY_PUSH': function( payload ) {
-		// 	// payload should be a standard RouteChange action
-		// 	console.log('Router: HISTORY_PUSH', payload);
+		HISTORY_PUSH: function( payload ) {
+			// payload should be a standard RouteChange action
+			console.log('Router: HISTORY_PUSH', payload);
 
-		// 	this.history.push(payload.route);
-		// },
-		// 'HISTORY_REPLACE': function( payload ) {
-		// 	// payload should still be a standard action
-		// 	console.log('Router: HISTORY_REPLACE', payload);
+			this.history.push(payload.route);
+
+		},
+		HISTORY_REPLACE: function( payload ) {
+			// payload should still be a standard action
+			console.log('Router: HISTORY_REPLACE', payload);
 			
-		// 	this.history.replace(payload.route);
-		// }
+			this.history.replace(payload.route);
+		}
 	}
 });
 
