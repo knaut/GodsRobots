@@ -322,6 +322,55 @@ module.exports = {
 		};
 
 		return state;
+	},
+
+	getState: function( events, req ) {
+		// use some input as a request and and a collection to generate a response object that 
+		// represents the state of the application given the request
+		
+		// requests can be null, undefined, strings (like "index" or "timeline"), or nested objects
+		// expect this kind of functionality to be encapsulated
+		
+		var res;
+
+		console.log(this)
+		
+		switch(Ulna.toType( req )) {
+			case 'null' || 'undefined':
+				console.log('State Warning: Payload input null or undefined');					
+			break;
+			case 'string':
+				// console.log('Dispatcher: Payload:', req);
+			break;
+			case 'object':
+				// console.log('Dispatcher: Payload:', req);
+
+				// this is hardcoded - in the future we may do some dynamic magic
+				// based on the structure of our services object (or collection)
+
+				var key = Object.keys(req)[0];
+				var routeContent = req[key];
+
+				switch( key ) {
+					case 'timeline':
+						// generate timeline state based on our input
+						// in our application, this should be a dateUID
+						res = {
+							timeline: this.constructTimelineStateFromDate(
+								events,
+								this.getDateByISO(
+									events,
+									routeContent
+								)
+							)
+						}
+						
+					break;
+				}
+			break;
+		}
+
+		return res;
 	}
 
 }

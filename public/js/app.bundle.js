@@ -7336,47 +7336,26 @@ var RouteChange = function( input, update ) {
 	// store our input as a request for reference later
 	action.route.req = input;
 
-	// generate a response state object
-	// instead of handing this business logic to actions, lets put it somewhere more manageable
-	// and easy to reason about
-	
-	// switch(Ulna.toType( input )) {
-	// 	case 'string':
-	// 		console.log('RouteChange string:', input)
-	// 	break;
-	// 	case 'object':
-			
-	// 		var routeKey = Object.keys(input)[0];
-			
-	// 		switch(routeKey) {
-	// 			case 'timeline':
-	// 				// add res to our route object
-	// 				// for a timeline object, we can expect an ISO timestamp for reference
-	// 				action.route['res'] = {
-	// 					timeline: services.utils.constructTimelineStateFromDate(
-	// 						services.data.events,
-	// 						services.utils.getDateByISO(
-	// 							services.data.events,
-	// 							input[routeKey]
-	// 						)
-	// 					)
-	// 				}
+	// we still need to generate a title, so we'll use a state getter to generate
+	// the upcoming state object
+	// hardcoded for the current implementation
+	var state = services.utils.getState( services.data.events, input );
 
-	// 				action.route.title = this.titlifyDate( action.route.res.timeline.activeYear );
-	// 				action.route.url = this.urlifyDate( action.route.res.timeline.activeYear );
+	action.route.title = this.titlifyDate( 
+		state.timeline.activeDate
+	);
 
-	// 			break;
-	// 		}
-
-	// 	break;
-	// }
+	// same
+	action.route.url = this.urlifyDate( 
+		state.timeline.activeDate
+	);
 
 	// assign our props to this
 	for (var key in action)	 {
 		this[key] = action[key]
 	}
 
-	// console.log('RouteChange actions:', action);
+	console.log('RouteChange actions:', action);
 }
 
 RouteChange.prototype = {
@@ -10558,62 +10537,6 @@ var dispatcher = new Ulna.Dispatcher({
 		{
 			name: 'HISTORY_PUSH',
 			beforeEmit: function(payload, next) {
-				// console.log('Dispatcher RouteChange:', payload);
-
-				// history push recieves all route changes. we can expect a normal RouteChange object
-				// use its input as a request and generate a response object that represents the state
-				// of the application given the request
-
-				// requests can be null, undefined, strings (like "index" or "timeline"), or nested objects
-				// expect this kind of functionality to be encapsulated
-
-				var req = payload.route.req;
-				var res;
-
-				switch(Ulna.toType( payload.route.req )) {
-					case 'null' || 'undefined':
-						console.log('Dispatcher Warning: Payload input null or undefined');
-					break;
-					case 'string':
-						// console.log('Dispatcher: Payload:', req);
-					break;
-					case 'object':
-						// console.log('Dispatcher: Payload:', req);
-
-						// this is hardcoded - in the future we may do some dynamic magic
-						// based on the structure of our services object
-						var routeKey = Object.keys(req)[0];
-						var routeContent = payload.route.req[routeKey];
-						switch( routeKey ) {
-							case 'timeline':
-
-								// generate timeline state based on our input
-								// in our application, this should be a dateUID
-								res = {
-									timeline: services.utils.constructTimelineStateFromDate(
-										services.data.events,
-										services.utils.getDateByISO(
-											services.data.events,
-											routeContent
-										)
-									)
-								}
-
-								// attach the response state to our route object
-								// it will get pushed into the history stack later
-								payload.route.res = res;
-
-								// titlify and urlify our route based on the response
-								payload.route.title = payload.titlifyDate( res.timeline.activeDate );
-								payload.route.url = payload.urlifyDate( res.timeline.activeDate );
-
-							break;
-						}
-
-					break;
-				}
-
-				// console.log('Payload modified:', payload)
 
 				next(payload);
 			},
@@ -11065,6 +10988,55 @@ module.exports = {
 		};
 
 		return state;
+	},
+
+	getState: function( events, req ) {
+		// use some input as a request and and a collection to generate a response object that 
+		// represents the state of the application given the request
+		
+		// requests can be null, undefined, strings (like "index" or "timeline"), or nested objects
+		// expect this kind of functionality to be encapsulated
+		
+		var res;
+
+		console.log(this)
+		
+		switch(Ulna.toType( req )) {
+			case 'null' || 'undefined':
+				console.log('State Warning: Payload input null or undefined');					
+			break;
+			case 'string':
+				// console.log('Dispatcher: Payload:', req);
+			break;
+			case 'object':
+				// console.log('Dispatcher: Payload:', req);
+
+				// this is hardcoded - in the future we may do some dynamic magic
+				// based on the structure of our services object (or collection)
+
+				var key = Object.keys(req)[0];
+				var routeContent = req[key];
+
+				switch( key ) {
+					case 'timeline':
+						// generate timeline state based on our input
+						// in our application, this should be a dateUID
+						res = {
+							timeline: this.constructTimelineStateFromDate(
+								events,
+								this.getDateByISO(
+									events,
+									routeContent
+								)
+							)
+						}
+						
+					break;
+				}
+			break;
+		}
+
+		return res;
 	}
 
 }

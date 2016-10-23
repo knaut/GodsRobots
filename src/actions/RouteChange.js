@@ -67,47 +67,26 @@ var RouteChange = function( input, update ) {
 	// store our input as a request for reference later
 	action.route.req = input;
 
-	// generate a response state object
-	// instead of handing this business logic to actions, lets put it somewhere more manageable
-	// and easy to reason about
-	
-	// switch(Ulna.toType( input )) {
-	// 	case 'string':
-	// 		console.log('RouteChange string:', input)
-	// 	break;
-	// 	case 'object':
-			
-	// 		var routeKey = Object.keys(input)[0];
-			
-	// 		switch(routeKey) {
-	// 			case 'timeline':
-	// 				// add res to our route object
-	// 				// for a timeline object, we can expect an ISO timestamp for reference
-	// 				action.route['res'] = {
-	// 					timeline: services.utils.constructTimelineStateFromDate(
-	// 						services.data.events,
-	// 						services.utils.getDateByISO(
-	// 							services.data.events,
-	// 							input[routeKey]
-	// 						)
-	// 					)
-	// 				}
+	// we still need to generate a title, so we'll use a state getter to generate
+	// the upcoming state object
+	// hardcoded for the current implementation
+	var state = services.utils.getState( services.data.events, input );
 
-	// 				action.route.title = this.titlifyDate( action.route.res.timeline.activeYear );
-	// 				action.route.url = this.urlifyDate( action.route.res.timeline.activeYear );
+	action.route.title = this.titlifyDate( 
+		state.timeline.activeDate
+	);
 
-	// 			break;
-	// 		}
-
-	// 	break;
-	// }
+	// same
+	action.route.url = this.urlifyDate( 
+		state.timeline.activeDate
+	);
 
 	// assign our props to this
 	for (var key in action)	 {
 		this[key] = action[key]
 	}
 
-	// console.log('RouteChange actions:', action);
+	console.log('RouteChange actions:', action);
 }
 
 RouteChange.prototype = {
