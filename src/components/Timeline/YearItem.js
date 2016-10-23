@@ -19,11 +19,11 @@ var YearItem = Ulna.Component.extend({
 			// 	data: this.data.year
 			// });
 
-			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange(
-				services.utils.buildDateUID(
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+				timeline: services.utils.buildDateUID(
 					services.utils.getFirstDateInYear( services.data.events, this.data.year ).startDate
 				)
-			));
+			}));
 		}
 	},
 

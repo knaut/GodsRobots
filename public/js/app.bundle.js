@@ -7336,26 +7336,38 @@ var RouteChange = function( input, update ) {
 	// store our input as a request for reference later
 	action.route.req = input;
 
+
 	// we still need to generate a title, so we'll use a state getter to generate
 	// the upcoming state object
 	// hardcoded for the current implementation
 	var state = services.utils.getState( services.data.events, input );
 
-	action.route.title = this.titlifyDate( 
-		state.timeline.activeDate
-	);
+	if (Ulna.toType(input) === 'object' && Object.keys(input)[0] === 'timeline') {
+		action.route.title = this.titlifyDate( 
+			state.timeline.activeDate
+		);
 
-	// same
-	action.route.url = this.urlifyDate( 
-		state.timeline.activeDate
-	);
+		// same
+		action.route.url = this.urlifyDate( 
+			state.timeline.activeDate
+		);	
+	} else {
+		action.route.title = this.titlify( 
+			state
+		);
+
+		// same
+		action.route.url = this.urlify( 
+			state
+		);
+	}
+
+	
 
 	// assign our props to this
 	for (var key in action)	 {
 		this[key] = action[key]
 	}
-
-	console.log('RouteChange actions:', action);
 }
 
 RouteChange.prototype = {
@@ -7508,13 +7520,23 @@ var App = Ulna.Component.extend({
 		HISTORY_PUSH: function( payload ) {
 			console.log('App: Payload', payload);
 
-			this.data = payload.route.res;
+			// generate a state response
+			var state = services.utils.getState( services.data.events, payload.route.req );
+
+			console.log('State:', state);
+
+			this.data = state;
 
 			this.rerender();
 		},
 
 		HISTORY_REPLACE: function( payload ) {
-			this.data = payload.route.res;
+			// generate a state response
+			var state = services.utils.getState( services.data.events, payload.route.req );
+
+			console.log('State:', state);
+
+			this.data = state;
 
 			this.rerender();
 		}
@@ -9046,9 +9068,9 @@ var DateNode = Ulna.Component.extend({
 				this.mutations.addSelected.call(this);
 			}
 
-			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange( 
-				services.utils.buildDateUID( this.data.date.startDate )
-			));
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+				timeline: services.utils.buildDateUID( this.data.date.startDate )
+			}));
 		}
 	},
 
@@ -9403,11 +9425,11 @@ var YearItem = Ulna.Component.extend({
 			// 	data: this.data.year
 			// });
 
-			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange(
-				services.utils.buildDateUID(
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+				timeline: services.utils.buildDateUID(
 					services.utils.getFirstDateInYear( services.data.events, this.data.year ).startDate
 				)
-			));
+			}));
 		}
 	},
 
@@ -10991,6 +11013,8 @@ module.exports = {
 	},
 
 	getState: function( events, req ) {
+		console.log(req)
+
 		// use some input as a request and and a collection to generate a response object that 
 		// represents the state of the application given the request
 		
@@ -10998,8 +11022,6 @@ module.exports = {
 		// expect this kind of functionality to be encapsulated
 		
 		var res;
-
-		console.log(this)
 		
 		switch(Ulna.toType( req )) {
 			case 'null' || 'undefined':
@@ -11007,6 +11029,11 @@ module.exports = {
 			break;
 			case 'string':
 				// console.log('Dispatcher: Payload:', req);
+				if (req === 'index') {
+					return {
+						index: {}
+					}
+				}
 			break;
 			case 'object':
 				// console.log('Dispatcher: Payload:', req);

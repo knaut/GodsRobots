@@ -39,9 +39,9 @@ var DateNode = Ulna.Component.extend({
 				this.mutations.addSelected.call(this);
 			}
 
-			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange( 
-				services.utils.buildDateUID( this.data.date.startDate )
-			));
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+				timeline: services.utils.buildDateUID( this.data.date.startDate )
+			}));
 		}
 	},
 

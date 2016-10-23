@@ -325,6 +325,8 @@ module.exports = {
 	},
 
 	getState: function( events, req ) {
+		console.log(req)
+
 		// use some input as a request and and a collection to generate a response object that 
 		// represents the state of the application given the request
 		
@@ -332,8 +334,6 @@ module.exports = {
 		// expect this kind of functionality to be encapsulated
 		
 		var res;
-
-		console.log(this)
 		
 		switch(Ulna.toType( req )) {
 			case 'null' || 'undefined':
@@ -341,6 +341,11 @@ module.exports = {
 			break;
 			case 'string':
 				// console.log('Dispatcher: Payload:', req);
+				if (req === 'index') {
+					return {
+						index: {}
+					}
+				}
 			break;
 			case 'object':
 				// console.log('Dispatcher: Payload:', req);

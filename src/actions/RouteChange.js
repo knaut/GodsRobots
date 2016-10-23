@@ -67,26 +67,38 @@ var RouteChange = function( input, update ) {
 	// store our input as a request for reference later
 	action.route.req = input;
 
+
 	// we still need to generate a title, so we'll use a state getter to generate
 	// the upcoming state object
 	// hardcoded for the current implementation
 	var state = services.utils.getState( services.data.events, input );
 
-	action.route.title = this.titlifyDate( 
-		state.timeline.activeDate
-	);
+	if (Ulna.toType(input) === 'object' && Object.keys(input)[0] === 'timeline') {
+		action.route.title = this.titlifyDate( 
+			state.timeline.activeDate
+		);
 
-	// same
-	action.route.url = this.urlifyDate( 
-		state.timeline.activeDate
-	);
+		// same
+		action.route.url = this.urlifyDate( 
+			state.timeline.activeDate
+		);	
+	} else {
+		action.route.title = this.titlify( 
+			state
+		);
+
+		// same
+		action.route.url = this.urlify( 
+			state
+		);
+	}
+
+	
 
 	// assign our props to this
 	for (var key in action)	 {
 		this[key] = action[key]
 	}
-
-	console.log('RouteChange actions:', action);
 }
 
 RouteChange.prototype = {
