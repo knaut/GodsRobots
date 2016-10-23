@@ -1,8 +1,11 @@
 // REQUIRES, SERVER
 var Hapi = require("hapi");
+// var Moment = require('moment');
 
 // head
-var $ = require('./src/appHead.js');
+var Cheerio = require('cheerio');
+// var $ = require('./src/appHead.js');
+var appHead = require('./src/appHead.js');
 
 // server stuff
 var server = new Hapi.Server(process.env.PORT || 3000, '0.0.0.0');
@@ -13,15 +16,45 @@ server.start(function() {
 
 // load the app
 var App = require('./src/app.js');
+
+// load the data
 var services = require('./src/services.js');
 
+// clientside initializer
+// stringified into app head
+var initializer = function() { 
+	
+	// start the app
+	app = new Ulna.App({
+		data: appState
+	});
+
+	app.bind();
+}
+
+
+
+// server routes
 server.route({
 	path: '/',
 	method: 'GET',
 	handler: function(request, reply) {
-		// initialize the app and its components
-		var app = new App();
+		// we have the state of our whole app
+		var appState = {
+			index: {}
+		};
 
+		// stringify that state to be set client-side later
+		var stringifiedState = JSON.stringify(appState);
+
+		// load the appHead, which takes the stringified state and an initializer
+		var $ = Cheerio.load( appHead( stringifiedState, initializer ) );
+
+		// create our server-side app with the appState
+		var app = new App({
+			data: appState
+		});
+		
 		// modify our server-side DOM with the html generated from our component chain
 		$(app.root).html( app.stringified );
 
@@ -57,7 +90,7 @@ server.route({
 		var url = request.params.date;
 
 		var date = services.utils.getDateByPartialISO( services.data.events, services.utils.buildShortISOfromURL( url ) );
-		
+		console.log(date)
 		var timelineState = {
 			years: services.utils.getYears( services.data.events ),
 			activeYear: date.startDate.year(),
@@ -65,16 +98,26 @@ server.route({
 			activeDate: date
 		};
 
+		// we have the state of our whole app
 		var appState = {
 			timeline: timelineState
 		};
+
+		// stringify that state to be set client-side later
+		var stringifiedState = appState;
+
+		var $ = Cheerio.load( appHead( stringifiedState, initializer ) );
 
 		var app = new App({
 			data: appState
 		});
 		
+
+		
 		// modify our server-side DOM with the html generated from our component chain
 		$(app.root).html( app.stringified );
+
+
 
 		// reply with the updated html
 		reply( $.html() );

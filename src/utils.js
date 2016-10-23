@@ -377,5 +377,4 @@ module.exports = {
 
 		return res;
 	}
-
 }
