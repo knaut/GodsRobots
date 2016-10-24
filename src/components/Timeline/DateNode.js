@@ -74,7 +74,7 @@ var DateNode = Ulna.Component.extend({
 				isSelected = '.selected';
 			}
 
-			var anchorKey = 'a[href="/timeline' + this.data.date.startDate.format('/YYYY/MM/DD/') + services.utils.hyphenate(this.data.date.name) + '"]' + isSelected;
+			var anchorKey = 'a[href="/timeline' + new Moment( this.data.date.startDate ).format('/YYYY/MM/DD/') + services.utils.hyphenate(this.data.date.name) + '"]' + isSelected;
 			var obj = {};
 			var objKey = '#timeline-popover-' + this.data.date.id;
 
@@ -82,14 +82,14 @@ var DateNode = Ulna.Component.extend({
 				obj[objKey] = {
 					'.timeline-popover.selected': {
 						h1: this.data.date.name,
-						date: this.data.date.startDate.format('MMM D, YYYY'),
+						date: new Moment( this.data.date.startDate ).format('MMM D, YYYY'),
 					}
 				};	
 			} else {
 				obj[objKey] = {
 					'.timeline-popover': {
 						h1: this.data.date.name,
-						date: this.data.date.startDate.format('MMM D, YYYY'),
+						date: new Moment( this.data.date.startDate ).format('MMM D, YYYY'),
 					}
 				};
 			}

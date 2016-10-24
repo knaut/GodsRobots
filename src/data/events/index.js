@@ -5,13 +5,13 @@ var dates = [
 	{
 		name: 'SuperHeroes Street Fair',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 9,
 			day: 22,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -23,13 +23,13 @@ var dates = [
 	{
 		name: 'Temple of Chaos, LA',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 8,
 			day: 10,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'video',
@@ -42,13 +42,13 @@ var dates = [
 	{
 		name: 'Sizzla Remixes Release',
 		kind: 'release',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 8,
 			day: 9,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -65,13 +65,13 @@ var dates = [
 	{
 		name: 'Janaka Selekta Live at Slim\'s',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 6,
 			day: 2,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'video',
@@ -84,13 +84,13 @@ var dates = [
 	{
 		name: 'How Weird Street Faire',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 4,
 			day: 7,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'photo',
@@ -107,13 +107,13 @@ var dates = [
 	{
 		name: 'Worldly, LA',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 3,
 			day: 21,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -125,13 +125,13 @@ var dates = [
 	{
 		name: 'The Chapel, SF',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 2,
 			day: 30,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -161,13 +161,13 @@ var dates = [
 	{
 		name: 'Symbiosis Festival',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 8,
 			day: 17,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -185,13 +185,13 @@ var dates = [
 	{
 		name: 'Day La Sol',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 7,
 			day: 1,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -203,13 +203,13 @@ var dates = [
 	{
 		name: 'Karsh Kale, The Chapel, SF',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 6,
 			day: 10,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'photo',
@@ -226,13 +226,13 @@ var dates = [
 	{
 		name: 'Union of the Kingdoms',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 6,
 			day: 4,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'photo',
@@ -249,13 +249,13 @@ var dates = [
 	{
 		name: 'Burning Man, Precompression',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 5,
 			day: 20,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -267,13 +267,13 @@ var dates = [
 	{
 		name: 'A Night For Nepal, Oakland',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 4,
 			day: 30,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -285,13 +285,13 @@ var dates = [
 	{
 		name: 'How Weird Street Faire 2015',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 3,
 			day: 26,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -308,13 +308,13 @@ var dates = [
 	{
 		name: 'Wormhole Wednesday 4-11-15',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 3,
 			day: 11,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -378,13 +378,13 @@ for (var d = 0; dates.length > d; d++) {
 				src: '//media/images/events/globalBeatMovement/test_6.jpg'
 			}
 		],
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 8,
 			day: 5,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		desc: 'LA, we are less than a week away for Temple of Chaos, come check out GODS ROBOTS ft Ishmeet Narula, Rusty Rickshaw, 108Hill & Bassfakira on the 10th at Los Globos.'
 	},
 */

@@ -1,6 +1,8 @@
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
+var Moment = require('moment');
+
 var dispatcher = require('../dispatcher.js');
 var services = require('../services.js');
 
@@ -20,7 +22,7 @@ var DateArticle = Ulna.Component.extend({
 		'.col-lg-12': function() {
 			var content = {
 				h1: this.data.name,
-				date: this.data.startDate.format('MMM D, YYYY'),
+				date: new Moment( this.data.startDate ).format('MMM D, YYYY'),
 				p: this.data.desc
 			};
 

@@ -23,7 +23,7 @@ var MonthList = Ulna.Component.extend({
 	template: {
 		ul: function() {
 			var list = [];
-			var activeDateMonthID = this.data.activeDate.startDate.format('MMMM').toLowerCase();
+			var activeDateMonthID = new Moment(this.data.activeDate.startDate).format('MMMM').toLowerCase();
 
 			// convert our keyed data structure to an unordered list with titles
 			for (var i = 0; this.data.months.length > i; i++) {

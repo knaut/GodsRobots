@@ -20,18 +20,16 @@ var App = require('./src/app.js');
 // load the data
 var services = require('./src/services.js');
 
+
 // clientside initializer
 // stringified into app head
-var initializer = function() { 
-	
+var initializer = function() {
 	// start the app
 	app = new Ulna.App({
 		data: appState
 	});
-
 	app.bind();
 }
-
 
 
 // server routes
@@ -90,7 +88,7 @@ server.route({
 		var url = request.params.date;
 
 		var date = services.utils.getDateByPartialISO( services.data.events, services.utils.buildShortISOfromURL( url ) );
-		console.log(date)
+		
 		var timelineState = {
 			years: services.utils.getYears( services.data.events ),
 			activeYear: date.startDate.year(),
@@ -104,7 +102,7 @@ server.route({
 		};
 
 		// stringify that state to be set client-side later
-		var stringifiedState = appState;
+		var stringifiedState = JSON.stringify(appState);
 
 		var $ = Cheerio.load( appHead( stringifiedState, initializer ) );
 
@@ -112,12 +110,8 @@ server.route({
 			data: appState
 		});
 		
-
-		
 		// modify our server-side DOM with the html generated from our component chain
 		$(app.root).html( app.stringified );
-
-
 
 		// reply with the updated html
 		reply( $.html() );

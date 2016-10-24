@@ -1,6 +1,20 @@
 var Moment = require('moment');
 
 module.exports = {
+	momentize: function( collection, key ) {
+		// take a collection and based on a key turn the objects with that key into Moments
+		var momentized = [];
+		for (var c = 0; collection.length > c; c++) {
+			if (collection[c].hasOwnProperty(key)) {
+				momentized.push(collection[c]);
+				momentized[c][key] = new Moment(momentized[c][key]);
+			}
+		}
+
+		return momentized;
+	},
+		
+		
 	hyphenate: function( string ) {
 		// simple hyphenation util
 
@@ -24,23 +38,24 @@ module.exports = {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
+	// buildDateUID
 	buildDateUID: function( date ) {
 		// build a unique id for a given Moment
 		// use a standard ISO format, like YYYYMMDDThhmm
 
-		return date.format('YYYYMMDDThhmm');
+		return new Moment( date ).format('YYYYMMDDThhmm');
 	},
-
+	// buildShortDateUID
 	buildShortDateUID: function( date ) {
 		// build a unique id for a given Moment
 		// use a standard short ISO format, like YYYYMMDD
 
-		return date.format('YYYYMMDD');
+		return new Moment( date ).format('YYYYMMDD');
 	},
-
+	// buildMonthUID
 	buildMonthUID: function( date ) {
 		// build unique ID for a given Moment month
-		return date.format('YYYYMM');
+		return new Moment( date ).format('YYYYMM');
 	},
 
 	buildDateURL: function( date ) {
@@ -60,7 +75,7 @@ module.exports = {
 			/timeline/1970/02/01/test-date
 		*/
 
-		return string = '/timeline/' + date.startDate.format('YYYY/MM/DD/') + this.hyphenate(date.name);
+		return string = '/timeline/' + new Moment( date.startDate ).format('YYYY/MM/DD/') + this.hyphenate(date.name);
 
 	},
 
@@ -112,7 +127,7 @@ module.exports = {
 		var years = [];
 
 		for (var y = 0; events.length > y; y++) {
-			var year = events[y].startDate.toObject().years;
+			var year = new Moment( events[y].startDate ).toObject().years;
 			
 			// add if we've just started our loop
 			if (years.length === 0) {
@@ -146,14 +161,14 @@ module.exports = {
 		var months = [];
 
 		for (var m = 0; events.length > m; m++) {
-			var eventYear = events[m].startDate.toObject().years;
+			var eventYear = new Moment( events[m].startDate ).toObject().years;
 			
 			// only accept event events that match our given year
 			if (eventYear == year) {
 
 				var date = events[m];
-				var monthNum = date.startDate.toObject().months;
-				var monthName = date.startDate.format('MMM');
+				var monthNum = new Moment( date.startDate ).toObject().months;
+				var monthName = new Moment( date.startDate ).format('MMM');
 
 				months.push(monthName);
 
@@ -171,7 +186,7 @@ module.exports = {
 
 		for ( var d = 0; events.length > d; d++ ) {
 			// match our year
-			if (year == events[d].startDate.toObject().years) {
+			if (year == new Moment( events[d].startDate ).toObject().years) {
 				dates.push(events[d]);
 			}
 		}
@@ -201,7 +216,7 @@ module.exports = {
 
 		months = [];
 		for (var i = 0; events.length > i; i++) {
-			var month = events[i].startDate.toObject().months;
+			var month = new Moment( events[i].startDate ).toObject().months;
 			
 			// add by default if it's the first iteration
 			if (months.length === 0) {
@@ -230,7 +245,7 @@ module.exports = {
 
 			for (var d = 0; events.length > d; d++) {
 				// only match events with this month
-				if (months[m] === events[d].startDate.toObject().months) {
+				if (months[m] === new Moment( events[d].startDate ).toObject().months) {
 					monthEvents.push(events[d]);
 				}
 			}

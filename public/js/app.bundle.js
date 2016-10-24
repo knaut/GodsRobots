@@ -7824,6 +7824,8 @@ module.exports = Curtain;
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
+var Moment = require('moment');
+
 var dispatcher = require('../dispatcher.js');
 var services = require('../services.js');
 
@@ -7843,7 +7845,7 @@ var DateArticle = Ulna.Component.extend({
 		'.col-lg-12': function() {
 			var content = {
 				h1: this.data.name,
-				date: this.data.startDate.format('MMM D, YYYY'),
+				date: new Moment( this.data.startDate ).format('MMM D, YYYY'),
 				p: this.data.desc
 			};
 
@@ -7885,7 +7887,7 @@ var DateArticle = Ulna.Component.extend({
 });
 
 module.exports = DateArticle;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Photos/PhotoCarousel.js":38,"./Videos/VideoCarousel.js":51,"ulna":8}],26:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Photos/PhotoCarousel.js":38,"./Videos/VideoCarousel.js":51,"moment":1,"ulna":8}],26:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -9103,7 +9105,7 @@ var DateNode = Ulna.Component.extend({
 				isSelected = '.selected';
 			}
 
-			var anchorKey = 'a[href="/timeline' + this.data.date.startDate.format('/YYYY/MM/DD/') + services.utils.hyphenate(this.data.date.name) + '"]' + isSelected;
+			var anchorKey = 'a[href="/timeline' + new Moment( this.data.date.startDate ).format('/YYYY/MM/DD/') + services.utils.hyphenate(this.data.date.name) + '"]' + isSelected;
 			var obj = {};
 			var objKey = '#timeline-popover-' + this.data.date.id;
 
@@ -9111,14 +9113,14 @@ var DateNode = Ulna.Component.extend({
 				obj[objKey] = {
 					'.timeline-popover.selected': {
 						h1: this.data.date.name,
-						date: this.data.date.startDate.format('MMM D, YYYY'),
+						date: new Moment( this.data.date.startDate ).format('MMM D, YYYY'),
 					}
 				};	
 			} else {
 				obj[objKey] = {
 					'.timeline-popover': {
 						h1: this.data.date.name,
-						date: this.data.date.startDate.format('MMM D, YYYY'),
+						date: new Moment( this.data.date.startDate ).format('MMM D, YYYY'),
 					}
 				};
 			}
@@ -9160,7 +9162,7 @@ var monthTemplate = {
 			var item = {};
 			var date = this.data.dates[d];
 			// use an inline style to space out our nodes
-			var nodeStyle = '[style="left:' + services.utils.calcNodeDistance( date.startDate.toObject().date ) + '%"]';
+			var nodeStyle = '[style="left:' + services.utils.calcNodeDistance( new Moment( date.startDate ).toObject().date ) + '%"]';
 			var itemKey = 'li#timeline-node-' + date.id + '-' + services.utils.buildDateUID(date.startDate) + '.timeline-nodes' + nodeStyle;								
 			var selected = false;
 			
@@ -9235,7 +9237,7 @@ var MonthList = Ulna.Component.extend({
 	template: {
 		ul: function() {
 			var list = [];
-			var activeDateMonthID = this.data.activeDate.startDate.format('MMMM').toLowerCase();
+			var activeDateMonthID = new Moment(this.data.activeDate.startDate).format('MMMM').toLowerCase();
 
 			// convert our keyed data structure to an unordered list with titles
 			for (var i = 0; this.data.months.length > i; i++) {
@@ -9883,13 +9885,13 @@ var dates = [
 	{
 		name: 'SuperHeroes Street Fair',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 9,
 			day: 22,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -9901,13 +9903,13 @@ var dates = [
 	{
 		name: 'Temple of Chaos, LA',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 8,
 			day: 10,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'video',
@@ -9920,13 +9922,13 @@ var dates = [
 	{
 		name: 'Sizzla Remixes Release',
 		kind: 'release',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 8,
 			day: 9,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -9943,13 +9945,13 @@ var dates = [
 	{
 		name: 'Janaka Selekta Live at Slim\'s',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 6,
 			day: 2,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'video',
@@ -9962,13 +9964,13 @@ var dates = [
 	{
 		name: 'How Weird Street Faire',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 4,
 			day: 7,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'photo',
@@ -9985,13 +9987,13 @@ var dates = [
 	{
 		name: 'Worldly, LA',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 3,
 			day: 21,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -10003,13 +10005,13 @@ var dates = [
 	{
 		name: 'The Chapel, SF',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 2,
 			day: 30,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -10039,13 +10041,13 @@ var dates = [
 	{
 		name: 'Symbiosis Festival',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 8,
 			day: 17,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -10063,13 +10065,13 @@ var dates = [
 	{
 		name: 'Day La Sol',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 7,
 			day: 1,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -10081,13 +10083,13 @@ var dates = [
 	{
 		name: 'Karsh Kale, The Chapel, SF',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 6,
 			day: 10,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'photo',
@@ -10104,13 +10106,13 @@ var dates = [
 	{
 		name: 'Union of the Kingdoms',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 6,
 			day: 4,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'photo',
@@ -10127,13 +10129,13 @@ var dates = [
 	{
 		name: 'Burning Man, Precompression',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 5,
 			day: 20,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -10145,13 +10147,13 @@ var dates = [
 	{
 		name: 'A Night For Nepal, Oakland',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 4,
 			day: 30,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -10163,13 +10165,13 @@ var dates = [
 	{
 		name: 'How Weird Street Faire 2015',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 3,
 			day: 26,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -10186,13 +10188,13 @@ var dates = [
 	{
 		name: 'Wormhole Wednesday 4-11-15',
 		kind: 'show',
-		startDate: new Moment({
+		startDate: {
 			year: 2015,
 			month: 3,
 			day: 11,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		media: [
 			{
 				kind: 'flier',
@@ -10256,13 +10258,13 @@ for (var d = 0; dates.length > d; d++) {
 				src: '//media/images/events/globalBeatMovement/test_6.jpg'
 			}
 		],
-		startDate: new Moment({
+		startDate: {
 			year: 2016,
 			month: 8,
 			day: 5,
 			hour: 19,
 			minute: 0
-		}),
+		},
 		desc: 'LA, we are less than a week away for Temple of Chaos, come check out GODS ROBOTS ft Ishmeet Narula, Rusty Rickshaw, 108Hill & Bassfakira on the 10th at Los Globos.'
 	},
 */
@@ -10684,11 +10686,27 @@ var services = new Ulna.Services({
 	utils: utils
 });
 
+services.data.events = services.utils.momentize( services.data.events, 'startDate' );
+
 module.exports = services;
 },{"./data/about/index.js":54,"./data/events/index.js":55,"./data/index.js":56,"./data/music/index.js":57,"./data/photos/index.js":58,"./dispatcher.js":59,"./utils.js":62,"moment":1,"ulna":8}],62:[function(require,module,exports){
 var Moment = require('moment');
 
 module.exports = {
+	momentize: function( collection, key ) {
+		// take a collection and based on a key turn the objects with that key into Moments
+		var momentized = [];
+		for (var c = 0; collection.length > c; c++) {
+			if (collection[c].hasOwnProperty(key)) {
+				momentized.push(collection[c]);
+				momentized[c][key] = new Moment(momentized[c][key]);
+			}
+		}
+
+		return momentized;
+	},
+		
+		
 	hyphenate: function( string ) {
 		// simple hyphenation util
 
@@ -10712,23 +10730,24 @@ module.exports = {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
+	// buildDateUID
 	buildDateUID: function( date ) {
 		// build a unique id for a given Moment
 		// use a standard ISO format, like YYYYMMDDThhmm
 
-		return date.format('YYYYMMDDThhmm');
+		return new Moment( date ).format('YYYYMMDDThhmm');
 	},
-
+	// buildShortDateUID
 	buildShortDateUID: function( date ) {
 		// build a unique id for a given Moment
 		// use a standard short ISO format, like YYYYMMDD
 
-		return date.format('YYYYMMDD');
+		return new Moment( date ).format('YYYYMMDD');
 	},
-
+	// buildMonthUID
 	buildMonthUID: function( date ) {
 		// build unique ID for a given Moment month
-		return date.format('YYYYMM');
+		return new Moment( date ).format('YYYYMM');
 	},
 
 	buildDateURL: function( date ) {
@@ -10748,7 +10767,7 @@ module.exports = {
 			/timeline/1970/02/01/test-date
 		*/
 
-		return string = '/timeline/' + date.startDate.format('YYYY/MM/DD/') + this.hyphenate(date.name);
+		return string = '/timeline/' + new Moment( date.startDate ).format('YYYY/MM/DD/') + this.hyphenate(date.name);
 
 	},
 
@@ -10800,7 +10819,7 @@ module.exports = {
 		var years = [];
 
 		for (var y = 0; events.length > y; y++) {
-			var year = events[y].startDate.toObject().years;
+			var year = new Moment( events[y].startDate ).toObject().years;
 			
 			// add if we've just started our loop
 			if (years.length === 0) {
@@ -10834,14 +10853,14 @@ module.exports = {
 		var months = [];
 
 		for (var m = 0; events.length > m; m++) {
-			var eventYear = events[m].startDate.toObject().years;
+			var eventYear = new Moment( events[m].startDate ).toObject().years;
 			
 			// only accept event events that match our given year
 			if (eventYear == year) {
 
 				var date = events[m];
-				var monthNum = date.startDate.toObject().months;
-				var monthName = date.startDate.format('MMM');
+				var monthNum = new Moment( date.startDate ).toObject().months;
+				var monthName = new Moment( date.startDate ).format('MMM');
 
 				months.push(monthName);
 
@@ -10859,7 +10878,7 @@ module.exports = {
 
 		for ( var d = 0; events.length > d; d++ ) {
 			// match our year
-			if (year == events[d].startDate.toObject().years) {
+			if (year == new Moment( events[d].startDate ).toObject().years) {
 				dates.push(events[d]);
 			}
 		}
@@ -10889,7 +10908,7 @@ module.exports = {
 
 		months = [];
 		for (var i = 0; events.length > i; i++) {
-			var month = events[i].startDate.toObject().months;
+			var month = new Moment( events[i].startDate ).toObject().months;
 			
 			// add by default if it's the first iteration
 			if (months.length === 0) {
@@ -10918,7 +10937,7 @@ module.exports = {
 
 			for (var d = 0; events.length > d; d++) {
 				// only match events with this month
-				if (months[m] === events[d].startDate.toObject().months) {
+				if (months[m] === new Moment( events[d].startDate ).toObject().months) {
 					monthEvents.push(events[d]);
 				}
 			}

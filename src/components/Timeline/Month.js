@@ -21,7 +21,7 @@ var monthTemplate = {
 			var item = {};
 			var date = this.data.dates[d];
 			// use an inline style to space out our nodes
-			var nodeStyle = '[style="left:' + services.utils.calcNodeDistance( date.startDate.toObject().date ) + '%"]';
+			var nodeStyle = '[style="left:' + services.utils.calcNodeDistance( new Moment( date.startDate ).toObject().date ) + '%"]';
 			var itemKey = 'li#timeline-node-' + date.id + '-' + services.utils.buildDateUID(date.startDate) + '.timeline-nodes' + nodeStyle;								
 			var selected = false;
 			

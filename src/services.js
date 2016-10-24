@@ -24,4 +24,6 @@ var services = new Ulna.Services({
 	utils: utils
 });
 
+services.data.events = services.utils.momentize( services.data.events, 'startDate' );
+
 module.exports = services;
