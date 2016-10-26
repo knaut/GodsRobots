@@ -75,9 +75,9 @@
 	padding: 25px 0 50px;
 	background: rgba(5,5,5,0.8);
 
-	bottom: 0;
-    top: 130px;
-    position: absolute;
+	// bottom: 0;
+ //    top: 130px;
+ //    position: absolute;
 
     overflow-y: auto;
 
@@ -100,7 +100,7 @@
 			font-size: 24px;
 			color: #a0a0a0;
 			text-align: left;
-			padding: 15px 0 10px 0;
+			padding: 40px 0 10px 0;
 			margin: 0;
 		}
 
@@ -216,10 +216,12 @@
 	transition: 0.25s opacity ease-in-out;
 	border: 1px solid #000;
 
-	top: -120%;
+	bottom: 90%;
     left: 10px;
     
     z-index: 0;
+
+    min-width: 150px;
 
     &:after {
     	content: '';
@@ -240,6 +242,7 @@
     	margin: 0;
     	color: #000;
     	text-align: center;
+
     }
 
     date {
@@ -287,9 +290,9 @@
 
 #timeline-content {
 	background: rgba(0,0,0,0.85);
-	bottom: 0;
-    top: 130px;
-    position: absolute;
+	// bottom: 0;
+ //    top: 130px;
+ //    position: absolute;
     transition: 0.25s all ease-in-out;
     
     overflow-y: auto;

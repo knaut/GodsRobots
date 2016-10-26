@@ -21,12 +21,8 @@ var App = Ulna.Component.extend({
 
 	listen: {
 		HISTORY_PUSH: function( payload ) {
-			console.log('App: Payload', payload);
-
 			// generate a state response
 			var state = services.utils.getState( services.data.events, payload.route.req );
-
-			console.log('State:', state);
 
 			this.data = state;
 
@@ -36,8 +32,6 @@ var App = Ulna.Component.extend({
 		HISTORY_REPLACE: function( payload ) {
 			// generate a state response
 			var state = services.utils.getState( services.data.events, payload.route.req );
-
-			console.log('State:', state);
 
 			this.data = state;
 

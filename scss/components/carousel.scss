@@ -13,27 +13,29 @@
 		margin: 0;
 		padding: 0;
 	}
+}
 
-	.slides {
-		transition: 0.5s all ease-in-out;
-	}
+.slides {
+	transition: 0.5s all ease-in-out;
+}
 
-	#upcoming-carousel {
+#timeline-months {
 		position: relative;
-		overflow: hidden;
+		// overflow: hidden;
 
-		h1 {
-			@include Roboto(100);
-		}
+		// h1 {
+		// 	@include Roboto(100);
+		// }
 
-		> h1 {
-			text-align: center;
-			@include RobotoCondensed(100, uppercase, 3px);
-			font-size: 18px;
-			margin: 25px 0 10px;
-		}
+		// > h1 {
+		// 	text-align: center;
+		// 	@include RobotoCondensed(100, uppercase, 3px);
+		// 	font-size: 18px;
+		// 	margin: 25px 0 10px;
+		// }
 
-		#upcoming-carousel-inner {
+		.carousel-inner {
+			overflow: auto !important;
 			.title {
 				h1 {
 					margin: 0 0 40px 0;		
@@ -44,14 +46,25 @@
 			ul.slides {
 				white-space: nowrap;
 				width: 100%;
-
+				margin: 0;
+				padding: 0;
+				position: relative;
 				li.slide {
 					display: inline-block;
 					white-space: nowrap;
-					transition: 0.25s all ease-in-out;
-					&:not(.active) {
-						opacity: 0;
+					padding: 0 12.5%;
+					width: 100%;
+
+					.timeline-month-inner-wrap {
+						& > div {
+							transition: 0.25s all ease-in-out;
+							opacity: 0;
+						}
+						& > .active {
+							opacity: 1;
+						}
 					}
+					
 				}
 				p {
 					font-size: 18px;
@@ -75,7 +88,11 @@
 			white-space: nowrap;
 			width: 100%;
 			text-align: center;
+			display: none;
 			margin: 0 0 15px;
+			ul {
+				padding: 0;
+			}
 			li {
 				display: inline-block;
 				margin: 0 10px;
@@ -101,7 +118,7 @@
 		}
 	}
 
-	#upcoming-carousel-inner-prev {
+	.carousel-inner-prev {
 		&:before {
 			content: '';
 			background: url('../media/images/nav_arrow_prev.png') no-repeat center center rgba(0,0,0,0.75);
@@ -131,7 +148,7 @@
 		}
 	}
 
-	#upcoming-carousel-inner-next {
+	.carousel-inner-next {
 		&:before {
 			content: '';
 			background: url('../media/images/nav_arrow_next.png') no-repeat center center rgba(0,0,0,0.75);
@@ -160,12 +177,12 @@
 			display: none;
 		}
 	}
-}
+
 
 
 @include breakpoint(sm) {
-	#upcoming-carousel-inner-prev,
-	#upcoming-carousel-inner-next {
+	.carousel-inner-prev,
+	.carousel-inner-next {
 		&:before {
 			background-size: cover !important;
 			width: 64px !important;
@@ -177,8 +194,8 @@
 }
 
 @include breakpoint(xs) {
-	#upcoming-carousel-inner-prev,
-	#upcoming-carousel-inner-next {
+	.carousel-inner-prev,
+	.carousel-inner-next {
 		&:before {
 			background-size: cover !important;
 			width: 35px !important;

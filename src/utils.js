@@ -331,8 +331,8 @@ module.exports = {
 	constructTimelineStateFromDate: function( events, event ) {
 		var state = {
 			years: this.getYears( events ),
-			activeYear: event.startDate.year(),
-			dates: this.formatDatesByMonth( this.getDatesForYear( events, event.startDate.year() ) ) ,
+			activeYear: new Moment( event.startDate ).year(),
+			dates: this.formatDatesByMonth( this.getDatesForYear( events, new Moment( event.startDate ).year() ) ) ,
 			activeDate: event
 		};
 
@@ -340,7 +340,6 @@ module.exports = {
 	},
 
 	getState: function( events, req ) {
-		console.log(req)
 
 		// use some input as a request and and a collection to generate a response object that 
 		// represents the state of the application given the request

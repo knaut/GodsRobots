@@ -7266,8 +7266,9 @@ InfographicChange.prototype = {
 
 module.exports = InfographicChange;
 
-},{"../services.js":61,"../utils.js":62,"ulna":8}],18:[function(require,module,exports){
+},{"../services.js":62,"../utils.js":63,"ulna":8}],18:[function(require,module,exports){
 var Ulna = require('ulna');
+var Moment = require('moment');
 var services = require('../services.js');
 
 // route changes should be uniform objects
@@ -7427,7 +7428,7 @@ RouteChange.prototype = {
 		// ex: 'GODS ROBOTS - Timeline - My Event, Oct 28th, 2016'
 		var string = services.data.header.title + services.data.header.delimiter + 'Timeline' + services.data.header.delimiter;
 
-		var title = string + date.name + ', ' + date.startDate.format('MMM Do, YYYY');
+		var title = string + date.name + ', ' + new Moment( date.startDate ).format('MMM Do, YYYY');
 
 		return title;
 	},
@@ -7494,7 +7495,7 @@ RouteChange.prototype = {
 }
 
 module.exports = RouteChange;
-},{"../services.js":61,"ulna":8}],19:[function(require,module,exports){
+},{"../services.js":62,"moment":1,"ulna":8}],19:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('./dispatcher.js');
@@ -7518,12 +7519,8 @@ var App = Ulna.Component.extend({
 
 	listen: {
 		HISTORY_PUSH: function( payload ) {
-			console.log('App: Payload', payload);
-
 			// generate a state response
 			var state = services.utils.getState( services.data.events, payload.route.req );
-
-			console.log('State:', state);
 
 			this.data = state;
 
@@ -7533,8 +7530,6 @@ var App = Ulna.Component.extend({
 		HISTORY_REPLACE: function( payload ) {
 			// generate a state response
 			var state = services.utils.getState( services.data.events, payload.route.req );
-
-			console.log('State:', state);
 
 			this.data = state;
 
@@ -7578,7 +7573,7 @@ if (Ulna.env === 'browser') {
 }
 
 module.exports = App;
-},{"./components/Curtain.js":24,"./components/Header.js":28,"./components/Main.js":33,"./components/Modal.js":34,"./components/Nav.js":35,"./dispatcher.js":59,"./router.js":60,"./services.js":61,"ulna":8}],20:[function(require,module,exports){
+},{"./components/Curtain.js":24,"./components/Header.js":28,"./components/Main.js":33,"./components/Modal.js":34,"./components/Nav.js":35,"./dispatcher.js":60,"./router.js":61,"./services.js":62,"ulna":8}],20:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7658,7 +7653,7 @@ var BioCard = Ulna.Component.extend({
 });
 
 module.exports = BioCard;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],21:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],21:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7699,7 +7694,7 @@ var BioCardList = Ulna.Component.extend({
 });
 
 module.exports = BioCardList;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./BioCard.js":20,"ulna":8}],22:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./BioCard.js":20,"ulna":8}],22:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -7753,7 +7748,7 @@ var BrandCarousel = Ulna.Component.extend({
 });
 
 module.exports = BrandCarousel;
-},{"../dispatcher.js":59,"ulna":8}],23:[function(require,module,exports){
+},{"../dispatcher.js":60,"ulna":8}],23:[function(require,module,exports){
 var Ulna = require('ulna');
 
 // a card is a generic component designed to display content in a visual manner
@@ -7820,7 +7815,7 @@ var Curtain = Ulna.Component.extend({
 });
 
 module.exports = Curtain;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],25:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],25:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7887,7 +7882,7 @@ var DateArticle = Ulna.Component.extend({
 });
 
 module.exports = DateArticle;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Photos/PhotoCarousel.js":38,"./Videos/VideoCarousel.js":51,"moment":1,"ulna":8}],26:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Photos/PhotoCarousel.js":38,"./Videos/VideoCarousel.js":52,"moment":1,"ulna":8}],26:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8037,7 +8032,7 @@ var Discography = Ulna.Component.extend({
 });
 
 module.exports = Discography;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],27:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],27:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8109,7 +8104,7 @@ var Footer = Ulna.Component.extend({
 });
 
 module.exports = Footer;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],28:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],28:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Logo = require('./Logo.js');
@@ -8140,7 +8135,7 @@ var Header = Ulna.Component.extend({
 });
 
 module.exports = Header;
-},{"./HotButton.js":30,"./Logo.js":32,"./SocialIcons.js":40,"./Typewriter.js":48,"ulna":8}],29:[function(require,module,exports){
+},{"./HotButton.js":30,"./Logo.js":32,"./SocialIcons.js":40,"./Typewriter.js":49,"ulna":8}],29:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Hero = Ulna.Component.extend({
@@ -8213,7 +8208,7 @@ var HotButton = Ulna.Component.extend({
 });
 
 module.exports = HotButton;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"ulna":8}],31:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"ulna":8}],31:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8405,7 +8400,7 @@ var InfographicCarousel = Ulna.Component.extend({
 });
 
 module.exports = InfographicCarousel;
-},{"../actions/InfographicChange.js":17,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],32:[function(require,module,exports){
+},{"../actions/InfographicChange.js":17,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],32:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8427,7 +8422,7 @@ var Logo = Ulna.Component.extend({
 });
 
 module.exports = Logo;
-},{"../dispatcher.js":59,"ulna":8}],33:[function(require,module,exports){
+},{"../dispatcher.js":60,"ulna":8}],33:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8605,7 +8600,7 @@ var Main = Ulna.Component.extend({
 });
 
 module.exports = Main;
-},{"../dispatcher.js":59,"../services.js":61,"./BioCardList.js":21,"./BrandCarousel.js":22,"./Discography.js":26,"./Footer.js":27,"./Hero.js":29,"./HotButton.js":30,"./InfographicCarousel.js":31,"./Photos/PhotoGallery.js":39,"./Timeline/Timeline.js":44,"./TimelinePrev.js":47,"./UpcomingCarousel.js":49,"./VFrame.js":50,"ulna":8}],34:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"./BioCardList.js":21,"./BrandCarousel.js":22,"./Discography.js":26,"./Footer.js":27,"./Hero.js":29,"./HotButton.js":30,"./InfographicCarousel.js":31,"./Photos/PhotoGallery.js":39,"./Timeline/Timeline.js":45,"./TimelinePrev.js":48,"./UpcomingCarousel.js":50,"./VFrame.js":51,"ulna":8}],34:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8716,7 +8711,7 @@ var Modal = Ulna.Component.extend({
 });
 
 module.exports = Modal;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Videos/VideoEmbed.js":52,"ulna":8}],35:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Videos/VideoEmbed.js":53,"ulna":8}],35:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8780,7 +8775,7 @@ var Nav = Ulna.Component.extend({
 });
 
 module.exports = Nav;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./NavItem.js":36,"ulna":8}],36:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./NavItem.js":36,"ulna":8}],36:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8847,7 +8842,7 @@ var NavItem = Ulna.Component.extend({
 });
 
 module.exports = NavItem;
-},{"../actions/RouteChange.js":18,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],37:[function(require,module,exports){
+},{"../actions/RouteChange.js":18,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],37:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -8887,7 +8882,7 @@ var Photo = Ulna.Component.extend({
 });
 
 module.exports = Photo;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],38:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"ulna":8}],38:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -8937,7 +8932,7 @@ var PhotoCarousel = Ulna.Component.extend({
 });
 
 module.exports = PhotoCarousel;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Photo.js":37,"ulna":8}],39:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Photo.js":37,"ulna":8}],39:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -8977,7 +8972,7 @@ var PhotoGallery = Ulna.Component.extend({
 });
 
 module.exports = PhotoGallery;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Photo.js":37,"ulna":8}],40:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Photo.js":37,"ulna":8}],40:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -9028,7 +9023,7 @@ var SocialIcons = Ulna.Component.extend({
 });
 
 module.exports = SocialIcons;
-},{"../dispatcher.js":59,"ulna":8}],41:[function(require,module,exports){
+},{"../dispatcher.js":60,"ulna":8}],41:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9138,7 +9133,7 @@ module.exports = DateNode;
 
 
 
-},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"moment":1,"ulna":8}],42:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"moment":1,"ulna":8}],42:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9211,7 +9206,221 @@ var Month = Ulna.Component.extend({
 });
 
 module.exports = Month;
-},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"./DateNode.js":41,"moment":1,"ulna":8}],43:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"./DateNode.js":41,"moment":1,"ulna":8}],43:[function(require,module,exports){
+var Ulna = require('ulna');
+var Moment = require('moment');
+
+var dispatcher = require('../../dispatcher.js');
+var services = require('../../services.js');
+var hyphenate = require('../../utils.js').hyphenate;
+
+var Month = require('./Month.js');
+
+var InfographicChange = require('../../actions/InfographicChange.js');
+var RouteChange = require('../../actions/RouteChange.js');
+
+var MonthCarousel = Ulna.Component.extend({
+	root: '#timeline-months',
+
+	dispatcher: dispatcher,
+
+	data: {
+		// upcoming: services.data.index.upcoming,
+		months: null,
+		activeDate: null,
+		index: 0
+	},
+
+	events: {
+		'click .carousel-inner-next': function(e) {
+			
+			// get the name of our active month
+			var activeMonth = new Moment( this.data.activeDate.startDate ).format('MMMM');
+			var allMonths = [];
+
+			for (var i = 0; this.data.months.length > i; i++) {
+				allMonths.push( Object.keys(this.data.months[i])[0] );
+			}
+
+			// ensuring we're not at the beginning of the carousel
+			if (activeMonth !== allMonths[ allMonths.length - 1 ]) {
+
+				// get the first date of the month previous in our list
+				var prevMonth;
+				var prevDate;
+
+				// when we match the current active month, use that index to grab the next entry
+				for (var m = 0; this.data.months.length > m; m++) {
+					if ( activeMonth === Object.keys(this.data.months[m])[0] ) {
+						prevMonth = this.data.months[m + 1];
+						prevDate = prevMonth[ Object.keys(prevMonth)[0] ][0];
+					}
+				}
+
+				this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+					timeline: services.utils.buildDateUID(
+						prevDate.startDate
+					)
+				}));
+			}
+
+		},
+		'click .carousel-inner-prev': function(e) {
+			
+			// get the name of our active month
+			var activeMonth = new Moment( this.data.activeDate.startDate ).format('MMMM');
+			var allMonths = [];
+			
+			for (var i = 0; this.data.months.length > i; i++) {
+				allMonths.push( Object.keys(this.data.months[i])[0] );
+			}
+
+			// if we're not at the end of the queue
+			if (activeMonth !== allMonths[0]) {
+				
+				// get the first date of the month previous in our list
+				var nextMonth;
+				var nextDate;
+				
+				// when we match the current active month, use that index to grab the previous entry
+				for (var m = 0; this.data.months.length > m; m++) {
+					
+					// we match based on our currently active month
+					if ( activeMonth === Object.keys(this.data.months[m])[0] ) {
+
+						nextMonth = this.data.months[ m - 1 ];
+						nextDate = nextMonth[ Object.keys(nextMonth)[0] ][0];
+						
+					}
+				}
+
+				this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+					timeline: services.utils.buildDateUID(
+						nextDate.startDate
+					)
+				}));
+			}
+		},
+		'click .slide-status li': function(e) {
+			// bad, tying data to the dom a bit here
+			// this.dispatcher.dispatch('INFOGRAPHIC_CHANGE', new InfographicChange({
+			// 	data: parseInt(e.target.attributes.id.nodeValue.slice(-1))
+			// }));
+		}
+	},
+
+	listen: {
+		'INFOGRAPHIC_CHANGE': function(payload) {
+			var prevState = this.data.active;
+			this.data.active = payload.next;
+			this.mutations.changeSlide.call(this, prevState);
+		}
+	},
+
+	mutations: {
+		changeSlide: function(prevState) {
+			// console.log('changeslide', this.data.active, prevState);
+
+			// get dom refs
+			var $slides = this.$root.find('.slide');
+			var $leds = this.$root.find('.slide-status li');
+
+			// update slides
+			$($slides[prevState]).removeClass('active');
+			$($slides[this.data.active]).addClass('active');
+
+			// update led status
+			$($leds[prevState]).removeClass('active');
+			$($leds[this.data.active]).addClass('active');
+
+			var index = this.data.active;
+			var prevIndex = prevState;
+
+			var left = index * -100 + '%';
+			var $container = this.$root.find('.slides');
+			$container.css({
+				'margin-left': left
+			});
+		}
+	},
+
+	template: {
+		'div.slide-status': function() {
+			var leds = {
+				ul: []
+			};
+			for (var l = 0; this.data.months.length > l; l++) {						
+				if (l === this.data.index) {
+					var led = {
+						index: l,
+						active: 'active'
+					}
+				} else {
+					var led = {
+						index: l,
+						active: ''
+					}
+				}
+				var liKey = 'li.carousel-slide-status-' + led.index + '.' + led.active;
+				var li = {};
+				li[liKey] = '';
+				leds.ul.push(li);
+			}
+			return leds;
+		},
+		'div.carousel-inner': {
+			'span.carousel-inner-prev': {
+				span: 'previous slide'
+			},
+			'.slides-wrap': function() {
+				var list = [];
+				var style = '';
+				var activeDateMonthID = new Moment(this.data.activeDate.startDate).format('MMMM').toLowerCase();
+				// each slide object
+				
+				for (var i = 0; this.data.months.length > i; i++) {
+					var currMonthID = services.utils.hyphenate( Object.keys( this.data.months[i] )[0] );
+					var active = false;						
+				
+					if ( currMonthID === activeDateMonthID ) {
+						active = this.data.activeDate;
+						style = '[style="left:' + i * -100 + '%"]';
+					}
+				
+					var item = {};
+					var itemKey = 'li.slide.timeline-month#timeline-month-' + 
+						currMonthID + 
+						'-' + services.utils.buildMonthUID( this.data.activeDate.startDate ) +
+						style;
+				
+					item[itemKey] = new Month({
+						data: {
+							id: currMonthID + '-' + services.utils.buildMonthUID( this.data.activeDate.startDate ),
+							month: currMonthID,
+							active: active,
+							dates: this.data.months[i][ Object.keys( this.data.months[i] )[0] ]
+						}
+					});
+				
+					list.push(item);
+				}
+
+				var listKey = 'ul.slides' + style;
+
+				var obj = {};
+				obj[listKey] = list;
+
+				return obj;
+			},
+			'span.carousel-inner-next': {
+				span: 'next slide'
+			}
+		}
+	}
+});
+
+module.exports = MonthCarousel;
+},{"../../actions/InfographicChange.js":17,"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Month.js":42,"moment":1,"ulna":8}],44:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 var utils = require('../../utils.js');
@@ -9270,7 +9479,7 @@ var MonthList = Ulna.Component.extend({
 });
 
 module.exports = MonthList;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Month.js":42,"moment":1,"ulna":8}],44:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Month.js":42,"moment":1,"ulna":8}],45:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9283,6 +9492,7 @@ var DateArticle = require('../DateArticle.js');
 var YearControl = require('./YearControl.js');
 var Month = require('./Month.js');
 var MonthList = require('./MonthList.js');
+var MonthCarousel = require('./MonthCarousel.js');
 
 
 var years = services.utils.getYears( services.data.events );
@@ -9316,22 +9526,29 @@ var Timeline = Ulna.Component.extend({
 			});
 		},
 		
-		'div#timeline-wrap': function() {
+		'#timeline-wrap': function() {
 
 			var cols = [];
 			var leftCol = {
-				'#timeline-months.col-md-4.col-sm-12': new MonthList({
+				'#timeline-months': new MonthCarousel({
 					data: {
-						activeDate: this.data.activeDate,
-						months: this.data.dates
+						months: this.data.dates,
+						activeDate: this.data.activeDate	
 					}
+					
 				})
+			// 	'#timeline-months': new MonthList({
+			// 		data: {
+			// 			activeDate: this.data.activeDate,
+			// 			months: this.data.dates
+			// 		}
+			// 	})
 			};
 			
 			cols.push(leftCol);
 
 			var rightCol = {};
-			var rightColKey = '#timeline-content.col-md-8.col-sm-12.col-md-offset-4';
+			var rightColKey = '#timeline-content';
 
 			rightCol[rightColKey] = new DateArticle({
 				data: this.data.activeDate
@@ -9346,7 +9563,7 @@ var Timeline = Ulna.Component.extend({
 });
 
 module.exports = Timeline;
-},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"../DateArticle.js":25,"./Month.js":42,"./MonthList.js":43,"./YearControl.js":45,"moment":1,"ulna":8}],45:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"../DateArticle.js":25,"./Month.js":42,"./MonthCarousel.js":43,"./MonthList.js":44,"./YearControl.js":46,"moment":1,"ulna":8}],46:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9405,7 +9622,7 @@ var YearControl = Ulna.Component.extend({
 });
 
 module.exports = YearControl;
-},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"./YearItem.js":46,"moment":1,"ulna":8}],46:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"./YearItem.js":47,"moment":1,"ulna":8}],47:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9458,7 +9675,7 @@ var YearItem = Ulna.Component.extend({
 });
 
 module.exports = YearItem;
-},{"../../actions/RouteChange.js":18,"../../dispatcher.js":59,"../../services.js":61,"moment":1,"ulna":8}],47:[function(require,module,exports){
+},{"../../actions/RouteChange.js":18,"../../dispatcher.js":60,"../../services.js":62,"moment":1,"ulna":8}],48:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -9559,7 +9776,7 @@ var Timeline = Ulna.Component.extend({
 });
 
 module.exports = Timeline;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"moment":1,"ulna":8}],48:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"moment":1,"ulna":8}],49:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Typed = Ulna.Component.extend({
@@ -9612,7 +9829,7 @@ var Typed = Ulna.Component.extend({
 });
 
 module.exports = Typed;
-},{"ulna":8}],49:[function(require,module,exports){
+},{"ulna":8}],50:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -9748,7 +9965,7 @@ var UpcomingCarousel = Ulna.Component.extend({
 });
 
 module.exports = UpcomingCarousel;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Card.js":23,"ulna":8}],50:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Card.js":23,"ulna":8}],51:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var VFrame = Ulna.Component.extend({
@@ -9763,7 +9980,7 @@ var VFrame = Ulna.Component.extend({
 });
 
 module.exports = VFrame;
-},{"ulna":8}],51:[function(require,module,exports){
+},{"ulna":8}],52:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9811,7 +10028,7 @@ var VideoCarousel = Ulna.Component.extend({
 });
 
 module.exports = VideoCarousel;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./VideoThumb.js":53,"ulna":8}],52:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./VideoThumb.js":54,"ulna":8}],53:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9832,7 +10049,7 @@ var VideoEmbed = Ulna.Component.extend({
 });
 
 module.exports = VideoEmbed;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],53:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"ulna":8}],54:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9864,7 +10081,7 @@ var VideoThumb = Ulna.Component.extend({
 });
 
 module.exports = VideoThumb;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],54:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"ulna":8}],55:[function(require,module,exports){
 module.exports = {
 	bios: [
 		{
@@ -9877,7 +10094,7 @@ module.exports = {
 		}
 	]
 };
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 var Moment = require('moment');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -10270,7 +10487,7 @@ for (var d = 0; dates.length > d; d++) {
 */
 
 module.exports = dates;
-},{"../../utils.js":62,"moment":1}],56:[function(require,module,exports){
+},{"../../utils.js":63,"moment":1}],57:[function(require,module,exports){
 module.exports = {
 	nav: [
 		{
@@ -10422,7 +10639,7 @@ module.exports = {
 		}
 	]
 };
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = {
 	discography: [
 		{
@@ -10490,7 +10707,7 @@ module.exports = {
 		}
 	]
 };
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = {
 	title: 'Photos',
 	photos: [
@@ -10544,7 +10761,7 @@ module.exports = {
 		}
 	]
 }
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 var Ulna = require('ulna');
 var services = require('./services.js');
 
@@ -10611,7 +10828,7 @@ var dispatcher = new Ulna.Dispatcher({
 });
 
 module.exports = dispatcher;	
-},{"./services.js":61,"ulna":8}],60:[function(require,module,exports){
+},{"./services.js":62,"ulna":8}],61:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('./dispatcher.js');
 // var services = require('./services.js');
@@ -10659,7 +10876,7 @@ var router = new Ulna.Router({
 });
 
 module.exports = router;
-},{"./actions/RouteChange.js":18,"./dispatcher.js":59,"ulna":8}],61:[function(require,module,exports){
+},{"./actions/RouteChange.js":18,"./dispatcher.js":60,"ulna":8}],62:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('./dispatcher.js');
 var utils = require('./utils.js');
@@ -10689,7 +10906,7 @@ var services = new Ulna.Services({
 services.data.events = services.utils.momentize( services.data.events, 'startDate' );
 
 module.exports = services;
-},{"./data/about/index.js":54,"./data/events/index.js":55,"./data/index.js":56,"./data/music/index.js":57,"./data/photos/index.js":58,"./dispatcher.js":59,"./utils.js":62,"moment":1,"ulna":8}],62:[function(require,module,exports){
+},{"./data/about/index.js":55,"./data/events/index.js":56,"./data/index.js":57,"./data/music/index.js":58,"./data/photos/index.js":59,"./dispatcher.js":60,"./utils.js":63,"moment":1,"ulna":8}],63:[function(require,module,exports){
 var Moment = require('moment');
 
 module.exports = {
@@ -11023,8 +11240,8 @@ module.exports = {
 	constructTimelineStateFromDate: function( events, event ) {
 		var state = {
 			years: this.getYears( events ),
-			activeYear: event.startDate.year(),
-			dates: this.formatDatesByMonth( this.getDatesForYear( events, event.startDate.year() ) ) ,
+			activeYear: new Moment( event.startDate ).year(),
+			dates: this.formatDatesByMonth( this.getDatesForYear( events, new Moment( event.startDate ).year() ) ) ,
 			activeDate: event
 		};
 
@@ -11032,7 +11249,6 @@ module.exports = {
 	},
 
 	getState: function( events, req ) {
-		console.log(req)
 
 		// use some input as a request and and a collection to generate a response object that 
 		// represents the state of the application given the request

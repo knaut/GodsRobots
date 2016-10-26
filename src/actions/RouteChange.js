@@ -1,4 +1,5 @@
 var Ulna = require('ulna');
+var Moment = require('moment');
 var services = require('../services.js');
 
 // route changes should be uniform objects
@@ -158,7 +159,7 @@ RouteChange.prototype = {
 		// ex: 'GODS ROBOTS - Timeline - My Event, Oct 28th, 2016'
 		var string = services.data.header.title + services.data.header.delimiter + 'Timeline' + services.data.header.delimiter;
 
-		var title = string + date.name + ', ' + date.startDate.format('MMM Do, YYYY');
+		var title = string + date.name + ', ' + new Moment( date.startDate ).format('MMM Do, YYYY');
 
 		return title;
 	},

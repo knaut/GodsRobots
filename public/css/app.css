@@ -41,112 +41,118 @@
     list-style: none;
     margin: 0;
     padding: 0; }
-  #upcoming .slides {
-    transition: 0.5s all ease-in-out; }
-  #upcoming #upcoming-carousel {
-    position: relative;
-    overflow: hidden; }
-    #upcoming #upcoming-carousel h1 {
-      font-family: 'Roboto', sans-serif;
-      font-weight: 100;
-      text-transform: auto;
-      letter-spacing: auto; }
-    #upcoming #upcoming-carousel > h1 {
-      text-align: center;
-      font-family: 'Roboto Condensed', sans-serif;
-      font-weight: 100;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 18px;
-      margin: 25px 0 10px; }
-    #upcoming #upcoming-carousel #upcoming-carousel-inner .title h1 {
+
+.slides {
+  transition: 0.5s all ease-in-out; }
+
+#timeline-months {
+  position: relative; }
+  #timeline-months .carousel-inner {
+    overflow: auto !important; }
+    #timeline-months .carousel-inner .title h1 {
       margin: 0 0 40px 0;
       text-align: center;
       font-size: 46px; }
-    #upcoming #upcoming-carousel #upcoming-carousel-inner ul.slides {
-      white-space: nowrap;
-      width: 100%; }
-      #upcoming #upcoming-carousel #upcoming-carousel-inner ul.slides li.slide {
-        display: inline-block;
-        white-space: nowrap;
-        transition: 0.25s all ease-in-out; }
-        #upcoming #upcoming-carousel #upcoming-carousel-inner ul.slides li.slide:not(.active) {
-          opacity: 0; }
-      #upcoming #upcoming-carousel #upcoming-carousel-inner ul.slides p {
-        font-size: 18px;
-        color: #5DB0CC; }
-      #upcoming #upcoming-carousel #upcoming-carousel-inner ul.slides .image {
-        text-align: center; }
-    #upcoming #upcoming-carousel #upcoming-carousel-inner .slides-wrap {
-      position: relative; }
-    #upcoming #upcoming-carousel .slide-status {
+    #timeline-months .carousel-inner ul.slides {
       white-space: nowrap;
       width: 100%;
-      text-align: center;
-      margin: 0 0 15px; }
-      #upcoming #upcoming-carousel .slide-status li {
+      margin: 0;
+      padding: 0;
+      position: relative; }
+      #timeline-months .carousel-inner ul.slides li.slide {
         display: inline-block;
-        margin: 0 10px;
-        cursor: pointer;
-        transition: 0.25s all ease-in-out;
-        height: 7px;
-        width: 7px;
-        border-radius: 5px;
-        background: #555; }
-        #upcoming #upcoming-carousel .slide-status li.active {
-          background: #efefef; }
-        #upcoming #upcoming-carousel .slide-status li:hover {
-          background: #eee; }
-    #upcoming #upcoming-carousel h1 {
-      white-space: normal; }
-    #upcoming #upcoming-carousel .bullets {
-      white-space: normal; }
-  #upcoming #upcoming-carousel-inner-prev:before {
-    content: '';
-    background: url("../media/images/nav_arrow_prev.png") no-repeat center center rgba(0, 0, 0, 0.75);
-    border-radius: 64px;
-    border: black solid 5px;
-    width: 128px;
-    height: 128px;
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    float: left;
-    margin-top: -64px;
-    opacity: 0.5;
-    transition: 0.25s opacity ease-in-out;
-    z-index: 2; }
-  #upcoming #upcoming-carousel-inner-prev:hover:before {
-    opacity: 1;
-    cursor: pointer; }
-  #upcoming #upcoming-carousel-inner-prev span {
-    display: none; }
-  #upcoming #upcoming-carousel-inner-next:before {
-    content: '';
-    background: url("../media/images/nav_arrow_next.png") no-repeat center center rgba(0, 0, 0, 0.75);
-    border-radius: 64px;
-    border: black solid 5px;
-    width: 128px;
-    height: 128px;
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    float: right;
-    margin-top: -64px;
-    opacity: 0.5;
-    transition: 0.25s opacity ease-in-out;
-    z-index: 2; }
-  #upcoming #upcoming-carousel-inner-next:hover:before {
-    opacity: 1;
-    cursor: pointer; }
-  #upcoming #upcoming-carousel-inner-next span {
-    display: none; }
+        white-space: nowrap;
+        padding: 0 12.5%;
+        width: 100%; }
+        #timeline-months .carousel-inner ul.slides li.slide .timeline-month-inner-wrap > div {
+          transition: 0.25s all ease-in-out;
+          opacity: 0; }
+        #timeline-months .carousel-inner ul.slides li.slide .timeline-month-inner-wrap > .active {
+          opacity: 1; }
+      #timeline-months .carousel-inner ul.slides p {
+        font-size: 18px;
+        color: #5DB0CC; }
+      #timeline-months .carousel-inner ul.slides .image {
+        text-align: center; }
+    #timeline-months .carousel-inner .slides-wrap {
+      position: relative; }
+  #timeline-months .slide-status {
+    white-space: nowrap;
+    width: 100%;
+    text-align: center;
+    display: none;
+    margin: 0 0 15px; }
+    #timeline-months .slide-status ul {
+      padding: 0; }
+    #timeline-months .slide-status li {
+      display: inline-block;
+      margin: 0 10px;
+      cursor: pointer;
+      transition: 0.25s all ease-in-out;
+      height: 7px;
+      width: 7px;
+      border-radius: 5px;
+      background: #555; }
+      #timeline-months .slide-status li.active {
+        background: #efefef; }
+      #timeline-months .slide-status li:hover {
+        background: #eee; }
+  #timeline-months h1 {
+    white-space: normal; }
+  #timeline-months .bullets {
+    white-space: normal; }
+
+.carousel-inner-prev:before {
+  content: '';
+  background: url("../media/images/nav_arrow_prev.png") no-repeat center center rgba(0, 0, 0, 0.75);
+  border-radius: 64px;
+  border: black solid 5px;
+  width: 128px;
+  height: 128px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  float: left;
+  margin-top: -64px;
+  opacity: 0.5;
+  transition: 0.25s opacity ease-in-out;
+  z-index: 2; }
+
+.carousel-inner-prev:hover:before {
+  opacity: 1;
+  cursor: pointer; }
+
+.carousel-inner-prev span {
+  display: none; }
+
+.carousel-inner-next:before {
+  content: '';
+  background: url("../media/images/nav_arrow_next.png") no-repeat center center rgba(0, 0, 0, 0.75);
+  border-radius: 64px;
+  border: black solid 5px;
+  width: 128px;
+  height: 128px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  float: right;
+  margin-top: -64px;
+  opacity: 0.5;
+  transition: 0.25s opacity ease-in-out;
+  z-index: 2; }
+
+.carousel-inner-next:hover:before {
+  opacity: 1;
+  cursor: pointer; }
+
+.carousel-inner-next span {
+  display: none; }
 
 @media (max-width: 991px) {
-  #upcoming-carousel-inner-prev:before,
-  #upcoming-carousel-inner-next:before {
+  .carousel-inner-prev:before,
+  .carousel-inner-next:before {
     background-size: cover !important;
     width: 64px !important;
     height: 64px !important;
@@ -154,8 +160,8 @@
     padding: 10px; } }
 
 @media (max-width: 767px) {
-  #upcoming-carousel-inner-prev:before,
-  #upcoming-carousel-inner-next:before {
+  .carousel-inner-prev:before,
+  .carousel-inner-next:before {
     background-size: cover !important;
     width: 35px !important;
     height: 35px !important;
@@ -473,9 +479,6 @@
   margin: 0;
   padding: 25px 0 50px;
   background: rgba(5, 5, 5, 0.8);
-  bottom: 0;
-  top: 130px;
-  position: absolute;
   overflow-y: auto;
   transition: 0.25s all ease-in-out; }
   #timeline-months > ul {
@@ -493,7 +496,7 @@
       font-size: 24px;
       color: #a0a0a0;
       text-align: left;
-      padding: 15px 0 10px 0;
+      padding: 40px 0 10px 0;
       margin: 0; }
     #timeline-months .timeline-month .timeline-month-nodes {
       margin: 0;
@@ -564,9 +567,10 @@
   position: absolute;
   transition: 0.25s opacity ease-in-out;
   border: 1px solid #000;
-  top: -120%;
+  bottom: 90%;
   left: 10px;
-  z-index: 0; }
+  z-index: 0;
+  min-width: 150px; }
   .timeline-popover:after {
     content: '';
     border-top: 10px solid #ccbc00;
@@ -618,9 +622,6 @@
 
 #timeline-content {
   background: rgba(0, 0, 0, 0.85);
-  bottom: 0;
-  top: 130px;
-  position: absolute;
   transition: 0.25s all ease-in-out;
   overflow-y: auto; }
   #timeline-content h1 {

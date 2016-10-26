@@ -10,6 +10,7 @@ var DateArticle = require('../DateArticle.js');
 var YearControl = require('./YearControl.js');
 var Month = require('./Month.js');
 var MonthList = require('./MonthList.js');
+var MonthCarousel = require('./MonthCarousel.js');
 
 
 var years = services.utils.getYears( services.data.events );
@@ -43,22 +44,29 @@ var Timeline = Ulna.Component.extend({
 			});
 		},
 		
-		'div#timeline-wrap': function() {
+		'#timeline-wrap': function() {
 
 			var cols = [];
 			var leftCol = {
-				'#timeline-months.col-md-4.col-sm-12': new MonthList({
+				'#timeline-months': new MonthCarousel({
 					data: {
-						activeDate: this.data.activeDate,
-						months: this.data.dates
+						months: this.data.dates,
+						activeDate: this.data.activeDate	
 					}
+					
 				})
+			// 	'#timeline-months': new MonthList({
+			// 		data: {
+			// 			activeDate: this.data.activeDate,
+			// 			months: this.data.dates
+			// 		}
+			// 	})
 			};
 			
 			cols.push(leftCol);
 
 			var rightCol = {};
-			var rightColKey = '#timeline-content.col-md-8.col-sm-12.col-md-offset-4';
+			var rightColKey = '#timeline-content';
 
 			rightCol[rightColKey] = new DateArticle({
 				data: this.data.activeDate
