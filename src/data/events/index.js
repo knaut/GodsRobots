@@ -15,6 +15,7 @@ var dates = [
 		media: [
 			{
 				kind: 'flier',
+				featured: true,
 				src: '/media/images/events/superheroes-street-fair/flier.jpg',
 				name: 'SuperHeroes Street Fair Flier'
 			}
@@ -57,8 +58,10 @@ var dates = [
 			},
 			{
 				kind: 'embed',
+				featured: true,
 				src: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/241463587&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true',
-				name: 'Sizzla Remixes Release Music'
+				name: 'Sizzla Remixes Release Music',
+				thumb: '/media/images/events/sizzla-remixes/flier.jpg'
 			}
 		]
 	},
@@ -146,12 +149,14 @@ var dates = [
 			},
 			{
 				kind: 'video',
+				featured: true,
 				src: 'https://www.youtube.com/embed/ATlui8zUdjk',
 				name: 'The Chapel Rehearsal 2',
 				thumb: '/media/images/events/the-chapel-sf/rehearsal-2_thumb.png'
 			},
 			{
 				kind: 'video',
+				featured: true,
 				src: 'https://www.youtube.com/embed/H_87Eukt20s',
 				name: 'The Chapel, SF Live',
 				thumb: '/media/images/events/the-chapel-sf/video_thumb.png',

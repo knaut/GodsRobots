@@ -339,6 +339,25 @@ module.exports = {
 		return state;
 	},
 
+	getFeaturedItems( events ) {
+		// get a collection of timeline events and return their featured media items
+		var items = [];
+
+		for (var d = 0; events.length > d; d++) {
+
+			for (var m = 0; events[d].media.length > m; m++) {
+
+				if (events[d].media[m].hasOwnProperty('featured')) {
+					// console.log(events[d].media[m])
+					items.push( events[d].media[m] );
+				}
+
+			}
+		}
+
+		return items;
+	},
+
 	getState: function( events, req ) {
 
 		// use some input as a request and and a collection to generate a response object that 

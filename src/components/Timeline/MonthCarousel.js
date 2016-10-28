@@ -7,7 +7,7 @@ var hyphenate = require('../../utils.js').hyphenate;
 
 var Month = require('./Month.js');
 
-var InfographicChange = require('../../actions/InfographicChange.js');
+// var InfographicChange = require('../../actions/InfographicChange.js');
 var RouteChange = require('../../actions/RouteChange.js');
 
 var MonthCarousel = Ulna.Component.extend({
@@ -100,13 +100,13 @@ var MonthCarousel = Ulna.Component.extend({
 		}
 	},
 
-	listen: {
-		'INFOGRAPHIC_CHANGE': function(payload) {
-			var prevState = this.data.active;
-			this.data.active = payload.next;
-			this.mutations.changeSlide.call(this, prevState);
-		}
-	},
+	// listen: {
+	// 	'INFOGRAPHIC_CHANGE': function(payload) {
+	// 		var prevState = this.data.active;
+	// 		this.data.active = payload.next;
+	// 		this.mutations.changeSlide.call(this, prevState);
+	// 	}
+	// },
 
 	mutations: {
 		changeSlide: function(prevState) {

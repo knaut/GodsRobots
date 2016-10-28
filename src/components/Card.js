@@ -6,37 +6,85 @@ var Ulna = require('ulna');
 
 /* card kinds:
 
-Still,
-Video,
-Event
-Installation
+Photo (Still Image with Text Content),
+{
+	id: 'test-photo',
+	name: 'Test Photo',
+	date: null,
+	credit: null,
+	src: '/test-photo.jpg'
+}
 
-cards
+Youtube Embed,
+{
+	id: null,
+	src: null
+}
+
+Soundcloud Embed
+{
+	id: null,
+	src: null
+}
+
+	card data schema must be like:
+	{
+		kind: null,
+		id: null,
+		name: 'Test Card',
+		date: null,
+		credit: null,
+		thumb: '/text-thumb.jpg'
+	}
 
 */
 
 var Card = Ulna.Component.extend({
-	// feed root programatically later
+	root: '#card-<<this.data.id>>',
+	
+	// data: {
+	// 	kind: null,
+	// 	id: null,
+	// 	name: null,
+	// 	thumb: null,
+	// },
+
+	// cards need to be smarter
+	// their general format should be uniform, but can switch based on kind
 	template: {
 		'div.card-wrap': function() {
-			var card = {};
+			switch(this.data.kind) {
+				case 'flier' || 'embed':
+					var templ = {
+						'h1.name': this.data.name,
+						'img[src="<<this.data.src>>"]': ''
+					}
 
-			var templ = {
-				'h1.title': this.data.title,
-				'p.summary': this.data.summary,
-				'img[src="<<this.data.image>>"]': ''
+					var card = {};
+					var cardBackground = 'background-image: url(' + this.data.src + ')';
+					var cardKey = '.card[style="' + cardBackground + '"]';
+
+					card[cardKey] = templ;
+
+					return card;
+				break;
+				default:
+					var templ = {
+						'h1.name': this.data.name,
+						'img[src="<<this.data.thumb>>"]': ''
+					}
+
+					var card = {};
+					var cardBackground = 'background-image: url(' + this.data.thumb + ')';
+					var cardKey = '.card[style="' + cardBackground + '"]';
+
+					card[cardKey] = templ;
+
+					return card;
+				break;
 			}
 
-			if (this.data.upcoming) {
-				templ['span.upcoming'] = 'Upcoming'
-			}
-
-			var cardBackground = 'background-image: url(' + this.data.image + ')';
-			var cardKey = '.card[style="' + cardBackground + '"]';
-
-			card[cardKey] = templ;
-
-			return card;
+			
 		}
 	}
 });

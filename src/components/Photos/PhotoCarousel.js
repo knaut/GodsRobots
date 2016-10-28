@@ -14,6 +14,16 @@ var PhotoCarousel = Ulna.Component.extend({
 		photos: []
 	},
 
+	events: {
+		'click .fa-chevron-left': function() {
+
+		},
+
+		'click .fa-chevron-right': function() {
+			
+		}
+	},
+
 	template: {
 		h1: function() {
 			return this.data.name;

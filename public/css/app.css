@@ -45,46 +45,59 @@
 .slides {
   transition: 0.5s all ease-in-out; }
 
-#timeline-months {
+#timeline-months,
+#card-carousel {
   position: relative; }
-  #timeline-months .carousel-inner {
+  #timeline-months .carousel-inner,
+  #card-carousel .carousel-inner {
     overflow: auto !important; }
-    #timeline-months .carousel-inner .title h1 {
+    #timeline-months .carousel-inner .title h1,
+    #card-carousel .carousel-inner .title h1 {
       margin: 0 0 40px 0;
       text-align: center;
       font-size: 46px; }
-    #timeline-months .carousel-inner ul.slides {
+    #timeline-months .carousel-inner ul.slides,
+    #card-carousel .carousel-inner ul.slides {
       white-space: nowrap;
       width: 100%;
       margin: 0;
       padding: 0;
       position: relative; }
-      #timeline-months .carousel-inner ul.slides li.slide {
+      #timeline-months .carousel-inner ul.slides li.slide,
+      #card-carousel .carousel-inner ul.slides li.slide {
         display: inline-block;
         white-space: nowrap;
         padding: 0 12.5%;
         width: 100%; }
-        #timeline-months .carousel-inner ul.slides li.slide .timeline-month-inner-wrap > div {
+        #timeline-months .carousel-inner ul.slides li.slide .timeline-month-inner-wrap > div,
+        #card-carousel .carousel-inner ul.slides li.slide .timeline-month-inner-wrap > div {
           transition: 0.25s all ease-in-out;
           opacity: 0; }
-        #timeline-months .carousel-inner ul.slides li.slide .timeline-month-inner-wrap > .active {
+        #timeline-months .carousel-inner ul.slides li.slide .timeline-month-inner-wrap > .active,
+        #card-carousel .carousel-inner ul.slides li.slide .timeline-month-inner-wrap > .active {
           opacity: 1; }
-      #timeline-months .carousel-inner ul.slides p {
+      #timeline-months .carousel-inner ul.slides p,
+      #card-carousel .carousel-inner ul.slides p {
         font-size: 18px;
         color: #5DB0CC; }
-      #timeline-months .carousel-inner ul.slides .image {
+      #timeline-months .carousel-inner ul.slides .image,
+      #card-carousel .carousel-inner ul.slides .image {
         text-align: center; }
-    #timeline-months .carousel-inner .slides-wrap {
+    #timeline-months .carousel-inner .slides-wrap,
+    #card-carousel .carousel-inner .slides-wrap {
       position: relative; }
-  #timeline-months .slide-status {
+  #timeline-months .slide-status,
+  #card-carousel .slide-status {
     white-space: nowrap;
     width: 100%;
     text-align: center;
     display: none;
     margin: 0 0 15px; }
-    #timeline-months .slide-status ul {
+    #timeline-months .slide-status ul,
+    #card-carousel .slide-status ul {
       padding: 0; }
-    #timeline-months .slide-status li {
+    #timeline-months .slide-status li,
+    #card-carousel .slide-status li {
       display: inline-block;
       margin: 0 10px;
       cursor: pointer;
@@ -93,13 +106,17 @@
       width: 7px;
       border-radius: 5px;
       background: #555; }
-      #timeline-months .slide-status li.active {
+      #timeline-months .slide-status li.active,
+      #card-carousel .slide-status li.active {
         background: #efefef; }
-      #timeline-months .slide-status li:hover {
+      #timeline-months .slide-status li:hover,
+      #card-carousel .slide-status li:hover {
         background: #eee; }
-  #timeline-months h1 {
+  #timeline-months h1,
+  #card-carousel h1 {
     white-space: normal; }
-  #timeline-months .bullets {
+  #timeline-months .bullets,
+  #card-carousel .bullets {
     white-space: normal; }
 
 .carousel-inner-prev:before {
@@ -1049,6 +1066,9 @@
     position: relative; }
   #video-carousel.carousel-gallery li img {
     height: 100%; }
+
+#featured-carousel {
+  background: #222; }
 
 #app-root {
   overflow-y: auto;

@@ -6,7 +6,7 @@ var services = require('../services.js');
 var VFrame = require('./VFrame.js');
 var HotButton = require('./HotButton.js');
 var BrandCarousel = require('./BrandCarousel.js');
-var InfographicCarousel = require('./InfographicCarousel.js');
+// var InfographicCarousel = require('./InfographicCarousel.js');
 var UpcomingCarousel = require('./UpcomingCarousel.js');
 var TimelinePrev = require('./TimelinePrev.js');
 var Timeline = require('./Timeline/Timeline.js');
@@ -15,6 +15,8 @@ var Hero = require('./Hero.js');
 var BioCardList = require('./BioCardList.js');
 var Discography = require('./Discography.js');
 var PhotoGallery = require('./Photos/PhotoGallery.js');
+var PhotoCarousel = require('./Photos/PhotoCarousel.js');
+var CardCarousel = require('./CardCarousel.js');
 
 // gather routes from nav
 var routes = services.data.index.nav;
@@ -36,6 +38,11 @@ var indexTemplate = {
 		// 'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
 		// 	data: services.data.photos
 		// }),
+		'#card-carousel': new CardCarousel({
+			data: {
+				items: services.utils.getFeaturedItems( services.data.events )
+			}
+		}),
 		'footer#footer': new Footer()
 	}
 };
