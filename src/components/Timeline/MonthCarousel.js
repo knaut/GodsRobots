@@ -23,8 +23,9 @@ var MonthCarousel = Ulna.Component.extend({
 	},
 
 	events: {
-		'click .carousel-inner-next': function(e) {
-			
+		'click a.carousel-next': function(e) {
+			e.preventDefault();
+
 			// get the name of our active month
 			var activeMonth = new Moment( this.data.activeDate.startDate ).format('MMMM');
 			var allMonths = [];
@@ -56,7 +57,8 @@ var MonthCarousel = Ulna.Component.extend({
 			}
 
 		},
-		'click .carousel-inner-prev': function(e) {
+		'click a.carousel-prev': function(e) {
+			e.preventDefault();
 			
 			// get the name of our active month
 			var activeMonth = new Moment( this.data.activeDate.startDate ).format('MMMM');
@@ -160,8 +162,15 @@ var MonthCarousel = Ulna.Component.extend({
 			return leds;
 		},
 		'div.carousel-inner': {
-			'span.carousel-inner-prev': {
-				span: 'previous slide'
+			'div.carousel-nav': {
+				'a.carousel-prev': {
+					span: 'Previous',
+					'i.fa.fa-angle-double-left': ''
+				},
+				'a.carousel-next': {
+					span: 'Next',
+					'i.fa.fa-angle-double-right': ''
+				}
 			},
 			'.slides-wrap': function() {
 				var list = [];
@@ -202,9 +211,6 @@ var MonthCarousel = Ulna.Component.extend({
 				obj[listKey] = list;
 
 				return obj;
-			},
-			'span.carousel-inner-next': {
-				span: 'next slide'
 			}
 		}
 	}

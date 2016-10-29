@@ -30,11 +30,11 @@ var CardCarousel = Ulna.Component.extend({
 				'div.carousel-nav': {
 					'a.carousel-prev': {
 						span: 'Previous',
-						'i.fa.fa-chevron-left': ''
+						'i.fa.fa-chevron-right': ''
 					},
 					'a.carousel-next': {
 						span: 'Next',
-						'i.fa.fa-chevron-right': ''
+						'i.fa.fa-chevron-left': ''
 					}
 				},
 				'div.carousel-inner': {

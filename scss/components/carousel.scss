@@ -19,6 +19,51 @@
 	transition: 0.5s all ease-in-out;
 }
 
+#card-carousel,
+#timeline-months {
+	position: relative;
+
+	.carousel-nav {
+	    
+
+		z-index: 2;
+
+		a.carousel-next,
+		a.carousel-prev {
+			color: #fff;
+			position: absolute;
+		    z-index: 2;
+		    top: 50%;
+		    margin-top: -20px;
+			// padding: 10px;
+
+			i.fa {
+				color: $grYellow;
+				font-size: 40px;
+				padding: 20px;
+				transition: 0.2s all ease-in-out;
+			}
+
+			&:hover {
+				i.fa {
+					color: #fff;
+					cursor: pointer;
+				}
+					
+			}
+
+			span {
+				display: none;
+			}
+		}
+
+		a.carousel-next {
+			right: 0;
+		}
+	}
+	
+}
+
 #timeline-months,
 #card-carousel {
 		position: relative;
@@ -81,7 +126,7 @@
 			}
 			.slides-wrap {
 				position: relative;
-				
+
 				li {
 					// position: absolute;
 				}

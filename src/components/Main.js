@@ -38,12 +38,12 @@ var indexTemplate = {
 		// 'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
 		// 	data: services.data.photos
 		// }),
-		'#card-carousel': new CardCarousel({
-			data: {
-				title: 'Featured',
-				items: services.utils.getFeaturedItems( services.data.events )
-			}
-		}),
+		// '#card-carousel': new CardCarousel({
+		// 	data: {
+		// 		title: 'Featured',
+		// 		items: services.utils.getFeaturedItems( services.data.events )
+		// 	}
+		// }),
 		'footer#footer': new Footer()
 	}
 };

@@ -45,6 +45,44 @@
 .slides {
   transition: 0.5s all ease-in-out; }
 
+#card-carousel,
+#timeline-months {
+  position: relative; }
+  #card-carousel .carousel-nav,
+  #timeline-months .carousel-nav {
+    z-index: 2; }
+    #card-carousel .carousel-nav a.carousel-next,
+    #card-carousel .carousel-nav a.carousel-prev,
+    #timeline-months .carousel-nav a.carousel-next,
+    #timeline-months .carousel-nav a.carousel-prev {
+      color: #fff;
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      margin-top: -20px; }
+      #card-carousel .carousel-nav a.carousel-next i.fa,
+      #card-carousel .carousel-nav a.carousel-prev i.fa,
+      #timeline-months .carousel-nav a.carousel-next i.fa,
+      #timeline-months .carousel-nav a.carousel-prev i.fa {
+        color: #FFEB00;
+        font-size: 40px;
+        padding: 20px;
+        transition: 0.2s all ease-in-out; }
+      #card-carousel .carousel-nav a.carousel-next:hover i.fa,
+      #card-carousel .carousel-nav a.carousel-prev:hover i.fa,
+      #timeline-months .carousel-nav a.carousel-next:hover i.fa,
+      #timeline-months .carousel-nav a.carousel-prev:hover i.fa {
+        color: #fff;
+        cursor: pointer; }
+      #card-carousel .carousel-nav a.carousel-next span,
+      #card-carousel .carousel-nav a.carousel-prev span,
+      #timeline-months .carousel-nav a.carousel-next span,
+      #timeline-months .carousel-nav a.carousel-prev span {
+        display: none; }
+    #card-carousel .carousel-nav a.carousel-next,
+    #timeline-months .carousel-nav a.carousel-next {
+      right: 0; }
+
 #timeline-months,
 #card-carousel {
   position: relative;
