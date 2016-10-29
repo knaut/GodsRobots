@@ -27,13 +27,14 @@
 		// h1 {
 		// 	@include Roboto(100);
 		// }
+		padding-top: 25px;
 
-		// > h1 {
-		// 	text-align: center;
-		// 	@include RobotoCondensed(100, uppercase, 3px);
-		// 	font-size: 18px;
-		// 	margin: 25px 0 10px;
-		// }
+		h1.carousel-title {
+			text-align: center;
+			@include RobotoCondensed(100, uppercase, 3px);
+			font-size: 21px;
+			margin: 0 25px 25px;
+		}
 
 		.carousel-inner {
 			overflow: auto !important;
@@ -80,6 +81,7 @@
 			}
 			.slides-wrap {
 				position: relative;
+				
 				li {
 					// position: absolute;
 				}

@@ -83,8 +83,6 @@ var Card = Ulna.Component.extend({
 					return card;
 				break;
 			}
-
-			
 		}
 	}
 });

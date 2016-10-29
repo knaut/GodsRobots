@@ -47,7 +47,17 @@
 
 #timeline-months,
 #card-carousel {
-  position: relative; }
+  position: relative;
+  padding-top: 25px; }
+  #timeline-months h1.carousel-title,
+  #card-carousel h1.carousel-title {
+    text-align: center;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 100;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 21px;
+    margin: 0 25px 25px; }
   #timeline-months .carousel-inner,
   #card-carousel .carousel-inner {
     overflow: auto !important; }
@@ -385,6 +395,55 @@
   .card-wrap .card {
     background-size: cover;
     overflow: hidden; }
+
+#card-carousel {
+  background: #333; }
+  #card-carousel ul {
+    margin: 0;
+    padding: 0; }
+  #card-carousel .card {
+    position: relative;
+    min-height: 300px;
+    z-index: 1; }
+    #card-carousel .card img {
+      display: none; }
+    #card-carousel .card:before {
+      content: '';
+      display: block;
+      position: absolute;
+      /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+47&0.78+0,0+41 */
+      background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.9) 0%, transparent 50%, transparent 47%);
+      /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.9) 0%, transparent 50%, transparent 47%);
+      /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 50%, transparent 47%);
+      /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c7000000', endColorstr='#00000000',GradientType=0 );
+      /* IE6-9 */
+      z-index: 2;
+      width: 100%;
+      height: 100%; }
+  #card-carousel ul.slides-wrap {
+    white-space: nowrap;
+    padding-bottom: 25px; }
+    #card-carousel ul.slides-wrap li {
+      width: 100%;
+      height: 100%;
+      list-style: none;
+      display: inline-table; }
+      #card-carousel ul.slides-wrap li h1 {
+        font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 200;
+        text-transform: capitalize;
+        letter-spacing: 1px;
+        font-size: 21px;
+        margin: 25px;
+        position: relative;
+        z-index: 2; }
+
+@media (max-width: 991px) {
+  #card-carousel ul.slides-wrap li {
+    width: 50%; } }
 
 #upcoming-carousel-inner .card {
   height: 400px; }

@@ -1,5 +1,5 @@
-// card styles
 
+// card styles
 .card-wrap {
 	position: relative;
 	overflow: hidden;
@@ -7,9 +7,74 @@
 	.card {
 		background-size: cover;
 		overflow: hidden;
-
 	}
 }
+
+#card-carousel {
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+	background: #333;
+	.card {
+		position: relative;
+		min-height: 300px;
+		z-index: 1;
+
+		img {
+			display: none;
+		}
+		
+		&:before {
+			content: '';
+			display: block;
+			position: absolute;
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+47&0.78+0,0+41 */
+			background: -moz-linear-gradient(top,  rgba(0,0,0,0.90) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 47%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top,  rgba(0,0,0,0.90) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 47%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom,  rgba(0,0,0,0.90) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 47%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c7000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+
+			z-index: 2;
+
+			width: 100%;
+			height: 100%;
+		}
+		
+	}
+	ul.slides-wrap {
+		white-space: nowrap;
+		padding-bottom: 25px;
+		li {
+			width: 100%;
+			height: 100%;
+			list-style: none;
+			display: inline-table;
+
+
+			// .col-lg-3.col-md-4.col-sm-6.col-xs-12
+
+			h1 {
+				@include RobotoCondensed(200, capitalize, 1px);
+				font-size: 21px;
+				margin: 25px;
+				position: relative;
+				z-index: 2;
+			}
+		}
+	}
+}
+
+@include breakpoint(sm) {
+	#card-carousel {
+		ul.slides-wrap {
+			li {
+				width: 50%;
+			}
+		}
+	}
+}
+
 
 #upcoming-carousel-inner {
 	.card {

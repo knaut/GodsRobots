@@ -40,6 +40,7 @@ var indexTemplate = {
 		// }),
 		'#card-carousel': new CardCarousel({
 			data: {
+				title: 'Featured',
 				items: services.utils.getFeaturedItems( services.data.events )
 			}
 		}),

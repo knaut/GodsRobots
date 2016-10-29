@@ -14,7 +14,9 @@ var CardCarousel = Ulna.Component.extend({
 	dispatcher: dispatcher,
 
 	data: {
-		items: []
+		// title: null,
+		items: [],
+		active: 0
 	},
 
 	events: {
@@ -22,36 +24,21 @@ var CardCarousel = Ulna.Component.extend({
 	},
 
 	template: {
-		'.container': function() {
+		'.card-carousel-wrap': function() {
 			var templ = {
-				'div.slide-status': function() {
-					var leds = {
-						ul: []
-					};
-					for (var l = 0; this.data.items.length > l; l++) {						
-						// if (l === this.data.index) {
-						// 	var led = {
-						// 		index: l,
-						// 		active: 'active'
-						// 	}
-						// } else {
-						// 	var led = {
-						// 		index: l,
-						// 		active: ''
-						// 	}
-						// }
-						// var liKey = 'li.carousel-slide-status-' + led.index + '.' + led.active;
-						// var li = {};
-						// li[liKey] = '';
-						// leds.ul.push(li);
+				'h1.carousel-title': this.data.title ? this.data.title : '',
+				'div.carousel-nav': {
+					'a.carousel-prev': {
+						span: 'Previous',
+						'i.fa.fa-chevron-left': ''
+					},
+					'a.carousel-next': {
+						span: 'Next',
+						'i.fa.fa-chevron-right': ''
 					}
-					return leds;
 				},
 				'div.carousel-inner': {
-					'span.carousel-inner-prev': {
-						span: 'previous slide'
-					},
-					'.slides-wrap': function() {
+					'ul.slides-wrap': function() {
 						var items = [];
 
 						for (var v = 0; this.data.items.length > v; v++) {
@@ -65,9 +52,7 @@ var CardCarousel = Ulna.Component.extend({
 
 						return items;
 					},
-					'span.carousel-inner-next': {
-						span: 'next slide'
-					}
+					
 				}
 			}
 
