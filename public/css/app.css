@@ -693,7 +693,8 @@
     border-bottom: 0;
     position: absolute;
     top: 100%;
-    left: 0; }
+    left: 50%;
+    margin-left: -10px; }
   .timeline-popover h1 {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
@@ -727,7 +728,8 @@
       border-bottom: 0;
       position: absolute;
       top: 100%;
-      left: 0; }
+      left: 50%;
+      margin-left: -10px; }
   .timeline-popover .timeline-popover-hero {
     max-height: 125px;
     overflow: hidden; }
@@ -759,6 +761,10 @@
 #timeline-wrap {
   height: 100%;
   top: 0; }
+
+.timeline-node > div {
+  position: absolute;
+  left: -64px; }
 
 #footer {
   background: #202020;
@@ -838,12 +844,12 @@
     position: absolute;
     top: 50%;
     margin-top: -20px;
-    font-size: 22px;
-    color: #fff;
+    font-size: 40px;
+    color: #FFEB00;
     transition: 0.2s all ease-in-out; }
     #photo-carousel #photo-carousel-next:hover,
     #photo-carousel #photo-carousel-prev:hover {
-      color: #FFEB00;
+      color: #fff;
       cursor: pointer; }
   #photo-carousel #photo-carousel-next {
     left: 0; }
@@ -1045,12 +1051,12 @@
     position: absolute;
     top: 50%;
     margin-top: -20px;
-    font-size: 22px;
-    color: #fff;
+    font-size: 40px;
+    color: #FFEB00;
     transition: 0.2s all ease-in-out; }
     #video-carousel #video-carousel-next:hover,
     #video-carousel #video-carousel-prev:hover {
-      color: #FFEB00;
+      color: #fff;
       cursor: pointer; }
   #video-carousel #video-carousel-next {
     left: 0; }

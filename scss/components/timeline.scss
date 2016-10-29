@@ -231,7 +231,8 @@
     	border-bottom: 0;
     	position: absolute;
     	top: 100%;
-    	left: 0;
+    	left: 50%;
+    	margin-left: -10px;
     }
 
     h1 {
@@ -274,7 +275,8 @@
 	    	border-bottom: 0;
 	    	position: absolute;
 	    	top: 100%;
-	    	left: 0;
+	    	left: 50%;
+    		margin-left: -10px;
 	    }
 	}
 
@@ -328,7 +330,13 @@
 	// }
 }
 
-
+.timeline-node {
+	& > div {
+		position: absolute;
+    	left: -64px;	
+	}
+	
+}
 
 
 

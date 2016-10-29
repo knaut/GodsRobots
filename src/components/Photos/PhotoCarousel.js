@@ -29,7 +29,7 @@ var PhotoCarousel = Ulna.Component.extend({
 			return this.data.name;
 		},
 		'div#photo-carousel-inner': {
-			'i#photo-carousel-next.fa.fa-chevron-left': '',
+			'i#photo-carousel-next.fa.fa-angle-left': '',
 			div: function() {
 				var photos = [];
 				for (var i = 0; this.data.photos.length > i; i++) {
@@ -51,7 +51,7 @@ var PhotoCarousel = Ulna.Component.extend({
 
 				return content;
 			},
-			'i#photo-carousel-prev.fa.fa-chevron-right': '',
+			'i#photo-carousel-prev.fa.fa-angle-right': '',
 		}
 	}
 });

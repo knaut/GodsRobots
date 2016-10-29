@@ -19,7 +19,7 @@ var VideoCarousel = Ulna.Component.extend({
 			return this.data.name;
 		},
 		'div#video-carousel-inner': {
-			'i#video-carousel-next.fa.fa-chevron-left': '',
+			'i#video-carousel-next.fa.fa-angle-left': '',
 			div: function() {
 				var videos = [];
 				for (var i = 0; this.data.videos.length > i; i++) {
@@ -39,7 +39,7 @@ var VideoCarousel = Ulna.Component.extend({
 
 				return content;
 			},
-			'i#video-carousel-prev.fa.fa-chevron-right': '',
+			'i#video-carousel-prev.fa.fa-angle-right': '',
 		}
 	}
 });

@@ -225,12 +225,12 @@
 		position: absolute;
 		top: 50%;
 		margin-top: -20px;
-		font-size: 22px;
-		color: #fff;
+		font-size: 40px;
+		color: $grYellow;
 		transition: 0.2s all ease-in-out;
 		// padding: 10px;
 		&:hover {
-			color: $grYellow;
+			color: #fff;
 			cursor: pointer;
 		}
 	}
