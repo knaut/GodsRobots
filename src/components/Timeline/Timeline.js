@@ -68,9 +68,13 @@ var Timeline = Ulna.Component.extend({
 			var rightCol = {};
 			var rightColKey = '#timeline-content';
 
-			rightCol[rightColKey] = new DateArticle({
-				data: this.data.activeDate
-			});
+			rightCol[rightColKey] = {
+				'.container': {
+					'.col-lg-12': new DateArticle({
+						data: this.data.activeDate
+					})
+				}
+			};
 			
 			cols.push(rightCol);
 

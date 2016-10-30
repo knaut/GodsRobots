@@ -5,7 +5,7 @@
 #main-wrap #logo {
 	position: relative;
 	width: 100%;
-
+	margin: 20px auto;
 	text-align: center;
 	color: #fff;
 	
@@ -14,8 +14,10 @@
 	}
 
 	img {
-		margin: -155px 0 0 0;
-		max-width: 100%;
+		margin: 20px auto 0;
+		
+		
+		width: 100%;
 	}
 }
 
@@ -25,9 +27,33 @@
 }
 
 #header-inner {
-    position: absolute;
-    top: 50%;
-    margin-top: -75px;
-	width: 100%;
-	max-height: 75%;
+ //    position: absolute;
+ //    top: 50%;
+    margin-top: 25px;
+	// width: 100%;
+	// max-height: 75%;
+}
+
+@include breakpoint(xs) {
+	#main-wrap #logo img {
+		width: 70%;
+	}
+}
+
+@include breakpoint(sm) {
+	#main-wrap #logo img {
+		width: 45%;
+	}
+}
+
+@include breakpoint(md) {
+	#main-wrap #logo img {
+		width: 30%;
+	}
+}
+
+@include breakpoint(lg) {
+	#main-wrap #logo img {
+		width: 15%;
+	}
 }

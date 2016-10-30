@@ -18,6 +18,10 @@ var PhotoGallery = require('./Photos/PhotoGallery.js');
 var PhotoCarousel = require('./Photos/PhotoCarousel.js');
 var CardCarousel = require('./CardCarousel.js');
 
+var Logo = require('./Logo.js');
+var HotButton = require('./HotButton.js');
+var SocialIcons = require('./SocialIcons.js');
+
 // gather routes from nav
 var routes = services.data.index.nav;
 
@@ -27,7 +31,7 @@ routes.push({
 });
 
 var indexTemplate = {
-	'#vframe': new VFrame(),
+	// '#vframe': new VFrame(),
 	'article#main-inner': {
 		// 'section#bio-cards.layout': new BioCardList(),
 		// 'section#discography.layout': new Discography({
@@ -38,12 +42,22 @@ var indexTemplate = {
 		// 'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
 		// 	data: services.data.photos
 		// }),
-		// '#card-carousel': new CardCarousel({
-		// 	data: {
-		// 		title: 'Featured',
-		// 		items: services.utils.getFeaturedItems( services.data.events )
-		// 	}
-		// }),
+		'header#logo.col-lg-12': new Logo(),
+		'#card-carousel': new CardCarousel({
+			data: {
+				title: 'Featured',
+				items: services.utils.getFeaturedItems( services.data.events )
+			}
+		}),
+		'ul.col-lg-12': {
+			'li#call-to-action': new HotButton({
+				data: {
+					name: 'call-to-action',
+					text: 'Enter the Timeline'
+				}
+			}),
+		},
+		'#social-icons.col-lg-12': new SocialIcons(),	
 		'footer#footer': new Footer()
 	}
 };

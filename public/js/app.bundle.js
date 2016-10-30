@@ -7354,6 +7354,8 @@ var Modal = require('./components/Modal.js');
 var Curtain = require('./components/Curtain.js');
 var Main = require('./components/Main.js');
 
+var CardCarousel = require('./components/CardCarousel.js');
+
 var App = Ulna.Component.extend({
 	root: '#app-root',
 
@@ -7396,7 +7398,7 @@ var App = Ulna.Component.extend({
 
 				// we pass on our props to Main, which is our main content area
 				// content['#nav-wrap.container'] = new Nav();
-				content['#header-wrap.container'] = new Header();
+				// content['#header-wrap.container'] = new Header();
 				content[mainKey] = new Main({
 					data: this.data
 				});
@@ -7420,7 +7422,7 @@ if (Ulna.env === 'browser') {
 }
 
 module.exports = App;
-},{"./components/Curtain.js":24,"./components/Header.js":28,"./components/Main.js":32,"./components/Modal.js":33,"./components/Nav.js":34,"./dispatcher.js":59,"./router.js":60,"./services.js":61,"ulna":8}],19:[function(require,module,exports){
+},{"./components/CardCarousel.js":23,"./components/Curtain.js":24,"./components/Header.js":28,"./components/Main.js":32,"./components/Modal.js":33,"./components/Nav.js":34,"./dispatcher.js":59,"./router.js":60,"./services.js":61,"ulna":8}],19:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7660,7 +7662,7 @@ var Card = Ulna.Component.extend({
 
 					var card = {};
 					var cardBackground = 'background-image: url(' + this.data.src + ')';
-					var cardKey = '.card[style="' + cardBackground + '"]';
+					var cardKey = 'a.card[style="' + cardBackground + '"]';
 
 					card[cardKey] = templ;
 
@@ -7674,7 +7676,7 @@ var Card = Ulna.Component.extend({
 
 					var card = {};
 					var cardBackground = 'background-image: url(' + this.data.thumb + ')';
-					var cardKey = '.card[style="' + cardBackground + '"]';
+					var cardKey = 'a.card[style="' + cardBackground + '"]';
 
 					card[cardKey] = templ;
 
@@ -7719,11 +7721,11 @@ var CardCarousel = Ulna.Component.extend({
 				'div.carousel-nav': {
 					'a.carousel-prev': {
 						span: 'Previous',
-						'i.fa.fa-chevron-right': ''
+						'i.fa.fa-chevron-left': ''
 					},
 					'a.carousel-next': {
 						span: 'Next',
-						'i.fa.fa-chevron-left': ''
+						'i.fa.fa-chevron-right': ''
 					}
 				},
 				'div.carousel-inner': {
@@ -8213,6 +8215,10 @@ var PhotoGallery = require('./Photos/PhotoGallery.js');
 var PhotoCarousel = require('./Photos/PhotoCarousel.js');
 var CardCarousel = require('./CardCarousel.js');
 
+var Logo = require('./Logo.js');
+var HotButton = require('./HotButton.js');
+var SocialIcons = require('./SocialIcons.js');
+
 // gather routes from nav
 var routes = services.data.index.nav;
 
@@ -8222,7 +8228,7 @@ routes.push({
 });
 
 var indexTemplate = {
-	'#vframe': new VFrame(),
+	// '#vframe': new VFrame(),
 	'article#main-inner': {
 		// 'section#bio-cards.layout': new BioCardList(),
 		// 'section#discography.layout': new Discography({
@@ -8233,12 +8239,22 @@ var indexTemplate = {
 		// 'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
 		// 	data: services.data.photos
 		// }),
-		// '#card-carousel': new CardCarousel({
-		// 	data: {
-		// 		title: 'Featured',
-		// 		items: services.utils.getFeaturedItems( services.data.events )
-		// 	}
-		// }),
+		'header#logo.col-lg-12': new Logo(),
+		'#card-carousel': new CardCarousel({
+			data: {
+				title: 'Featured',
+				items: services.utils.getFeaturedItems( services.data.events )
+			}
+		}),
+		'ul.col-lg-12': {
+			'li#call-to-action': new HotButton({
+				data: {
+					name: 'call-to-action',
+					text: 'Enter the Timeline'
+				}
+			}),
+		},
+		'#social-icons.col-lg-12': new SocialIcons(),	
 		'footer#footer': new Footer()
 	}
 };
@@ -8378,7 +8394,7 @@ var Main = Ulna.Component.extend({
 });
 
 module.exports = Main;
-},{"../dispatcher.js":59,"../services.js":61,"./BioCardList.js":20,"./BrandCarousel.js":21,"./CardCarousel.js":23,"./Discography.js":26,"./Footer.js":27,"./Hero.js":29,"./HotButton.js":30,"./Photos/PhotoCarousel.js":37,"./Photos/PhotoGallery.js":38,"./Timeline/Timeline.js":44,"./TimelinePrev.js":47,"./UpcomingCarousel.js":49,"./VFrame.js":50,"ulna":8}],33:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"./BioCardList.js":20,"./BrandCarousel.js":21,"./CardCarousel.js":23,"./Discography.js":26,"./Footer.js":27,"./Hero.js":29,"./HotButton.js":30,"./Logo.js":31,"./Photos/PhotoCarousel.js":37,"./Photos/PhotoGallery.js":38,"./SocialIcons.js":39,"./Timeline/Timeline.js":44,"./TimelinePrev.js":47,"./UpcomingCarousel.js":49,"./VFrame.js":50,"ulna":8}],33:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -9344,9 +9360,13 @@ var Timeline = Ulna.Component.extend({
 			var rightCol = {};
 			var rightColKey = '#timeline-content';
 
-			rightCol[rightColKey] = new DateArticle({
-				data: this.data.activeDate
-			});
+			rightCol[rightColKey] = {
+				'.container': {
+					'.col-lg-12': new DateArticle({
+						data: this.data.activeDate
+					})
+				}
+			};
 			
 			cols.push(rightCol);
 

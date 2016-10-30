@@ -8,6 +8,7 @@
 #main-wrap #logo {
   position: relative;
   width: 100%;
+  margin: 20px auto;
   text-align: center;
   color: #fff; }
   #main-wrap #logo h1 {
@@ -16,19 +17,31 @@
     text-transform: auto;
     letter-spacing: auto; }
   #main-wrap #logo img {
-    margin: -155px 0 0 0;
-    max-width: 100%; }
+    margin: 20px auto 0;
+    width: 100%; }
 
 #header-wrap {
   height: 100%;
   width: 100%; }
 
 #header-inner {
-  position: absolute;
-  top: 50%;
-  margin-top: -75px;
-  width: 100%;
-  max-height: 75%; }
+  margin-top: 25px; }
+
+@media (max-width: 767px) {
+  #main-wrap #logo img {
+    width: 70%; } }
+
+@media (max-width: 991px) {
+  #main-wrap #logo img {
+    width: 45%; } }
+
+@media (max-width: 1199px) {
+  #main-wrap #logo img {
+    width: 30%; } }
+
+@media (min-width: 1200px) {
+  #main-wrap #logo img {
+    width: 15%; } }
 
 #upcoming {
   background: #0f0f0f;
@@ -51,36 +64,34 @@
   #card-carousel .carousel-nav,
   #timeline-months .carousel-nav {
     z-index: 2; }
-    #card-carousel .carousel-nav a.carousel-next,
-    #card-carousel .carousel-nav a.carousel-prev,
-    #timeline-months .carousel-nav a.carousel-next,
-    #timeline-months .carousel-nav a.carousel-prev {
-      color: #fff;
+    #card-carousel .carousel-nav a.carousel-next i.fa,
+    #card-carousel .carousel-nav a.carousel-prev i.fa,
+    #timeline-months .carousel-nav a.carousel-next i.fa,
+    #timeline-months .carousel-nav a.carousel-prev i.fa {
       position: absolute;
       z-index: 2;
       top: 50%;
-      margin-top: -20px; }
-      #card-carousel .carousel-nav a.carousel-next i.fa,
-      #card-carousel .carousel-nav a.carousel-prev i.fa,
-      #timeline-months .carousel-nav a.carousel-next i.fa,
-      #timeline-months .carousel-nav a.carousel-prev i.fa {
-        color: #FFEB00;
-        font-size: 40px;
-        padding: 20px;
-        transition: 0.2s all ease-in-out; }
-      #card-carousel .carousel-nav a.carousel-next:hover i.fa,
-      #card-carousel .carousel-nav a.carousel-prev:hover i.fa,
-      #timeline-months .carousel-nav a.carousel-next:hover i.fa,
-      #timeline-months .carousel-nav a.carousel-prev:hover i.fa {
-        color: #fff;
-        cursor: pointer; }
-      #card-carousel .carousel-nav a.carousel-next span,
-      #card-carousel .carousel-nav a.carousel-prev span,
-      #timeline-months .carousel-nav a.carousel-next span,
-      #timeline-months .carousel-nav a.carousel-prev span {
-        display: none; }
-    #card-carousel .carousel-nav a.carousel-next,
-    #timeline-months .carousel-nav a.carousel-next {
+      margin-top: -20px;
+      color: #FFEB00;
+      font-size: 40px;
+      padding: 20px;
+      transition: 0.2s all ease-in-out;
+      text-shadow: 0 0 20px black; }
+    #card-carousel .carousel-nav a.carousel-next:hover i.fa,
+    #card-carousel .carousel-nav a.carousel-prev:hover i.fa,
+    #timeline-months .carousel-nav a.carousel-next:hover i.fa,
+    #timeline-months .carousel-nav a.carousel-prev:hover i.fa {
+      color: #fff;
+      cursor: pointer;
+      font-size: 50px;
+      margin-top: -25px; }
+    #card-carousel .carousel-nav a.carousel-next span,
+    #card-carousel .carousel-nav a.carousel-prev span,
+    #timeline-months .carousel-nav a.carousel-next span,
+    #timeline-months .carousel-nav a.carousel-prev span {
+      display: none; }
+    #card-carousel .carousel-nav a.carousel-next i.fa,
+    #timeline-months .carousel-nav a.carousel-next i.fa {
       right: 0; }
 
 #timeline-months,
@@ -434,50 +445,66 @@
     background-size: cover;
     overflow: hidden; }
 
-#card-carousel {
-  background: #333; }
-  #card-carousel ul {
-    margin: 0;
-    padding: 0; }
-  #card-carousel .card {
-    position: relative;
-    min-height: 300px;
-    z-index: 1; }
-    #card-carousel .card img {
-      display: none; }
-    #card-carousel .card:before {
-      content: '';
-      display: block;
-      position: absolute;
-      /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+47&0.78+0,0+41 */
-      background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.9) 0%, transparent 50%, transparent 47%);
-      /* FF3.6-15 */
-      background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.9) 0%, transparent 50%, transparent 47%);
-      /* Chrome10-25,Safari5.1-6 */
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 50%, transparent 47%);
-      /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c7000000', endColorstr='#00000000',GradientType=0 );
-      /* IE6-9 */
-      z-index: 2;
-      width: 100%;
-      height: 100%; }
-  #card-carousel ul.slides-wrap {
-    white-space: nowrap;
-    padding-bottom: 25px; }
-    #card-carousel ul.slides-wrap li {
-      width: 100%;
-      height: 100%;
-      list-style: none;
-      display: inline-table; }
-      #card-carousel ul.slides-wrap li h1 {
-        font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 200;
-        text-transform: capitalize;
-        letter-spacing: 1px;
-        font-size: 21px;
-        margin: 25px;
-        position: relative;
-        z-index: 2; }
+#card-carousel ul {
+  margin: 0;
+  padding: 0; }
+
+#card-carousel a.card {
+  position: relative;
+  min-height: 300px;
+  z-index: 1;
+  display: block;
+  text-decoration: none;
+  background-position-x: 50%;
+  background-position-y: 0;
+  background-size: auto 300px;
+  background-origin: padding-box;
+  transition: 0.3s all ease-in-out; }
+  #card-carousel a.card h1 {
+    color: #B9BFC1;
+    transition: 0.3s all ease-in-out; }
+  #card-carousel a.card:hover {
+    cursor: pointer;
+    background-size: auto 330px;
+    background-position-y: -15px; }
+    #card-carousel a.card:hover h1 {
+      color: #fff; }
+  #card-carousel a.card img {
+    display: none; }
+  #card-carousel a.card:before {
+    content: '';
+    display: block;
+    position: absolute;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+47&0.78+0,0+41 */
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.9) 0%, transparent 50%, transparent 47%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.9) 0%, transparent 50%, transparent 47%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 50%, transparent 47%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c7000000', endColorstr='#00000000',GradientType=0 );
+    /* IE6-9 */
+    z-index: 2;
+    width: 100%;
+    height: 100%; }
+
+#card-carousel ul.slides-wrap {
+  white-space: nowrap;
+  padding-bottom: 25px; }
+  #card-carousel ul.slides-wrap li {
+    width: 100%;
+    height: 100%;
+    list-style: none;
+    display: inline-table; }
+    #card-carousel ul.slides-wrap li h1 {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-weight: 200;
+      text-transform: capitalize;
+      letter-spacing: 1px;
+      font-size: 21px;
+      margin: 25px;
+      position: relative;
+      z-index: 2; }
 
 @media (max-width: 991px) {
   #card-carousel ul.slides-wrap li {
@@ -541,12 +568,11 @@
   height: auto;
   z-index: -100;
   transform: translateX(-50%) translateY(-50%);
-  background: url("/media/images/timeline_bg_test_3.jpg") no-repeat;
+  background: #222;
   background-size: cover; }
 
 #timeline-year-control {
-  padding: 15px 0;
-  background: rgba(0, 0, 0, 0.3); }
+  padding: 15px 0; }
   #timeline-year-control #timeline-year-control-content {
     text-align: center; }
     #timeline-year-control #timeline-year-control-content a {
@@ -592,7 +618,7 @@
 #timeline-months {
   margin: 0;
   padding: 25px 0 50px;
-  background: rgba(5, 5, 5, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   transition: 0.25s all ease-in-out; }
   #timeline-months > ul {
@@ -737,8 +763,9 @@
       width: 100%; }
 
 #timeline-content {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.7);
   transition: 0.25s all ease-in-out;
+  padding-bottom: 50px;
   overflow-y: auto; }
   #timeline-content h1 {
     font-family: 'Roboto Condensed', sans-serif;
@@ -747,7 +774,7 @@
     letter-spacing: -1px;
     font-size: 48px;
     color: #FFEB00;
-    margin: 30px 0 0 0; }
+    margin: 50px 0 0 0; }
   #timeline-content date {
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: 400;
@@ -767,7 +794,6 @@
   left: -64px; }
 
 #footer {
-  background: #202020;
   padding: 25px;
   text-align: center; }
   #footer a {
@@ -1182,7 +1208,7 @@ html {
   height: 100%; }
 
 body {
-  background: #021016;
+  background: #111;
   margin: 0;
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
@@ -1219,16 +1245,7 @@ body {
       #call-to-action a:hover button {
         color: #23424D; }
 
-#main.page-index {
-  top: 100%;
-  position: absolute;
-  width: 100%; }
-
-#main #main-content {
-  padding-top: 70px; }
-
 .layout {
-  background: #222;
   padding: 25px; }
   .layout h1 {
     font-family: 'Roboto Condensed', sans-serif;

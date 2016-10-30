@@ -15,11 +15,37 @@
 		margin: 0;
 		padding: 0;
 	}
-	background: #333;
-	.card {
+	// background: #333;
+	a.card {
 		position: relative;
 		min-height: 300px;
 		z-index: 1;
+		display: block;
+		text-decoration: none;
+		
+		background-position-x: 50%;
+		background-position-y: 0;
+		background-size: auto 300px;
+		background-origin: padding-box;
+
+		transition: 0.3s all ease-in-out;
+
+		h1 {
+			color: $knGrayLight;
+			transition: 0.3s all ease-in-out;
+		}
+
+		&:hover {
+			cursor: pointer;
+			background-size: auto 330px;
+			background-position-y: -15px;
+
+			h1 {
+				color: #fff;
+			}
+		}
+
+		
 
 		img {
 			display: none;

@@ -9,6 +9,8 @@ var Modal = require('./components/Modal.js');
 var Curtain = require('./components/Curtain.js');
 var Main = require('./components/Main.js');
 
+var CardCarousel = require('./components/CardCarousel.js');
+
 var App = Ulna.Component.extend({
 	root: '#app-root',
 
@@ -51,7 +53,7 @@ var App = Ulna.Component.extend({
 
 				// we pass on our props to Main, which is our main content area
 				// content['#nav-wrap.container'] = new Nav();
-				content['#header-wrap.container'] = new Header();
+				// content['#header-wrap.container'] = new Header();
 				content[mainKey] = new Main({
 					data: this.data
 				});

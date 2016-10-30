@@ -8,13 +8,14 @@
 	height: auto;
 	z-index: -100;
 	transform: translateX(-50%) translateY(-50%);
-	background: url('/media/images/timeline_bg_test_3.jpg') no-repeat;
+	// background: url('/media/images/timeline_bg_test_3.jpg') no-repeat;
+	background: #222;
 	background-size: cover;
 }
 
 #timeline-year-control {
 	padding: 15px 0;
-	background: rgba(0,0,0,0.3);
+	// background: rgba(0,0,0,0.3);
 	#timeline-year-control-content {
 		text-align: center;
 		a {
@@ -73,11 +74,7 @@
 #timeline-months {
 	margin: 0;
 	padding: 25px 0 50px;
-	background: rgba(5,5,5,0.8);
-
-	// bottom: 0;
- //    top: 130px;
- //    position: absolute;
+	background: rgba(0, 0, 0, 0.5);
 
     overflow-y: auto;
 
@@ -192,19 +189,6 @@
 				}
 			}
 		}
-
-		// active state for the month line
-		// can add this in back later
-		// .active {
-		// 	.timeline-month-title {
-		// 		color: #fff;
-		// 	}
-		// 	.timeline-month-nodes {
-		// 		&:after {
-		// 			background: rgba(255,255,255,0.8);
-		// 		}
-		// 	}
-		// }
 	}
 }
 
@@ -291,11 +275,9 @@
 }
 
 #timeline-content {
-	background: rgba(0,0,0,0.85);
-	// bottom: 0;
- //    top: 130px;
- //    position: absolute;
+	background: rgba(0, 0, 0, 0.70);
     transition: 0.25s all ease-in-out;
+    padding-bottom: 50px;
     
     overflow-y: auto;
 
@@ -303,7 +285,7 @@
     	@include RobotoCondensed(400, uppercase, -1px);
     	font-size: 48px;
     	color: $grYellow;
-    	margin: 30px 0 0 0;
+    	margin: 50px 0 0 0;
     }
 
     date {

@@ -62,7 +62,7 @@ var Card = Ulna.Component.extend({
 
 					var card = {};
 					var cardBackground = 'background-image: url(' + this.data.src + ')';
-					var cardKey = '.card[style="' + cardBackground + '"]';
+					var cardKey = 'a.card[style="' + cardBackground + '"]';
 
 					card[cardKey] = templ;
 
@@ -76,7 +76,7 @@ var Card = Ulna.Component.extend({
 
 					var card = {};
 					var cardBackground = 'background-image: url(' + this.data.thumb + ')';
-					var cardKey = '.card[style="' + cardBackground + '"]';
+					var cardKey = 'a.card[style="' + cardBackground + '"]';
 
 					card[cardKey] = templ;
 

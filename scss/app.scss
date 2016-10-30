@@ -30,7 +30,7 @@ html {
 }
 
 body {
-	background: $knBlueDark;
+	background: #111;
 	margin: 0;
 	@include Roboto(100);
 	height: 100%;
@@ -75,22 +75,21 @@ body {
 	
 }
 
-#main {
-	&.page-index {
-		top: 100%; 
-		position: absolute; 
-		width: 100%;
-	}
+// #main {
+// 	&.page-index {
+// 		top: 100%; 
+// 		position: absolute; 
+// 		width: 100%;
+// 	}
 	
-	#main-content {
-		padding-top: 70px;
-	}
-}
+// 	#main-content {
+// 		padding-top: 70px;
+// 	}
+// }
 
 
 // global layout class for general formatting on articles
 .layout {
-	background: #222;
 	padding: 25px;
 	h1 {
 		@include RobotoCondensed;
