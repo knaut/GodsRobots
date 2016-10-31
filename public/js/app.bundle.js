@@ -7354,8 +7354,6 @@ var Modal = require('./components/Modal.js');
 var Curtain = require('./components/Curtain.js');
 var Main = require('./components/Main.js');
 
-var CardCarousel = require('./components/CardCarousel.js');
-
 var App = Ulna.Component.extend({
 	root: '#app-root',
 
@@ -7398,7 +7396,7 @@ var App = Ulna.Component.extend({
 
 				// we pass on our props to Main, which is our main content area
 				// content['#nav-wrap.container'] = new Nav();
-				// content['#header-wrap.container'] = new Header();
+				content['#header-wrap.container'] = new Header();
 				content[mainKey] = new Main({
 					data: this.data
 				});
@@ -7422,7 +7420,7 @@ if (Ulna.env === 'browser') {
 }
 
 module.exports = App;
-},{"./components/CardCarousel.js":23,"./components/Curtain.js":24,"./components/Header.js":28,"./components/Main.js":32,"./components/Modal.js":33,"./components/Nav.js":34,"./dispatcher.js":59,"./router.js":60,"./services.js":61,"ulna":8}],19:[function(require,module,exports){
+},{"./components/Curtain.js":24,"./components/Header.js":28,"./components/Main.js":32,"./components/Modal.js":33,"./components/Nav.js":34,"./dispatcher.js":59,"./router.js":60,"./services.js":61,"ulna":8}],19:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7648,6 +7646,14 @@ var Card = Ulna.Component.extend({
 	// 	name: null,
 	// 	thumb: null,
 	// },
+
+	events: {
+		'click a.card': function(e) {
+			e.preventDefault();
+
+			console.log(this.data)
+		}
+	},
 
 	// cards need to be smarter
 	// their general format should be uniform, but can switch based on kind
@@ -8215,7 +8221,6 @@ var PhotoGallery = require('./Photos/PhotoGallery.js');
 var PhotoCarousel = require('./Photos/PhotoCarousel.js');
 var CardCarousel = require('./CardCarousel.js');
 
-var Logo = require('./Logo.js');
 var HotButton = require('./HotButton.js');
 var SocialIcons = require('./SocialIcons.js');
 
@@ -8239,22 +8244,12 @@ var indexTemplate = {
 		// 'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
 		// 	data: services.data.photos
 		// }),
-		'header#logo.col-lg-12': new Logo(),
 		'#card-carousel': new CardCarousel({
 			data: {
 				title: 'Featured',
 				items: services.utils.getFeaturedItems( services.data.events )
 			}
 		}),
-		'ul.col-lg-12': {
-			'li#call-to-action': new HotButton({
-				data: {
-					name: 'call-to-action',
-					text: 'Enter the Timeline'
-				}
-			}),
-		},
-		'#social-icons.col-lg-12': new SocialIcons(),	
 		'footer#footer': new Footer()
 	}
 };
@@ -8394,7 +8389,7 @@ var Main = Ulna.Component.extend({
 });
 
 module.exports = Main;
-},{"../dispatcher.js":59,"../services.js":61,"./BioCardList.js":20,"./BrandCarousel.js":21,"./CardCarousel.js":23,"./Discography.js":26,"./Footer.js":27,"./Hero.js":29,"./HotButton.js":30,"./Logo.js":31,"./Photos/PhotoCarousel.js":37,"./Photos/PhotoGallery.js":38,"./SocialIcons.js":39,"./Timeline/Timeline.js":44,"./TimelinePrev.js":47,"./UpcomingCarousel.js":49,"./VFrame.js":50,"ulna":8}],33:[function(require,module,exports){
+},{"../dispatcher.js":59,"../services.js":61,"./BioCardList.js":20,"./BrandCarousel.js":21,"./CardCarousel.js":23,"./Discography.js":26,"./Footer.js":27,"./Hero.js":29,"./HotButton.js":30,"./Photos/PhotoCarousel.js":37,"./Photos/PhotoGallery.js":38,"./SocialIcons.js":39,"./Timeline/Timeline.js":44,"./TimelinePrev.js":47,"./UpcomingCarousel.js":49,"./VFrame.js":50,"ulna":8}],33:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -9151,79 +9146,81 @@ var MonthCarousel = Ulna.Component.extend({
 	},
 
 	template: {
-		'div.slide-status': function() {
-			var leds = {
-				ul: []
-			};
-			for (var l = 0; this.data.months.length > l; l++) {						
-				if (l === this.data.index) {
-					var led = {
-						index: l,
-						active: 'active'
-					}
-				} else {
-					var led = {
-						index: l,
-						active: ''
-					}
-				}
-				var liKey = 'li.carousel-slide-status-' + led.index + '.' + led.active;
-				var li = {};
-				li[liKey] = '';
-				leds.ul.push(li);
-			}
-			return leds;
-		},
-		'div.carousel-inner': {
-			'div.carousel-nav': {
-				'a.carousel-prev': {
-					span: 'Previous',
-					'i.fa.fa-angle-double-left': ''
-				},
-				'a.carousel-next': {
-					span: 'Next',
-					'i.fa.fa-angle-double-right': ''
-				}
-			},
-			'.slides-wrap': function() {
-				var list = [];
-				var style = '';
-				var activeDateMonthID = new Moment(this.data.activeDate.startDate).format('MMMM').toLowerCase();
-				// each slide object
-				
-				for (var i = 0; this.data.months.length > i; i++) {
-					var currMonthID = services.utils.hyphenate( Object.keys( this.data.months[i] )[0] );
-					var active = false;						
-				
-					if ( currMonthID === activeDateMonthID ) {
-						active = this.data.activeDate;
-						style = '[style="left:' + i * -100 + '%"]';
-					}
-				
-					var item = {};
-					var itemKey = 'li.slide.timeline-month#timeline-month-' + 
-						currMonthID + 
-						'-' + services.utils.buildMonthUID( this.data.activeDate.startDate ) +
-						style;
-				
-					item[itemKey] = new Month({
-						data: {
-							id: currMonthID + '-' + services.utils.buildMonthUID( this.data.activeDate.startDate ),
-							month: currMonthID,
-							active: active,
-							dates: this.data.months[i][ Object.keys( this.data.months[i] )[0] ]
+		'.container': {
+			'div.slide-status': function() {
+				var leds = {
+					ul: []
+				};
+				for (var l = 0; this.data.months.length > l; l++) {						
+					if (l === this.data.index) {
+						var led = {
+							index: l,
+							active: 'active'
 						}
-					});
-				
-					list.push(item);
+					} else {
+						var led = {
+							index: l,
+							active: ''
+						}
+					}
+					var liKey = 'li.carousel-slide-status-' + led.index + '.' + led.active;
+					var li = {};
+					li[liKey] = '';
+					leds.ul.push(li);
 				}
+				return leds;
+			},
+			'div.carousel-inner': {
+				'div.carousel-nav': {
+					'a.carousel-prev': {
+						span: 'Previous',
+						'i.fa.fa-angle-double-left': ''
+					},
+					'a.carousel-next': {
+						span: 'Next',
+						'i.fa.fa-angle-double-right': ''
+					}
+				},
+				'.slides-wrap': function() {
+					var list = [];
+					var style = '';
+					var activeDateMonthID = new Moment(this.data.activeDate.startDate).format('MMMM').toLowerCase();
+					// each slide object
+					
+					for (var i = 0; this.data.months.length > i; i++) {
+						var currMonthID = services.utils.hyphenate( Object.keys( this.data.months[i] )[0] );
+						var active = false;						
+					
+						if ( currMonthID === activeDateMonthID ) {
+							active = this.data.activeDate;
+							style = '[style="left:' + i * -100 + '%"]';
+						}
+					
+						var item = {};
+						var itemKey = 'li.slide.timeline-month#timeline-month-' + 
+							currMonthID + 
+							'-' + services.utils.buildMonthUID( this.data.activeDate.startDate ) +
+							style;
+					
+						item[itemKey] = new Month({
+							data: {
+								id: currMonthID + '-' + services.utils.buildMonthUID( this.data.activeDate.startDate ),
+								month: currMonthID,
+								active: active,
+								dates: this.data.months[i][ Object.keys( this.data.months[i] )[0] ]
+							}
+						});
+					
+						list.push(item);
+					}
 
-				var listKey = 'ul.slides' + style;
+					var listKey = 'ul.slides' + style;
 
-				var obj = {};
-				obj[listKey] = list;
+					var obj = {};
+					obj[listKey] = list;
 
-				return obj;
+					return obj;
+				}
 			}
 		}
 	}
@@ -9360,13 +9357,9 @@ var Timeline = Ulna.Component.extend({
 			var rightCol = {};
 			var rightColKey = '#timeline-content';
 
-			rightCol[rightColKey] = {
-				'.container': {
-					'.col-lg-12': new DateArticle({
-						data: this.data.activeDate
-					})
-				}
-			};
+			rightCol[rightColKey] = new DateArticle({
+				data: this.data.activeDate
+			});
 			
 			cols.push(rightCol);
 

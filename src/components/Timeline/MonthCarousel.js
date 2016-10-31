@@ -138,79 +138,81 @@ var MonthCarousel = Ulna.Component.extend({
 	},
 
 	template: {
-		'div.slide-status': function() {
-			var leds = {
-				ul: []
-			};
-			for (var l = 0; this.data.months.length > l; l++) {						
-				if (l === this.data.index) {
-					var led = {
-						index: l,
-						active: 'active'
-					}
-				} else {
-					var led = {
-						index: l,
-						active: ''
-					}
-				}
-				var liKey = 'li.carousel-slide-status-' + led.index + '.' + led.active;
-				var li = {};
-				li[liKey] = '';
-				leds.ul.push(li);
-			}
-			return leds;
-		},
-		'div.carousel-inner': {
-			'div.carousel-nav': {
-				'a.carousel-prev': {
-					span: 'Previous',
-					'i.fa.fa-angle-double-left': ''
-				},
-				'a.carousel-next': {
-					span: 'Next',
-					'i.fa.fa-angle-double-right': ''
-				}
-			},
-			'.slides-wrap': function() {
-				var list = [];
-				var style = '';
-				var activeDateMonthID = new Moment(this.data.activeDate.startDate).format('MMMM').toLowerCase();
-				// each slide object
-				
-				for (var i = 0; this.data.months.length > i; i++) {
-					var currMonthID = services.utils.hyphenate( Object.keys( this.data.months[i] )[0] );
-					var active = false;						
-				
-					if ( currMonthID === activeDateMonthID ) {
-						active = this.data.activeDate;
-						style = '[style="left:' + i * -100 + '%"]';
-					}
-				
-					var item = {};
-					var itemKey = 'li.slide.timeline-month#timeline-month-' + 
-						currMonthID + 
-						'-' + services.utils.buildMonthUID( this.data.activeDate.startDate ) +
-						style;
-				
-					item[itemKey] = new Month({
-						data: {
-							id: currMonthID + '-' + services.utils.buildMonthUID( this.data.activeDate.startDate ),
-							month: currMonthID,
-							active: active,
-							dates: this.data.months[i][ Object.keys( this.data.months[i] )[0] ]
+		'.container': {
+			'div.slide-status': function() {
+				var leds = {
+					ul: []
+				};
+				for (var l = 0; this.data.months.length > l; l++) {						
+					if (l === this.data.index) {
+						var led = {
+							index: l,
+							active: 'active'
 						}
-					});
-				
-					list.push(item);
+					} else {
+						var led = {
+							index: l,
+							active: ''
+						}
+					}
+					var liKey = 'li.carousel-slide-status-' + led.index + '.' + led.active;
+					var li = {};
+					li[liKey] = '';
+					leds.ul.push(li);
 				}
+				return leds;
+			},
+			'div.carousel-inner': {
+				'div.carousel-nav': {
+					'a.carousel-prev': {
+						span: 'Previous',
+						'i.fa.fa-angle-double-left': ''
+					},
+					'a.carousel-next': {
+						span: 'Next',
+						'i.fa.fa-angle-double-right': ''
+					}
+				},
+				'.slides-wrap': function() {
+					var list = [];
+					var style = '';
+					var activeDateMonthID = new Moment(this.data.activeDate.startDate).format('MMMM').toLowerCase();
+					// each slide object
+					
+					for (var i = 0; this.data.months.length > i; i++) {
+						var currMonthID = services.utils.hyphenate( Object.keys( this.data.months[i] )[0] );
+						var active = false;						
+					
+						if ( currMonthID === activeDateMonthID ) {
+							active = this.data.activeDate;
+							style = '[style="left:' + i * -100 + '%"]';
+						}
+					
+						var item = {};
+						var itemKey = 'li.slide.timeline-month#timeline-month-' + 
+							currMonthID + 
+							'-' + services.utils.buildMonthUID( this.data.activeDate.startDate ) +
+							style;
+					
+						item[itemKey] = new Month({
+							data: {
+								id: currMonthID + '-' + services.utils.buildMonthUID( this.data.activeDate.startDate ),
+								month: currMonthID,
+								active: active,
+								dates: this.data.months[i][ Object.keys( this.data.months[i] )[0] ]
+							}
+						});
+					
+						list.push(item);
+					}
 
-				var listKey = 'ul.slides' + style;
+					var listKey = 'ul.slides' + style;
 
-				var obj = {};
-				obj[listKey] = list;
+					var obj = {};
+					obj[listKey] = list;
 
-				return obj;
+					return obj;
+				}
 			}
 		}
 	}

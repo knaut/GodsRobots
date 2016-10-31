@@ -12,6 +12,7 @@ var Month = require('./Month.js');
 var MonthList = require('./MonthList.js');
 var MonthCarousel = require('./MonthCarousel.js');
 
+var Logo = require('../Logo.js');
 
 var years = services.utils.getYears( services.data.events );
 var activeYear = services.utils.getYears( services.data.events )[0];
@@ -34,6 +35,12 @@ var Timeline = Ulna.Component.extend({
 	},
 	
 	template: {
+		'#logo': new Logo({
+			data: {
+				src: '/media/images/logos/gr_logo_mini.png'
+			}
+		}),
+
 		// use a function to avoid scope issues when passing down data
 		'#timeline-year-control': function() {
 			return new YearControl({
@@ -69,11 +76,9 @@ var Timeline = Ulna.Component.extend({
 			var rightColKey = '#timeline-content';
 
 			rightCol[rightColKey] = {
-				'.container': {
-					'.col-lg-12': new DateArticle({
-						data: this.data.activeDate
-					})
-				}
+				'.container': new DateArticle({
+					data: this.data.activeDate
+				})
 			};
 			
 			cols.push(rightCol);

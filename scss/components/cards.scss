@@ -70,7 +70,7 @@
 	}
 	ul.slides-wrap {
 		white-space: nowrap;
-		padding-bottom: 25px;
+		
 		li {
 			width: 100%;
 			height: 100%;
@@ -91,11 +91,59 @@
 	}
 }
 
+#card-carousel {
+	ul.slides-wrap {
+		li {
+			width: 100%;
+		}
+	}
+}
+
+@include breakpoint(xxs) {
+	#card-carousel {
+		ul.slides-wrap {
+			li {
+				width: 100%;
+			}
+		}
+	}
+}
+
+@include breakpoint(xs) {
+	#card-carousel {
+		ul.slides-wrap {
+			li {
+				width: 100%;
+			}
+		}
+	}
+}
+
 @include breakpoint(sm) {
 	#card-carousel {
 		ul.slides-wrap {
 			li {
+				width: 100%;
+			}
+		}
+	}
+}
+
+@include breakpoint(md) {
+	#card-carousel {
+		ul.slides-wrap {
+			li {
 				width: 50%;
+			}
+		}
+	}
+}
+
+@include breakpoint(lg) {
+	#card-carousel {
+		ul.slides-wrap {
+			li {
+				width: 25%;
 			}
 		}
 	}
@@ -150,30 +198,30 @@
 	}
 }
 
-@include breakpoint(sm) {
-	#upcoming-carousel-inner {
-		.card {
-			span.upcoming {
-				font-size: 14px;
-				padding-top: 10px;
-				padding-bottom: 10px;
-			}
-		}
-	}
-}
+// @include breakpoint(sm) {
+// 	#upcoming-carousel-inner {
+// 		.card {
+// 			span.upcoming {
+// 				font-size: 14px;
+// 				padding-top: 10px;
+// 				padding-bottom: 10px;
+// 			}
+// 		}
+// 	}
+// }
 
-@include breakpoint(md) {
-	#upcoming-carousel-inner {
-		.card {
-			height: 625px;
-		}	
-	}
-}
+// @include breakpoint(md) {
+// 	#upcoming-carousel-inner {
+// 		.card {
+// 			height: 625px;
+// 		}	
+// 	}
+// }
 
-@include breakpoint(lg) {
-	#upcoming-carousel-inner {
-		.card {
-			height: 850px;
-		}	
-	}
-}
+// @include breakpoint(lg) {
+// 	#upcoming-carousel-inner {
+// 		.card {
+// 			height: 850px;
+// 		}	
+// 	}
+// }

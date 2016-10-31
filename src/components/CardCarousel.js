@@ -27,17 +27,17 @@ var CardCarousel = Ulna.Component.extend({
 		'.card-carousel-wrap': function() {
 			var templ = {
 				'h1.carousel-title': this.data.title ? this.data.title : '',
-				'div.carousel-nav': {
-					'a.carousel-prev': {
-						span: 'Previous',
-						'i.fa.fa-chevron-left': ''
-					},
-					'a.carousel-next': {
-						span: 'Next',
-						'i.fa.fa-chevron-right': ''
-					}
-				},
 				'div.carousel-inner': {
+					'div.carousel-nav': {
+						'a.carousel-prev': {
+							span: 'Previous',
+							'i.fa.fa-chevron-left': ''
+						},
+						'a.carousel-next': {
+							span: 'Next',
+							'i.fa.fa-chevron-right': ''
+						}
+					},
 					'ul.slides-wrap': function() {
 						var items = [];
 

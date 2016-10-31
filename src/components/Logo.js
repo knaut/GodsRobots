@@ -13,8 +13,18 @@ var Logo = Ulna.Component.extend({
 		// }
 	},
 
+	data: {
+		src: '/media/images/logos/gr_logo.png'
+	},
+
 	template: {
-		'img[src="media/images/logos/gr_logo.png"]': ''
+		div: function() {
+			var key = 'img[src="' + this.data.src + '"]';
+			var obj = {};
+			obj[key] = '';
+
+			return obj;
+		}
 	}
 });
 

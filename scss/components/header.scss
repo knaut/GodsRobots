@@ -36,24 +36,24 @@
 
 @include breakpoint(xs) {
 	#main-wrap #logo img {
-		width: 70%;
+		width: 50%;
 	}
 }
 
 @include breakpoint(sm) {
 	#main-wrap #logo img {
-		width: 45%;
+		width: 35%;
 	}
 }
 
 @include breakpoint(md) {
 	#main-wrap #logo img {
-		width: 30%;
+		width: 20%;
 	}
 }
 
 @include breakpoint(lg) {
 	#main-wrap #logo img {
-		width: 15%;
+		width: 10%;
 	}
 }

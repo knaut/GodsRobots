@@ -3,12 +3,17 @@
   @if ($point == lg){
     @media (min-width: 1200px){ @content }
   }
+
   @else if ($point == md){
     @media   (max-width: 1199px){ @content }
   }
   
   @else if ($point == sm){
-    @media   (max-width: 991px){ @content }
+    @media   (max-width: 1091px){ @content }
+  }
+
+  @else if ($point == sm){
+    @media   (max-width: 891px){ @content }
   }
 
   @else if ($point == xs){

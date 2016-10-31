@@ -8,6 +8,7 @@ var Nav = require('./components/Nav.js');
 var Modal = require('./components/Modal.js');
 var Curtain = require('./components/Curtain.js');
 var Main = require('./components/Main.js');
+var Footer = require('./components/Footer.js');
 
 var CardCarousel = require('./components/CardCarousel.js');
 
@@ -67,7 +68,8 @@ var App = Ulna.Component.extend({
 			}
 
 			return content;
-		}
+		},
+		'footer#footer': new Footer()
 	}
 });
 

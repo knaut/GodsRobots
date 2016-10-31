@@ -49,6 +49,14 @@ var Card = Ulna.Component.extend({
 	// 	thumb: null,
 	// },
 
+	events: {
+		'click a.card': function(e) {
+			e.preventDefault();
+
+			console.log(this.data)
+		}
+	},
+
 	// cards need to be smarter
 	// their general format should be uniform, but can switch based on kind
 	template: {

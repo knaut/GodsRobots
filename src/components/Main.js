@@ -42,8 +42,12 @@ var indexTemplate = {
 		// 'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
 		// 	data: services.data.photos
 		// }),
-		'header#logo.col-lg-12': new Logo(),
-		'#card-carousel': new CardCarousel({
+		'header#logo.col-lg-12': new Logo({
+			data: {
+				src: '/media/images/logos/gr_logo.png'
+			}
+		}),
+		'#card-carousel.container': new CardCarousel({
 			data: {
 				title: 'Featured',
 				items: services.utils.getFeaturedItems( services.data.events )
@@ -57,8 +61,7 @@ var indexTemplate = {
 				}
 			}),
 		},
-		'#social-icons.col-lg-12': new SocialIcons(),	
-		'footer#footer': new Footer()
+		'#social-icons.col-lg-12': new SocialIcons(),
 	}
 };
 
