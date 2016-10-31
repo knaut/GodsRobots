@@ -44,9 +44,11 @@ var CardCarousel = Ulna.Component.extend({
 						for (var v = 0; this.data.items.length > v; v++) {
 							var card = {};
 							var cardKey = 'li#card-' + this.data.items[v].id;
+
 							card[cardKey] = new Card({
 								data: this.data.items[v]
 							});
+							
 							items.push(card);
 						}
 

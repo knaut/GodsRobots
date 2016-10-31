@@ -348,14 +348,29 @@ module.exports = {
 			for (var m = 0; events[d].media.length > m; m++) {
 
 				if (events[d].media[m].hasOwnProperty('featured')) {
-					// console.log(events[d].media[m])
-					items.push( events[d].media[m] );
+					var media = events[d].media[m];
+					// need a way to find our date from featured media items
+					media['iso'] = this.buildDateUID( events[d].startDate )
+
+					items.push( media );
 				}
 
 			}
 		}
 
 		return items;
+	},
+
+	getDateByName( events, name ) {
+		var date;
+
+		for (var i = 0; events.length > i; i++) {
+			if (events[i].name === name) {
+				date = events[i];
+			}
+		}
+
+		return date;
 	},
 
 	getState: function( events, req ) {

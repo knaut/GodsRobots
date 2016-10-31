@@ -1,4 +1,7 @@
 var Ulna = require('ulna');
+var services = require('../services.js');
+var dispatcher = require('../dispatcher.js');
+var RouteChange = require('../actions/RouteChange.js');
 
 // a card is a generic component designed to display content in a visual manner
 // it consists of a full-size background image,
@@ -41,19 +44,23 @@ Soundcloud Embed
 
 var Card = Ulna.Component.extend({
 	root: '#card-<<this.data.id>>',
-	
+	dispatcher: dispatcher,
 	// data: {
 	// 	kind: null,
 	// 	id: null,
 	// 	name: null,
 	// 	thumb: null,
+	//  date: dateObj
 	// },
 
 	events: {
 		'click a.card': function(e) {
 			e.preventDefault();
-
-			console.log(this.data)
+			
+			// console.log(this.data.iso);
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+				timeline: this.data.iso
+			}))
 		}
 	},
 
