@@ -18,7 +18,9 @@
     letter-spacing: auto; }
   #main-wrap #logo img {
     margin: 20px auto 0;
-    width: 100%; }
+    width: 20%; }
+    #main-wrap #logo img:hover {
+      cursor: pointer; }
 
 #header-wrap {
   height: 100%;
@@ -27,21 +29,25 @@
 #header-inner {
   margin-top: 25px; }
 
-@media (max-width: 767px) {
+@media (min-width: 1200px) {
   #main-wrap #logo img {
-    width: 50%; } }
-
-@media (max-width: 1091px) {
-  #main-wrap #logo img {
-    width: 35%; } }
+    width: 15%; } }
 
 @media (max-width: 1199px) {
   #main-wrap #logo img {
-    width: 20%; } }
+    width: 25%; } }
 
-@media (min-width: 1200px) {
+@media (max-width: 891px) {
   #main-wrap #logo img {
-    width: 10%; } }
+    width: 30%; } }
+
+@media (max-width: 767px) {
+  #main-wrap #logo img {
+    width: 45%; } }
+
+@media (max-width: 640px) {
+  #main-wrap #logo img {
+    width: 60%; } }
 
 #upcoming {
   background: #0f0f0f;
@@ -232,7 +238,7 @@
 .carousel-inner-next span {
   display: none; }
 
-@media (max-width: 1091px) {
+@media (max-width: 891px) {
   .carousel-inner-prev:before,
   .carousel-inner-next:before {
     background-size: cover !important;
@@ -432,7 +438,7 @@
       display: block;
       opacity: 1; } }
 
-@media (max-width: 1091px) {
+@media (max-width: 891px) {
   #nav-wrap nav #nav-expander {
     position: fixed;
     top: 0;
@@ -514,25 +520,25 @@
 #card-carousel ul.slides-wrap li {
   width: 100%; }
 
-@media (max-width: 640px) {
+@media (min-width: 1200px) {
   #card-carousel ul.slides-wrap li {
-    width: 100%; } }
+    width: 25%; } }
+
+@media (max-width: 1199px) {
+  #card-carousel ul.slides-wrap li {
+    width: 33.5%; } }
+
+@media (max-width: 891px) {
+  #card-carousel ul.slides-wrap li {
+    width: 50%; } }
 
 @media (max-width: 767px) {
   #card-carousel ul.slides-wrap li {
     width: 100%; } }
 
-@media (max-width: 1091px) {
+@media (max-width: 640px) {
   #card-carousel ul.slides-wrap li {
     width: 100%; } }
-
-@media (max-width: 1199px) {
-  #card-carousel ul.slides-wrap li {
-    width: 50%; } }
-
-@media (min-width: 1200px) {
-  #card-carousel ul.slides-wrap li {
-    width: 25%; } }
 
 #upcoming-carousel-inner .card {
   height: 400px; }
@@ -567,6 +573,13 @@
     padding: 15px 100px; }
   #upcoming-carousel-inner .card img {
     display: none; }
+
+.page-timeline #logo img {
+  width: 100px !important;
+  margin-top: 0; }
+
+.page-timeline #logo {
+  margin: 0 !important; }
 
 #timeline-bg {
   position: fixed;
@@ -941,7 +954,7 @@
       #photo-gallery.tile-gallery li {
         height: 200px;
         width: 200px; } }
-    @media (max-width: 1091px) {
+    @media (max-width: 891px) {
       #photo-gallery.tile-gallery li {
         height: 300px;
         width: 300px; } }
@@ -1148,7 +1161,7 @@
       #video-gallery.tile-gallery li {
         height: 200px;
         width: 200px; } }
-    @media (max-width: 1091px) {
+    @media (max-width: 891px) {
       #video-gallery.tile-gallery li {
         height: 300px;
         width: 300px; } }
@@ -1217,13 +1230,32 @@ html {
   height: 100%; }
 
 body {
-  background: #111;
+  background: #111 url(/media/images/global/pattern_hex_2.png) repeat;
   margin: 0;
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
   text-transform: auto;
   letter-spacing: auto;
-  height: 100%; }
+  height: 100%;
+  position: relative;
+  z-index: 1; }
+  body:before {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0+0,0.95+100 */
+    background: -moz-radial-gradient(center, ellipse cover, transparent 0%, rgba(0, 0, 0, 0.95) 100%);
+    /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, transparent 0%, rgba(0, 0, 0, 0.95) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.95) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#f2000000',GradientType=1 );
+    /* IE6-9 fallback on horizontal gradient */
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; }
   body #main-wrap {
     min-height: 100%; }
     body #main-wrap ul {

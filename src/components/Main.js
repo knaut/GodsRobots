@@ -32,7 +32,7 @@ routes.push({
 
 var indexTemplate = {
 	// '#vframe': new VFrame(),
-	'article#main-inner': {
+	'article#main-inner.container': {
 		// 'section#bio-cards.layout': new BioCardList(),
 		// 'section#discography.layout': new Discography({
 		// 	data: {
@@ -47,7 +47,7 @@ var indexTemplate = {
 				src: '/media/images/logos/gr_logo.png'
 			}
 		}),
-		'#card-carousel.container': new CardCarousel({
+		'#card-carousel.col-lg-12': new CardCarousel({
 			data: {
 				title: 'Featured',
 				items: services.utils.getFeaturedItems( services.data.events )

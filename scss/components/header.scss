@@ -16,8 +16,11 @@
 	img {
 		margin: 20px auto 0;
 		
-		
-		width: 100%;
+		width: 20%;
+
+		&:hover {
+			cursor: pointer;
+		}
 	}
 }
 
@@ -34,26 +37,38 @@
 	// max-height: 75%;
 }
 
-@include breakpoint(xs) {
+
+@include breakpoint(lg) {
 	#main-wrap #logo img {
-		width: 50%;
+		width: 15%;
+	}
+}
+
+
+@include breakpoint(md) {
+	#main-wrap #logo img {
+		width: 25%;
 	}
 }
 
 @include breakpoint(sm) {
 	#main-wrap #logo img {
-		width: 35%;
+		width: 30%;
 	}
 }
 
-@include breakpoint(md) {
+@include breakpoint(xs) {
 	#main-wrap #logo img {
-		width: 20%;
+		width: 45%;
 	}
 }
 
-@include breakpoint(lg) {
+@include breakpoint(xxs) {
 	#main-wrap #logo img {
-		width: 10%;
+		width: 60%;
 	}
 }
+
+
+
+

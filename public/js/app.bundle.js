@@ -8194,6 +8194,7 @@ module.exports = HotButton;
 },{"../actions/RouteChange.js":17,"../dispatcher.js":59,"../services.js":61,"ulna":8}],31:[function(require,module,exports){
 var Ulna = require('ulna');
 
+var RouteChange = require('../actions/RouteChange.js');
 var dispatcher = require('../dispatcher.js');
 
 var Logo = Ulna.Component.extend({
@@ -8211,8 +8212,14 @@ var Logo = Ulna.Component.extend({
 		src: '/media/images/logos/gr_logo.png'
 	},
 
+	events: {
+		'click a': function(e) {
+			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange('index'))
+		}
+	},
+
 	template: {
-		div: function() {
+		a: function() {
 			var key = 'img[src="' + this.data.src + '"]';
 			var obj = {};
 			obj[key] = '';
@@ -8223,7 +8230,7 @@ var Logo = Ulna.Component.extend({
 });
 
 module.exports = Logo;
-},{"../dispatcher.js":59,"ulna":8}],32:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"ulna":8}],32:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8258,7 +8265,7 @@ routes.push({
 
 var indexTemplate = {
 	// '#vframe': new VFrame(),
-	'article#main-inner': {
+	'article#main-inner.container': {
 		// 'section#bio-cards.layout': new BioCardList(),
 		// 'section#discography.layout': new Discography({
 		// 	data: {
@@ -8273,7 +8280,7 @@ var indexTemplate = {
 				src: '/media/images/logos/gr_logo.png'
 			}
 		}),
-		'#card-carousel.container': new CardCarousel({
+		'#card-carousel.col-lg-12': new CardCarousel({
 			data: {
 				title: 'Featured',
 				items: services.utils.getFeaturedItems( services.data.events )

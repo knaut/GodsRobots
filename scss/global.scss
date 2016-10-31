@@ -8,9 +8,9 @@
     @media   (max-width: 1199px){ @content }
   }
   
-  @else if ($point == sm){
-    @media   (max-width: 1091px){ @content }
-  }
+  // @else if ($point == sm){
+  //   @media   (max-width: 1091px){ @content }
+  // }
 
   @else if ($point == sm){
     @media   (max-width: 891px){ @content }

@@ -99,11 +99,31 @@
 	}
 }
 
-@include breakpoint(xxs) {
+@include breakpoint(lg) {
 	#card-carousel {
 		ul.slides-wrap {
 			li {
-				width: 100%;
+				width: 25%;
+			}
+		}
+	}
+}
+
+@include breakpoint(md) {
+	#card-carousel {
+		ul.slides-wrap {
+			li {
+				width: 33.5%;
+			}
+		}
+	}
+}
+
+@include breakpoint(sm) {
+	#card-carousel {
+		ul.slides-wrap {
+			li {
+				width: 50%;
 			}
 		}
 	}
@@ -119,7 +139,7 @@
 	}
 }
 
-@include breakpoint(sm) {
+@include breakpoint(xxs) {
 	#card-carousel {
 		ul.slides-wrap {
 			li {
@@ -129,25 +149,12 @@
 	}
 }
 
-@include breakpoint(md) {
-	#card-carousel {
-		ul.slides-wrap {
-			li {
-				width: 50%;
-			}
-		}
-	}
-}
 
-@include breakpoint(lg) {
-	#card-carousel {
-		ul.slides-wrap {
-			li {
-				width: 25%;
-			}
-		}
-	}
-}
+
+
+
+
+
 
 
 #upcoming-carousel-inner {
