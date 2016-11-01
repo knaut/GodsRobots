@@ -3,6 +3,7 @@ var hyphenate = require('../utils.js').hyphenate;
 var dispatcher = require('../dispatcher.js');
 
 var Photo = require('./Photos/Photo.js');
+var VideoThumb = require('./Videos/VideoThumb.js');
 
 var SlickCarousel = Ulna.Component.extend({
 	root: '#slick-carousel-<<this.data.id>>',
@@ -55,15 +56,31 @@ var SlickCarousel = Ulna.Component.extend({
 			var items = [];
 			for (var i = 0; this.data.items.length > i; i++) {
 
-				var li = {};
-				var liKey = 'div#photo-thumb-' + hyphenate(this.data.items[i].name);					
-				var data = this.data.items[i];
+				switch(this.data.items[i].kind) {
+					case 'flier' || 'photo' || 'still':
+						var li = {};
+						var liKey = 'div#photo-thumb-' + hyphenate(this.data.items[i].name);					
+						var data = this.data.items[i];
 
-				li[liKey] = new Photo({
-					data: data
-				});
+						li[liKey] = new Photo({
+							data: data
+						});
 
-				items.push(li);
+						items.push(li);
+					break;
+					case 'video':
+						var li = {};
+						var liKey = 'div#video-thumb-' + hyphenate(this.data.items[i].name);					
+						var data = this.data.items[i];
+
+						li[liKey] = new VideoThumb({
+							data: data
+						});
+
+						items.push(li);
+					break;
+				}
+				
 			}
 
 			return items;

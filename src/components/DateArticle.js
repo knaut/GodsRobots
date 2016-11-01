@@ -38,10 +38,11 @@ var DateArticle = Ulna.Component.extend({
 			}
 
 			if (videos.length) {
-				content['#video-carousel.carousel-gallery'] = new VideoCarousel({
+				content['#videos.slick-gallery'] = new SlickCarousel({
+					root: '#videos',
 					data: {
 						name: 'Videos',
-						videos: videos
+						items: videos
 					}
 				});
 			}
@@ -54,9 +55,9 @@ var DateArticle = Ulna.Component.extend({
 			}
 
 			if (imgs.length) {
-				content['#slick-carousel-test.slick-gallery'] = new SlickCarousel({
+				content['#photos.slick-gallery'] = new SlickCarousel({
+					root: '#photos',
 					data: {
-						id: 'test',
 						name: 'Photos',
 						items: imgs
 					}

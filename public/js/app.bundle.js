@@ -7839,10 +7839,11 @@ var DateArticle = Ulna.Component.extend({
 			}
 
 			if (videos.length) {
-				content['#video-carousel.carousel-gallery'] = new VideoCarousel({
+				content['#videos.slick-gallery'] = new SlickCarousel({
+					root: '#videos',
 					data: {
 						name: 'Videos',
-						videos: videos
+						items: videos
 					}
 				});
 			}
@@ -7855,9 +7856,9 @@ var DateArticle = Ulna.Component.extend({
 			}
 
 			if (imgs.length) {
-				content['#slick-carousel-test.slick-gallery'] = new SlickCarousel({
+				content['#photos.slick-gallery'] = new SlickCarousel({
+					root: '#photos',
 					data: {
-						id: 'test',
 						name: 'Photos',
 						items: imgs
 					}
@@ -8826,6 +8827,7 @@ var hyphenate = require('../utils.js').hyphenate;
 var dispatcher = require('../dispatcher.js');
 
 var Photo = require('./Photos/Photo.js');
+var VideoThumb = require('./Videos/VideoThumb.js');
 
 var SlickCarousel = Ulna.Component.extend({
 	root: '#slick-carousel-<<this.data.id>>',
@@ -8878,15 +8880,31 @@ var SlickCarousel = Ulna.Component.extend({
 			var items = [];
 			for (var i = 0; this.data.items.length > i; i++) {
 
-				var li = {};
-				var liKey = 'div#photo-thumb-' + hyphenate(this.data.items[i].name);					
-				var data = this.data.items[i];
+				switch(this.data.items[i].kind) {
+					case 'flier' || 'photo' || 'still':
+						var li = {};
+						var liKey = 'div#photo-thumb-' + hyphenate(this.data.items[i].name);					
+						var data = this.data.items[i];
 
-				li[liKey] = new Photo({
-					data: data
-				});
+						li[liKey] = new Photo({
+							data: data
+						});
 
-				items.push(li);
+						items.push(li);
+					break;
+					case 'video':
+						var li = {};
+						var liKey = 'div#video-thumb-' + hyphenate(this.data.items[i].name);					
+						var data = this.data.items[i];
+
+						li[liKey] = new VideoThumb({
+							data: data
+						});
+
+						items.push(li);
+					break;
+				}
+				
 			}
 
 			return items;
@@ -8895,7 +8913,7 @@ var SlickCarousel = Ulna.Component.extend({
 });
 
 module.exports = SlickCarousel;
-},{"../dispatcher.js":60,"../utils.js":63,"./Photos/Photo.js":36,"ulna":8}],40:[function(require,module,exports){
+},{"../dispatcher.js":60,"../utils.js":63,"./Photos/Photo.js":36,"./Videos/VideoThumb.js":54,"ulna":8}],40:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -10187,14 +10205,14 @@ var dates = [
 			{
 				kind: 'video',
 				featured: true,
-				src: 'https://www.youtube.com/embed/ATlui8zUdjk',
+				src: 'https://www.youtube.com/embed/H_87Eukt20s',
 				name: 'The Chapel Rehearsal 2',
 				thumb: '/media/images/events/the-chapel-sf/rehearsal-2_thumb.png'
 			},
 			{
 				kind: 'video',
 				featured: true,
-				src: 'https://www.youtube.com/embed/H_87Eukt20s',
+				src: 'https://www.youtube.com/embed/ATlui8zUdjk',
 				name: 'The Chapel, SF Live',
 				thumb: '/media/images/events/the-chapel-sf/video_thumb.png',
 			}

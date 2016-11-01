@@ -912,13 +912,14 @@
 
 .slick-gallery h1 {
   font-size: 28px !important;
-  color: #a0a0a0 !important;
-  margin-bottom: 10px !important; }
+  color: #fff !important;
+  margin-bottom: 25px !important; }
 
 .slick-gallery .slick-slider {
   padding: 0 25px; }
 
-.slick-gallery .photo-wrap img {
+.slick-gallery .photo-wrap img,
+.slick-gallery .video-wrap img {
   margin: 0 auto;
   max-width: 100%;
   max-height: 300px;
@@ -1391,7 +1392,8 @@
   text-align: center;
   padding: 0;
   margin: 0;
-  width: 100%; }
+  width: 100%;
+  margin-left: -25px; }
   .slick-dots li {
     position: relative;
     display: inline-block;

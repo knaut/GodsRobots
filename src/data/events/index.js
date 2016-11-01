@@ -150,14 +150,14 @@ var dates = [
 			{
 				kind: 'video',
 				featured: true,
-				src: 'https://www.youtube.com/embed/ATlui8zUdjk',
+				src: 'https://www.youtube.com/embed/H_87Eukt20s',
 				name: 'The Chapel Rehearsal 2',
 				thumb: '/media/images/events/the-chapel-sf/rehearsal-2_thumb.png'
 			},
 			{
 				kind: 'video',
 				featured: true,
-				src: 'https://www.youtube.com/embed/H_87Eukt20s',
+				src: 'https://www.youtube.com/embed/ATlui8zUdjk',
 				name: 'The Chapel, SF Live',
 				thumb: '/media/images/events/the-chapel-sf/video_thumb.png',
 			}
