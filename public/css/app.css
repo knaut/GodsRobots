@@ -104,8 +104,8 @@
     #timeline-months .carousel-nav a.carousel-next i.fa {
       right: 0; }
 
-#card-carousel .carousel-inner {
-  box-shadow: 0 0 20px black; }
+.carousel > div {
+  box-shadow: 0 0 50px black; }
 
 #timeline-months,
 #card-carousel {
@@ -1017,7 +1017,7 @@
       width: 100%; }
 
 #curtain-wrap #curtain {
-  background: rgba(50, 50, 0, 0);
+  background: rgba(25, 25, 25, 0) url(/media/images/logos/gr_logo_mini_black.png) center no-repeat;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -1026,11 +1026,11 @@
   width: auto;
   height: auto;
   transform: translateX(-50%) translateY(-50%);
-  z-index: 1;
+  z-index: 99;
   transition: 0.3s all ease-in-out; }
   #curtain-wrap #curtain.active {
     min-width: 100%;
-    background: #321900; }
+    background: #191919 url(/media/images/logos/gr_logo_mini_black.png) center no-repeat; }
 
 #video-carousel {
   position: relative; }
@@ -1448,6 +1448,13 @@ body {
       text-decoration: none; }
       #call-to-action a:hover button {
         color: #23424D; }
+
+#main #main-content {
+  transition: 0.5s all ease-in-out; }
+  #main #main-content.state-inactive {
+    opacity: 0; }
+  #main #main-content.state-active {
+    opacity: 1; }
 
 .layout {
   padding: 25px; }

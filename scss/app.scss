@@ -98,17 +98,28 @@ body {
 	
 }
 
-// #main {
-// 	&.page-index {
-// 		top: 100%; 
-// 		position: absolute; 
-// 		width: 100%;
-// 	}
+#main {
+	// &.page-index {
+	// 	top: 100%; 
+	// 	position: absolute; 
+	// 	width: 100%;
+	// }
 	
-// 	#main-content {
-// 		padding-top: 70px;
-// 	}
-// }
+	#main-content {
+		// opacity: 0;
+		// padding-top: 70px;
+		transition: 0.5s all ease-in-out;
+		
+		&.state-inactive {
+			opacity: 0;
+		}
+
+		&.state-active {
+			opacity: 1;
+		}
+
+	}
+}
 
 
 // global layout class for general formatting on articles

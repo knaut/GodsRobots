@@ -152,19 +152,35 @@ var Main = Ulna.Component.extend({
 	root: '#main',
 	dispatcher: dispatcher,
 
-	// listen: {
-	// 	HISTORY_PUSH: function(payload) {
-			
+	state: {
+		active: 'state-inactive'
+	},
 
-	// 	}
-	// },
+	listen: {
+		ON_LOAD( payload ) {
+			console.log('Main: ON_LOAD');
+
+			this.state.active = 'state-active';
+			this.mutations.fadeIn.call(this);
+
+		}
+	},
+
+	mutations: {
+		fadeIn() {
+			this.$root.find('#main-content').addClass('state-active').removeClass('state-inactive');
+		},
+		fadeOut() {
+			this.$root.find('#main-content').removeClass('state-active').addClass('state-active');
+		}
+	},
 
 	data: {
 		index: {}
 	},
 
 	template: {
-		'#main-content': function() {
+		'#main-content.<<this.state.active>>': function() {
 			var route = Object.keys(this.data)[0];
 
 			switch (route) {

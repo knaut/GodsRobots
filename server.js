@@ -29,6 +29,7 @@ var initializer = function() {
 		data: appState
 	});
 	app.bind();
+	app.dispatcher.dispatch('ON_LOAD', {});
 }
 
 
