@@ -1,1 +1,54 @@
+#main-wrap #logo {
+	position: relative;
+	width: 100%;
+	margin: 20px auto 0;
+	text-align: center;
+	color: #fff;
+	
+	h1 {
+		@include RobotoCondensed(100);
+	}
+
+	img {
+		margin: 20px auto 0;
+		
+		width: 20%;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}
+
+@include breakpoint(lg) {
+	#main-wrap #logo img {
+		width: 35%;
+	}
+}
+
+
+@include breakpoint(md) {
+	#main-wrap #logo img {
+		width: 35%;
+	}
+}
+
+@include breakpoint(sm) {
+	#main-wrap #logo img {
+		width: 35%;
+	}
+}
+
+@include breakpoint(xs) {
+	#main-wrap #logo img {
+		width: 50%;
+	}
+}
+
+@include breakpoint(xxs) {
+	#main-wrap #logo img {
+		width: 60%;
+	}
+}
+
 

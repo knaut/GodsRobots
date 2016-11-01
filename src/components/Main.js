@@ -23,130 +23,6 @@ var Logo = require('./Logo.js');
 var HotButton = require('./HotButton.js');
 var SocialIcons = require('./SocialIcons.js');
 
-// gather routes from nav
-var routes = services.data.index.nav;
-
-routes.push({
-	title: 'Index',
-	url: '/'
-});
-
-var indexTemplate = {
-	// '#vframe': new VFrame(),
-	'article#main-inner.container': {
-		// 'section#bio-cards.layout': new BioCardList(),
-		// 'section#discography.layout': new Discography({
-		// 	data: {
-		// 		albums: services.data.music.discography
-		// 	}
-		// }),
-		// 'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
-		// 	data: services.data.photos
-		// }),
-		'header#logo.col-lg-12': new Logo({
-			data: {
-				src: '/media/images/logos/gr_logo.png'
-			}
-		}),
-		'#featured.col-lg-12.card-carousel': new FeaturedCarousel({
-			root: '#featured',
-			data: {
-				title: 'Featured',
-				items: services.utils.getFeaturedItems( services.data.events )
-			}
-		}),
-		'ul.col-lg-12': {
-			'li#call-to-action': new HotButton({
-				data: {
-					name: 'call-to-action',
-					text: 'Enter the Timeline'
-				}
-			}),
-		},
-		'#social-icons.col-lg-12': new SocialIcons(),
-	}
-};
-
-var aboutTemplate = {
-	'#hero-wrap': new Hero(),
-	'article#main-inner': {
-		'section#bio-cards.layout': new BioCardList(),
-		'footer#footer': new Footer()
-	}
-}
-
-var musicTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Music',
-			img: '/media/images/music/music_hero_example.jpg'
-		}
-	}),
-	'article#main-inner': {
-		'section#discography.layout': new Discography({
-			data: {
-				albums: services.data.music.discography
-			}
-		}),
-		'footer#footer': new Footer()
-	}
-}
-
-var videoTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Videos',
-			img: '/media/images/videos/hero.jpg'
-		}
-	}),
-	'article#main-inner': {
-		'section#discography.layout': new Discography({
-			data: {
-				albums: services.data.music.discography
-			}
-		}),
-		'footer#footer': new Footer()
-	}
-}
-
-var photoTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Videos',
-			img: '/media/images/photos/hero.jpg'
-		}
-	}),
-	'article#main-inner': {
-		'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
-			data: services.data.photos
-		}),
-		'footer#footer': new Footer()
-	}
-}
-
-var pressTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Videos',
-			img: '/media/images/press/hero.jpg'
-		}
-	}),
-	'article#main-inner': {
-		'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
-			data: services.data.photos
-		}),
-		'footer#footer': new Footer()
-	}
-}
-
-var contactTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Videos',
-			img: '/media/images/contact/hero.jpg'
-		}
-	})
-}
 
 var Main = Ulna.Component.extend({
 	root: '#main',
@@ -162,7 +38,6 @@ var Main = Ulna.Component.extend({
 
 			this.state.active = 'state-active';
 			this.mutations.fadeIn.call(this);
-
 		}
 	},
 
@@ -182,37 +57,43 @@ var Main = Ulna.Component.extend({
 	template: {
 		'#main-content.<<this.state.active>>': function() {
 			var route = Object.keys(this.data)[0];
+			var obj = {
+				'header#logo.col-lg-12': new Logo()
+			};
 
 			switch (route) {
 				case 'index':
-					return indexTemplate;
+					
+					obj['article#main-inner.container'] = {
+						'#featured.col-lg-12.card-carousel': new FeaturedCarousel({
+							root: '#featured',
+							data: {
+								title: 'Featured',
+								items: services.utils.getFeaturedItems( services.data.events )
+							}
+						}),
+						'ul.col-lg-12': {
+							'li#call-to-action': new HotButton({
+								data: {
+									name: 'call-to-action',
+									text: 'Enter the Timeline'
+								}
+							}),
+						},
+						'#social-icons.col-lg-12': new SocialIcons(),
+					};
+
 				break;
 				
 				case 'timeline':
-					return new Timeline({
+					obj['#timeline'] = new Timeline({
+						root: '#timeline',
 						data: this.data.timeline
 					});
 				break;
-
-				// case 'about':
-				// 	return aboutTemplate;
-				// break;
-				// case 'music':
-				// 	return musicTemplate;
-				// break;
-				// case 'videos':
-				// 	return videoTemplate;
-				// break;
-				// case 'photos':
-				// 	return photoTemplate;
-				// break;
-				// case 'press':
-				// 	return pressTemplate;
-				// break;
-				// case 'contact':
-				// 	return contactTemplate;
-				// break;
 			}
+
+			return obj;
 		}
 	}
 });

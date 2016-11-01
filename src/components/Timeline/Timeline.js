@@ -23,7 +23,6 @@ var firstMonthKey = Object.keys(datesByMonths[0])[0];
 var firstDate = datesByMonths[0][firstMonthKey][0];
 
 var Timeline = Ulna.Component.extend({
-	root: '#main-content',
 	dispatcher: dispatcher,
 
 	// default data
@@ -35,12 +34,6 @@ var Timeline = Ulna.Component.extend({
 	},
 	
 	template: {
-		'#logo': new Logo({
-			data: {
-				src: '/media/images/logos/gr_logo_mini.png'
-			}
-		}),
-
 		// use a function to avoid scope issues when passing down data
 		'#timeline-year-control': function() {
 			return new YearControl({

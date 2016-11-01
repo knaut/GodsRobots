@@ -14,6 +14,9 @@ var services = new Ulna.Services({
 			title: 'GODS ROBOTS',
 			delimiter: ' - ',
 		},
+		brand: {
+			logo: '/media/images/logos/gr_logo_typeface.png'
+		},
 		index: require('./data/index.js'),
 		about: require('./data/about/index.js'),
 		music: require('./data/music/index.js'),

@@ -1,13 +1,3 @@
-.page-timeline {
-	#logo img {
-		width: 100px !important;
-		margin-top: 0;
-	}
-	#logo {
-		margin: 0 !important;
-	}
-}
-
 #timeline-bg {
 	position: fixed;
 	top: 50%;
@@ -18,8 +8,6 @@
 	height: auto;
 	z-index: -100;
 	transform: translateX(-50%) translateY(-50%);
-	// background: url('/media/images/timeline_bg_test_3.jpg') no-repeat;
-	// background: #111;
 	background-size: cover;
 }
 

@@ -2,6 +2,7 @@ var Ulna = require('ulna');
 
 var RouteChange = require('../actions/RouteChange.js');
 var dispatcher = require('../dispatcher.js');
+var services = require('../services.js');
 
 var Logo = Ulna.Component.extend({
 	root: '#logo',
@@ -15,8 +16,8 @@ var Logo = Ulna.Component.extend({
 	},
 
 	data: {
-		src: '/media/images/logos/gr_logo.png'
-	},
+		src: services.data.brand.logo
+	},	
 
 	events: {
 		'click a': function(e) {

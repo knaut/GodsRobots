@@ -8240,6 +8240,7 @@ var Ulna = require('ulna');
 
 var RouteChange = require('../actions/RouteChange.js');
 var dispatcher = require('../dispatcher.js');
+var services = require('../services.js');
 
 var Logo = Ulna.Component.extend({
 	root: '#logo',
@@ -8253,8 +8254,8 @@ var Logo = Ulna.Component.extend({
 	},
 
 	data: {
-		src: '/media/images/logos/gr_logo.png'
-	},
+		src: services.data.brand.logo
+	},	
 
 	events: {
 		'click a': function(e) {
@@ -8274,7 +8275,7 @@ var Logo = Ulna.Component.extend({
 });
 
 module.exports = Logo;
-},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"ulna":8}],32:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"../services.js":62,"ulna":8}],32:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8300,130 +8301,6 @@ var Logo = require('./Logo.js');
 var HotButton = require('./HotButton.js');
 var SocialIcons = require('./SocialIcons.js');
 
-// gather routes from nav
-var routes = services.data.index.nav;
-
-routes.push({
-	title: 'Index',
-	url: '/'
-});
-
-var indexTemplate = {
-	// '#vframe': new VFrame(),
-	'article#main-inner.container': {
-		// 'section#bio-cards.layout': new BioCardList(),
-		// 'section#discography.layout': new Discography({
-		// 	data: {
-		// 		albums: services.data.music.discography
-		// 	}
-		// }),
-		// 'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
-		// 	data: services.data.photos
-		// }),
-		'header#logo.col-lg-12': new Logo({
-			data: {
-				src: '/media/images/logos/gr_logo.png'
-			}
-		}),
-		'#featured.col-lg-12.card-carousel': new FeaturedCarousel({
-			root: '#featured',
-			data: {
-				title: 'Featured',
-				items: services.utils.getFeaturedItems( services.data.events )
-			}
-		}),
-		'ul.col-lg-12': {
-			'li#call-to-action': new HotButton({
-				data: {
-					name: 'call-to-action',
-					text: 'Enter the Timeline'
-				}
-			}),
-		},
-		'#social-icons.col-lg-12': new SocialIcons(),
-	}
-};
-
-var aboutTemplate = {
-	'#hero-wrap': new Hero(),
-	'article#main-inner': {
-		'section#bio-cards.layout': new BioCardList(),
-		'footer#footer': new Footer()
-	}
-}
-
-var musicTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Music',
-			img: '/media/images/music/music_hero_example.jpg'
-		}
-	}),
-	'article#main-inner': {
-		'section#discography.layout': new Discography({
-			data: {
-				albums: services.data.music.discography
-			}
-		}),
-		'footer#footer': new Footer()
-	}
-}
-
-var videoTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Videos',
-			img: '/media/images/videos/hero.jpg'
-		}
-	}),
-	'article#main-inner': {
-		'section#discography.layout': new Discography({
-			data: {
-				albums: services.data.music.discography
-			}
-		}),
-		'footer#footer': new Footer()
-	}
-}
-
-var photoTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Videos',
-			img: '/media/images/photos/hero.jpg'
-		}
-	}),
-	'article#main-inner': {
-		'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
-			data: services.data.photos
-		}),
-		'footer#footer': new Footer()
-	}
-}
-
-var pressTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Videos',
-			img: '/media/images/press/hero.jpg'
-		}
-	}),
-	'article#main-inner': {
-		'section#photo-gallery.tile-gallery.layout': new PhotoGallery({
-			data: services.data.photos
-		}),
-		'footer#footer': new Footer()
-	}
-}
-
-var contactTemplate = {
-	'#hero-wrap': new Hero({
-		data: {
-			name: 'Videos',
-			img: '/media/images/contact/hero.jpg'
-		}
-	})
-}
 
 var Main = Ulna.Component.extend({
 	root: '#main',
@@ -8439,7 +8316,6 @@ var Main = Ulna.Component.extend({
 
 			this.state.active = 'state-active';
 			this.mutations.fadeIn.call(this);
-
 		}
 	},
 
@@ -8459,37 +8335,43 @@ var Main = Ulna.Component.extend({
 	template: {
 		'#main-content.<<this.state.active>>': function() {
 			var route = Object.keys(this.data)[0];
+			var obj = {
+				'header#logo.col-lg-12': new Logo()
+			};
 
 			switch (route) {
 				case 'index':
-					return indexTemplate;
+					
+					obj['article#main-inner.container'] = {
+						'#featured.col-lg-12.card-carousel': new FeaturedCarousel({
+							root: '#featured',
+							data: {
+								title: 'Featured',
+								items: services.utils.getFeaturedItems( services.data.events )
+							}
+						}),
+						'ul.col-lg-12': {
+							'li#call-to-action': new HotButton({
+								data: {
+									name: 'call-to-action',
+									text: 'Enter the Timeline'
+								}
+							}),
+						},
+						'#social-icons.col-lg-12': new SocialIcons(),
+					};
+
 				break;
 				
 				case 'timeline':
-					return new Timeline({
+					obj['#timeline'] = new Timeline({
+						root: '#timeline',
 						data: this.data.timeline
 					});
 				break;
-
-				// case 'about':
-				// 	return aboutTemplate;
-				// break;
-				// case 'music':
-				// 	return musicTemplate;
-				// break;
-				// case 'videos':
-				// 	return videoTemplate;
-				// break;
-				// case 'photos':
-				// 	return photoTemplate;
-				// break;
-				// case 'press':
-				// 	return pressTemplate;
-				// break;
-				// case 'contact':
-				// 	return contactTemplate;
-				// break;
 			}
+
+			return obj;
 		}
 	}
 });
@@ -9510,7 +9392,6 @@ var firstMonthKey = Object.keys(datesByMonths[0])[0];
 var firstDate = datesByMonths[0][firstMonthKey][0];
 
 var Timeline = Ulna.Component.extend({
-	root: '#main-content',
 	dispatcher: dispatcher,
 
 	// default data
@@ -9522,12 +9403,6 @@ var Timeline = Ulna.Component.extend({
 	},
 	
 	template: {
-		'#logo': new Logo({
-			data: {
-				src: '/media/images/logos/gr_logo_mini.png'
-			}
-		}),
-
 		// use a function to avoid scope issues when passing down data
 		'#timeline-year-control': function() {
 			return new YearControl({
@@ -10792,6 +10667,9 @@ var services = new Ulna.Services({
 		header: {
 			title: 'GODS ROBOTS',
 			delimiter: ' - ',
+		},
+		brand: {
+			logo: '/media/images/logos/gr_logo_typeface.png'
 		},
 		index: require('./data/index.js'),
 		about: require('./data/about/index.js'),
