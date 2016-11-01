@@ -14,6 +14,7 @@ var appHead = function( state, initializer ) {
 			'<body>' +
 				'<div id="app-root"></div>' +
 				'<script src="/js/libs/jquery.js"></script>' +
+				'<script src="/js/libs/slick.min.js"></script>' +
 				'<script src="/js/app.bundle.js"></script>';
 
 	var templEnd = '</body>' +
@@ -25,10 +26,7 @@ var appHead = function( state, initializer ) {
 			'var appState = ' + state + ';' +
 			'(' + initializer.toString() + ')();' +
 		'</script>' +
-		// /*debug*/ '<script type="text/javascript"> init = ' + func.toString( test ) + '; app = init(); app.bind(); </script>' +
 	templEnd;
-
-	// var $ = Cheerio.load( appHead );
 
 	return templ;
 };

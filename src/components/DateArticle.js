@@ -8,7 +8,11 @@ var services = require('../services.js');
 
 var RouteChange = require('../actions/RouteChange.js');
 var PhotoCarousel = require('./Photos/PhotoCarousel.js');
+var PhotoGallery = require('./Photos/PhotoGallery.js');
 var VideoCarousel = require('./Videos/VideoCarousel.js');
+var SlickCarousel = require('./SlickCarousel.js');
+
+
 
 var DateArticle = Ulna.Component.extend({
 	root: '#timeline-content',
@@ -50,10 +54,11 @@ var DateArticle = Ulna.Component.extend({
 			}
 
 			if (imgs.length) {
-				content['#photo-carousel.carousel-gallery'] = new PhotoCarousel({
+				content['#slick-carousel-test.slick-gallery'] = new SlickCarousel({
 					data: {
+						id: 'test',
 						name: 'Photos',
-						photos: imgs
+						items: imgs
 					}
 				});
 			}

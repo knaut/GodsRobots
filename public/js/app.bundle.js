@@ -7342,7 +7342,7 @@ RouteChange.prototype = {
 }
 
 module.exports = RouteChange;
-},{"../services.js":61,"moment":1,"ulna":8}],18:[function(require,module,exports){
+},{"../services.js":62,"moment":1,"ulna":8}],18:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('./dispatcher.js');
@@ -7424,7 +7424,7 @@ if (Ulna.env === 'browser') {
 }
 
 module.exports = App;
-},{"./components/CardCarousel.js":23,"./components/Curtain.js":24,"./components/Footer.js":27,"./components/Header.js":28,"./components/Main.js":32,"./components/Modal.js":33,"./components/Nav.js":34,"./dispatcher.js":59,"./router.js":60,"./services.js":61,"ulna":8}],19:[function(require,module,exports){
+},{"./components/CardCarousel.js":23,"./components/Curtain.js":24,"./components/Footer.js":27,"./components/Header.js":28,"./components/Main.js":32,"./components/Modal.js":33,"./components/Nav.js":34,"./dispatcher.js":60,"./router.js":61,"./services.js":62,"ulna":8}],19:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7504,7 +7504,7 @@ var BioCard = Ulna.Component.extend({
 });
 
 module.exports = BioCard;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],20:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],20:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7545,7 +7545,7 @@ var BioCardList = Ulna.Component.extend({
 });
 
 module.exports = BioCardList;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./BioCard.js":19,"ulna":8}],21:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./BioCard.js":19,"ulna":8}],21:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -7599,7 +7599,7 @@ var BrandCarousel = Ulna.Component.extend({
 });
 
 module.exports = BrandCarousel;
-},{"../dispatcher.js":59,"ulna":8}],22:[function(require,module,exports){
+},{"../dispatcher.js":60,"ulna":8}],22:[function(require,module,exports){
 var Ulna = require('ulna');
 var services = require('../services.js');
 var dispatcher = require('../dispatcher.js');
@@ -7705,7 +7705,7 @@ var Card = Ulna.Component.extend({
 });
 
 module.exports = Card;
-},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"../services.js":61,"ulna":8}],23:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"../services.js":62,"ulna":8}],23:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -7776,7 +7776,7 @@ var CardCarousel = Ulna.Component.extend({
 
 module.exports = CardCarousel;
 
-},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Card.js":22,"moment":1,"ulna":8}],24:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Card.js":22,"moment":1,"ulna":8}],24:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 var dispatcher = require('../dispatcher.js');
@@ -7798,7 +7798,7 @@ var Curtain = Ulna.Component.extend({
 });
 
 module.exports = Curtain;
-},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],25:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],25:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -7809,7 +7809,11 @@ var services = require('../services.js');
 
 var RouteChange = require('../actions/RouteChange.js');
 var PhotoCarousel = require('./Photos/PhotoCarousel.js');
+var PhotoGallery = require('./Photos/PhotoGallery.js');
 var VideoCarousel = require('./Videos/VideoCarousel.js');
+var SlickCarousel = require('./SlickCarousel.js');
+
+
 
 var DateArticle = Ulna.Component.extend({
 	root: '#timeline-content',
@@ -7851,10 +7855,11 @@ var DateArticle = Ulna.Component.extend({
 			}
 
 			if (imgs.length) {
-				content['#photo-carousel.carousel-gallery'] = new PhotoCarousel({
+				content['#slick-carousel-test.slick-gallery'] = new SlickCarousel({
 					data: {
+						id: 'test',
 						name: 'Photos',
-						photos: imgs
+						items: imgs
 					}
 				});
 			}
@@ -7865,7 +7870,7 @@ var DateArticle = Ulna.Component.extend({
 });
 
 module.exports = DateArticle;
-},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Photos/PhotoCarousel.js":37,"./Videos/VideoCarousel.js":51,"moment":1,"ulna":8}],26:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Photos/PhotoCarousel.js":37,"./Photos/PhotoGallery.js":38,"./SlickCarousel.js":39,"./Videos/VideoCarousel.js":52,"moment":1,"ulna":8}],26:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8015,7 +8020,7 @@ var Discography = Ulna.Component.extend({
 });
 
 module.exports = Discography;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],27:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],27:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8087,7 +8092,7 @@ var Footer = Ulna.Component.extend({
 });
 
 module.exports = Footer;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],28:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],28:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Logo = require('./Logo.js');
@@ -8118,7 +8123,7 @@ var Header = Ulna.Component.extend({
 });
 
 module.exports = Header;
-},{"./HotButton.js":30,"./Logo.js":31,"./SocialIcons.js":39,"./Typewriter.js":48,"ulna":8}],29:[function(require,module,exports){
+},{"./HotButton.js":30,"./Logo.js":31,"./SocialIcons.js":40,"./Typewriter.js":49,"ulna":8}],29:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Hero = Ulna.Component.extend({
@@ -8191,7 +8196,7 @@ var HotButton = Ulna.Component.extend({
 });
 
 module.exports = HotButton;
-},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"../services.js":61,"ulna":8}],31:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"../services.js":62,"ulna":8}],31:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var RouteChange = require('../actions/RouteChange.js');
@@ -8230,7 +8235,7 @@ var Logo = Ulna.Component.extend({
 });
 
 module.exports = Logo;
-},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"ulna":8}],32:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"ulna":8}],32:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8433,7 +8438,7 @@ var Main = Ulna.Component.extend({
 });
 
 module.exports = Main;
-},{"../dispatcher.js":59,"../services.js":61,"./BioCardList.js":20,"./BrandCarousel.js":21,"./CardCarousel.js":23,"./Discography.js":26,"./Footer.js":27,"./Hero.js":29,"./HotButton.js":30,"./Logo.js":31,"./Photos/PhotoCarousel.js":37,"./Photos/PhotoGallery.js":38,"./SocialIcons.js":39,"./Timeline/Timeline.js":44,"./TimelinePrev.js":47,"./UpcomingCarousel.js":49,"./VFrame.js":50,"ulna":8}],33:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"./BioCardList.js":20,"./BrandCarousel.js":21,"./CardCarousel.js":23,"./Discography.js":26,"./Footer.js":27,"./Hero.js":29,"./HotButton.js":30,"./Logo.js":31,"./Photos/PhotoCarousel.js":37,"./Photos/PhotoGallery.js":38,"./SocialIcons.js":40,"./Timeline/Timeline.js":45,"./TimelinePrev.js":48,"./UpcomingCarousel.js":50,"./VFrame.js":51,"ulna":8}],33:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8544,7 +8549,7 @@ var Modal = Ulna.Component.extend({
 });
 
 module.exports = Modal;
-},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Videos/VideoEmbed.js":52,"ulna":8}],34:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Videos/VideoEmbed.js":53,"ulna":8}],34:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8608,7 +8613,7 @@ var Nav = Ulna.Component.extend({
 });
 
 module.exports = Nav;
-},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./NavItem.js":35,"ulna":8}],35:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./NavItem.js":35,"ulna":8}],35:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -8675,7 +8680,7 @@ var NavItem = Ulna.Component.extend({
 });
 
 module.exports = NavItem;
-},{"../actions/RouteChange.js":17,"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"ulna":8}],36:[function(require,module,exports){
+},{"../actions/RouteChange.js":17,"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"ulna":8}],36:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -8715,7 +8720,7 @@ var Photo = Ulna.Component.extend({
 });
 
 module.exports = Photo;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],37:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"ulna":8}],37:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -8775,7 +8780,7 @@ var PhotoCarousel = Ulna.Component.extend({
 });
 
 module.exports = PhotoCarousel;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Photo.js":36,"ulna":8}],38:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Photo.js":36,"ulna":8}],38:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -8815,7 +8820,82 @@ var PhotoGallery = Ulna.Component.extend({
 });
 
 module.exports = PhotoGallery;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Photo.js":36,"ulna":8}],39:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Photo.js":36,"ulna":8}],39:[function(require,module,exports){
+var Ulna = require('ulna');
+var hyphenate = require('../utils.js').hyphenate;
+var dispatcher = require('../dispatcher.js');
+
+var Photo = require('./Photos/Photo.js');
+
+var SlickCarousel = Ulna.Component.extend({
+	root: '#slick-carousel-<<this.data.id>>',
+	dispatcher: dispatcher,
+
+	// data: {
+	// 	id: null,
+	// 	items: []
+	// },
+
+	listen: {
+
+	},
+
+	bindSlick() {
+		this.$root.children('div').slick({
+			dots: true,
+			slidesToShow: 1,
+			// centerMode: true,
+			// variableWidth: true
+		});
+	},
+
+	unbindSlick() {
+		this.$root.children('div').slick('unslick');
+	},
+
+	bindToDOM() {
+		this.bindRoot();
+		this.bindEvents();
+		this.bindSlick();
+
+		return this.eventsBound;
+	},
+
+	unbindFromDOM() {
+		this.unbindSlick();
+		this.unbindEvents();
+		this.unbindRoot();
+		
+
+		return this.eventsBound;
+	},
+
+	template: {
+		h1() {
+			return this.data.name;
+		},
+		div() {
+			var items = [];
+			for (var i = 0; this.data.items.length > i; i++) {
+
+				var li = {};
+				var liKey = 'div#photo-thumb-' + hyphenate(this.data.items[i].name);					
+				var data = this.data.items[i];
+
+				li[liKey] = new Photo({
+					data: data
+				});
+
+				items.push(li);
+			}
+
+			return items;
+		}
+	}
+});
+
+module.exports = SlickCarousel;
+},{"../dispatcher.js":60,"../utils.js":63,"./Photos/Photo.js":36,"ulna":8}],40:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8866,7 +8946,7 @@ var SocialIcons = Ulna.Component.extend({
 });
 
 module.exports = SocialIcons;
-},{"../dispatcher.js":59,"ulna":8}],40:[function(require,module,exports){
+},{"../dispatcher.js":60,"ulna":8}],41:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -8976,7 +9056,7 @@ module.exports = DateNode;
 
 
 
-},{"../../actions/RouteChange.js":17,"../../dispatcher.js":59,"../../services.js":61,"moment":1,"ulna":8}],41:[function(require,module,exports){
+},{"../../actions/RouteChange.js":17,"../../dispatcher.js":60,"../../services.js":62,"moment":1,"ulna":8}],42:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9049,7 +9129,7 @@ var Month = Ulna.Component.extend({
 });
 
 module.exports = Month;
-},{"../../actions/RouteChange.js":17,"../../dispatcher.js":59,"../../services.js":61,"./DateNode.js":40,"moment":1,"ulna":8}],42:[function(require,module,exports){
+},{"../../actions/RouteChange.js":17,"../../dispatcher.js":60,"../../services.js":62,"./DateNode.js":41,"moment":1,"ulna":8}],43:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9271,7 +9351,7 @@ var MonthCarousel = Ulna.Component.extend({
 });
 
 module.exports = MonthCarousel;
-},{"../../actions/RouteChange.js":17,"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Month.js":41,"moment":1,"ulna":8}],43:[function(require,module,exports){
+},{"../../actions/RouteChange.js":17,"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Month.js":42,"moment":1,"ulna":8}],44:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 var utils = require('../../utils.js');
@@ -9330,7 +9410,7 @@ var MonthList = Ulna.Component.extend({
 });
 
 module.exports = MonthList;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./Month.js":41,"moment":1,"ulna":8}],44:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./Month.js":42,"moment":1,"ulna":8}],45:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9423,7 +9503,7 @@ var Timeline = Ulna.Component.extend({
 });
 
 module.exports = Timeline;
-},{"../../actions/RouteChange.js":17,"../../dispatcher.js":59,"../../services.js":61,"../DateArticle.js":25,"../Logo.js":31,"./Month.js":41,"./MonthCarousel.js":42,"./MonthList.js":43,"./YearControl.js":45,"moment":1,"ulna":8}],45:[function(require,module,exports){
+},{"../../actions/RouteChange.js":17,"../../dispatcher.js":60,"../../services.js":62,"../DateArticle.js":25,"../Logo.js":31,"./Month.js":42,"./MonthCarousel.js":43,"./MonthList.js":44,"./YearControl.js":46,"moment":1,"ulna":8}],46:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9482,7 +9562,7 @@ var YearControl = Ulna.Component.extend({
 });
 
 module.exports = YearControl;
-},{"../../actions/RouteChange.js":17,"../../dispatcher.js":59,"../../services.js":61,"./YearItem.js":46,"moment":1,"ulna":8}],46:[function(require,module,exports){
+},{"../../actions/RouteChange.js":17,"../../dispatcher.js":60,"../../services.js":62,"./YearItem.js":47,"moment":1,"ulna":8}],47:[function(require,module,exports){
 var Ulna = require('ulna');
 var Moment = require('moment');
 
@@ -9535,7 +9615,7 @@ var YearItem = Ulna.Component.extend({
 });
 
 module.exports = YearItem;
-},{"../../actions/RouteChange.js":17,"../../dispatcher.js":59,"../../services.js":61,"moment":1,"ulna":8}],47:[function(require,module,exports){
+},{"../../actions/RouteChange.js":17,"../../dispatcher.js":60,"../../services.js":62,"moment":1,"ulna":8}],48:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../utils.js').hyphenate;
 
@@ -9636,7 +9716,7 @@ var Timeline = Ulna.Component.extend({
 });
 
 module.exports = Timeline;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"moment":1,"ulna":8}],48:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"moment":1,"ulna":8}],49:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var Typed = Ulna.Component.extend({
@@ -9689,7 +9769,7 @@ var Typed = Ulna.Component.extend({
 });
 
 module.exports = Typed;
-},{"ulna":8}],49:[function(require,module,exports){
+},{"ulna":8}],50:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -9825,7 +9905,7 @@ var UpcomingCarousel = Ulna.Component.extend({
 });
 
 module.exports = UpcomingCarousel;
-},{"../dispatcher.js":59,"../services.js":61,"../utils.js":62,"./Card.js":22,"ulna":8}],50:[function(require,module,exports){
+},{"../dispatcher.js":60,"../services.js":62,"../utils.js":63,"./Card.js":22,"ulna":8}],51:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var VFrame = Ulna.Component.extend({
@@ -9840,7 +9920,7 @@ var VFrame = Ulna.Component.extend({
 });
 
 module.exports = VFrame;
-},{"ulna":8}],51:[function(require,module,exports){
+},{"ulna":8}],52:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9888,7 +9968,7 @@ var VideoCarousel = Ulna.Component.extend({
 });
 
 module.exports = VideoCarousel;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"./VideoThumb.js":53,"ulna":8}],52:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"./VideoThumb.js":54,"ulna":8}],53:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9909,7 +9989,7 @@ var VideoEmbed = Ulna.Component.extend({
 });
 
 module.exports = VideoEmbed;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],53:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"ulna":8}],54:[function(require,module,exports){
 var Ulna = require('ulna');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -9941,7 +10021,7 @@ var VideoThumb = Ulna.Component.extend({
 });
 
 module.exports = VideoThumb;
-},{"../../dispatcher.js":59,"../../services.js":61,"../../utils.js":62,"ulna":8}],54:[function(require,module,exports){
+},{"../../dispatcher.js":60,"../../services.js":62,"../../utils.js":63,"ulna":8}],55:[function(require,module,exports){
 module.exports = {
 	bios: [
 		{
@@ -9954,7 +10034,7 @@ module.exports = {
 		}
 	]
 };
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 var Moment = require('moment');
 var hyphenate = require('../../utils.js').hyphenate;
 
@@ -10352,7 +10432,7 @@ for (var d = 0; dates.length > d; d++) {
 */
 
 module.exports = dates;
-},{"../../utils.js":62,"moment":1}],56:[function(require,module,exports){
+},{"../../utils.js":63,"moment":1}],57:[function(require,module,exports){
 module.exports = {
 	nav: [
 		{
@@ -10385,7 +10465,7 @@ module.exports = {
 		}
 	]
 };
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = {
 	discography: [
 		{
@@ -10453,7 +10533,7 @@ module.exports = {
 		}
 	]
 };
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = {
 	title: 'Photos',
 	photos: [
@@ -10507,7 +10587,7 @@ module.exports = {
 		}
 	]
 }
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 var Ulna = require('ulna');
 var services = require('./services.js');
 
@@ -10574,7 +10654,7 @@ var dispatcher = new Ulna.Dispatcher({
 });
 
 module.exports = dispatcher;	
-},{"./services.js":61,"ulna":8}],60:[function(require,module,exports){
+},{"./services.js":62,"ulna":8}],61:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('./dispatcher.js');
 // var services = require('./services.js');
@@ -10622,7 +10702,7 @@ var router = new Ulna.Router({
 });
 
 module.exports = router;
-},{"./actions/RouteChange.js":17,"./dispatcher.js":59,"ulna":8}],61:[function(require,module,exports){
+},{"./actions/RouteChange.js":17,"./dispatcher.js":60,"ulna":8}],62:[function(require,module,exports){
 var Ulna = require('ulna');
 var dispatcher = require('./dispatcher.js');
 var utils = require('./utils.js');
@@ -10652,7 +10732,7 @@ var services = new Ulna.Services({
 services.data.events = services.utils.momentize( services.data.events, 'startDate' );
 
 module.exports = services;
-},{"./data/about/index.js":54,"./data/events/index.js":55,"./data/index.js":56,"./data/music/index.js":57,"./data/photos/index.js":58,"./dispatcher.js":59,"./utils.js":62,"moment":1,"ulna":8}],62:[function(require,module,exports){
+},{"./data/about/index.js":55,"./data/events/index.js":56,"./data/index.js":57,"./data/music/index.js":58,"./data/photos/index.js":59,"./dispatcher.js":60,"./utils.js":63,"moment":1,"ulna":8}],63:[function(require,module,exports){
 var Moment = require('moment');
 
 module.exports = {
