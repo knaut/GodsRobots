@@ -16,7 +16,8 @@ var BioCardList = require('./BioCardList.js');
 var Discography = require('./Discography.js');
 var PhotoGallery = require('./Photos/PhotoGallery.js');
 var PhotoCarousel = require('./Photos/PhotoCarousel.js');
-var CardCarousel = require('./CardCarousel.js');
+var FeaturedCarousel = require('./FeaturedCarousel.js');
+var SlickCarousel = require('./SlickCarousel.js');
 
 var Logo = require('./Logo.js');
 var HotButton = require('./HotButton.js');
@@ -47,7 +48,8 @@ var indexTemplate = {
 				src: '/media/images/logos/gr_logo.png'
 			}
 		}),
-		'#card-carousel.col-lg-12': new CardCarousel({
+		'#featured.col-lg-12.card-carousel': new FeaturedCarousel({
+			root: '#featured',
 			data: {
 				title: 'Featured',
 				items: services.utils.getFeaturedItems( services.data.events )

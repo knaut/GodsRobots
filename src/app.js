@@ -10,8 +10,6 @@ var Curtain = require('./components/Curtain.js');
 var Main = require('./components/Main.js');
 var Footer = require('./components/Footer.js');
 
-var CardCarousel = require('./components/CardCarousel.js');
-
 var App = Ulna.Component.extend({
 	root: '#app-root',
 

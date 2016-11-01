@@ -10,11 +10,11 @@
 	}
 }
 
-#card-carousel {
-	ul {
-		margin: 0;
-		padding: 0;
-	}
+.card-carousel {
+	// ul {
+	// 	margin: 0;
+	// 	padding: 0;
+	// }
 	// background: #333;
 	a.card {
 		position: relative;
@@ -31,7 +31,13 @@
 		transition: 0.3s all ease-in-out;
 
 		h1 {
+			text-align: center;
 			color: $knGrayLight;
+			@include RobotoCondensed(200, capitalize, 1px);
+			font-size: 21px;
+			margin: 25px;
+			position: relative;
+			z-index: 2;
 			transition: 0.3s all ease-in-out;
 		}
 
@@ -68,167 +74,21 @@
 		}
 		
 	}
-	ul.slides-wrap {
-		white-space: nowrap;
+	// ul.slides-wrap {
+	// 	white-space: nowrap;
 		
-		li {
-			width: 100%;
-			height: 100%;
-			list-style: none;
-			display: inline-table;
+	// 	li {
+	// 		width: 100%;
+	// 		height: 100%;
+	// 		list-style: none;
+	// 		display: inline-table;
 
 
-			// .col-lg-3.col-md-4.col-sm-6.col-xs-12
+	// 		// .col-lg-3.col-md-4.col-sm-6.col-xs-12
 
-			h1 {
-				@include RobotoCondensed(200, capitalize, 1px);
-				font-size: 21px;
-				margin: 25px;
-				position: relative;
-				z-index: 2;
-			}
-		}
-	}
+	// 		h1 {
+	// 			
+	// 		}
+	// 	}
+	// }
 }
-
-#card-carousel {
-	ul.slides-wrap {
-		li {
-			width: 100%;
-		}
-	}
-}
-
-@include breakpoint(lg) {
-	#card-carousel {
-		ul.slides-wrap {
-			li {
-				width: 25%;
-			}
-		}
-	}
-}
-
-@include breakpoint(md) {
-	#card-carousel {
-		ul.slides-wrap {
-			li {
-				width: 33.5%;
-			}
-		}
-	}
-}
-
-@include breakpoint(sm) {
-	#card-carousel {
-		ul.slides-wrap {
-			li {
-				width: 50%;
-			}
-		}
-	}
-}
-
-@include breakpoint(xs) {
-	#card-carousel {
-		ul.slides-wrap {
-			li {
-				width: 100%;
-			}
-		}
-	}
-}
-
-@include breakpoint(xxs) {
-	#card-carousel {
-		ul.slides-wrap {
-			li {
-				width: 100%;
-			}
-		}
-	}
-}
-
-
-
-
-
-
-
-
-
-#upcoming-carousel-inner {
-	.card {
-
-		height: 400px;
-
-		h1.title {
-			width: 100%;
-			background: rgba(0,0,0,0.5);
-			padding: 20px;
-			margin: 0 auto;
-			text-align: center;
-			text-transform: uppercase;;
-			letter-spacing: 4px;
-		}
-
-		p.summary {
-			background: rgba(0,0,0,0.75);
-			padding: 25px;
-			margin: 0;
-			position: absolute;
-			bottom: 0;
-			text-align: center;
-			width: 100%;
-
-			white-space: normal;
-		}
-
-		span.upcoming {
-			@include RobotoCondensed(100, uppercase, 3px);
-			font-size: 24px;
-
-			background: $knPurpleDarkWash;
-			position: absolute;
-			top: 32px;
-			left: -95px;
-			transform: rotate(-45deg);
-			padding: 15px 100px;
-
-			// text-transform: uppercase;
-			// letter-spacing: 3px;
-		}
-		
-		img {
-			display: none;
-		}
-	}
-}
-
-// @include breakpoint(sm) {
-// 	#upcoming-carousel-inner {
-// 		.card {
-// 			span.upcoming {
-// 				font-size: 14px;
-// 				padding-top: 10px;
-// 				padding-bottom: 10px;
-// 			}
-// 		}
-// 	}
-// }
-
-// @include breakpoint(md) {
-// 	#upcoming-carousel-inner {
-// 		.card {
-// 			height: 625px;
-// 		}	
-// 	}
-// }
-
-// @include breakpoint(lg) {
-// 	#upcoming-carousel-inner {
-// 		.card {
-// 			height: 850px;
-// 		}	
-// 	}
-// }

@@ -57,7 +57,7 @@ var Card = Ulna.Component.extend({
 		'click a.card': function(e) {
 			e.preventDefault();
 			
-			// console.log(this.data.iso);
+			console.log(this.data);
 			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
 				timeline: this.data.iso
 			}))
