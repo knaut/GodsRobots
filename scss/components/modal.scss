@@ -5,13 +5,15 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	z-index: 0;
+	z-index: -10;
 
 	opacity: 0;
 
 	transition: 0.3s all ease-in-out;
 	overflow-y: auto;
 	padding-bottom: 70px;
+
+
 
 	.container {
 		position: relative;
