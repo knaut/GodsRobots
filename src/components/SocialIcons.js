@@ -7,31 +7,25 @@ var SocialIcons = Ulna.Component.extend({
 
 	dispatcher: dispatcher,
 
-	listen: {
-		// 'ON_LOAD': function(payload) {
-		// 	console.log('Social Icons load')
-		// }
-	},
-
 	template: {
 		ul: [
 			{
 				li: {
-					'a[href="mailto:info@knaut.net"]': {
+					'a[href="mailto:janaka.atugoda@gmail.com"]': {
 						'img[src="/media/images/email_icon.png"]': ''
 					}
 				}
 			},
 			{
 				li: {
-					'a[href="https://facebook.com/knautwerk"]': {
+					'a[href="https://www.facebook.com/janakaselektamusic/"]': {
 						'img[src="/media/images/facebook_icon.png"]': ''
 					}
 				}
 			},
 			{
 				li: {
-					'a[href="https://twitter.com/knautwerk"]': {
+					'a[href="https://twitter.com/janakaselekta"]': {
 						'img[src="/media/images/twitter_icon.png"]': ''
 					}
 				}
@@ -43,14 +37,6 @@ var SocialIcons = Ulna.Component.extend({
 					}
 				}
 			}
-			
-			// {
-			// 	li: {
-			// 		'a[href="https://instagram.com/knautwerk"]': {
-			// 			'img[src="/media/images/instagram_icon.png"]': ''
-			// 		}
-			// 	}
-			// }
 		]
 	}
 });
