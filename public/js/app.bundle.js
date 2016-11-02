@@ -10551,7 +10551,7 @@ var dates = [
 			{
 				kind: 'video',
 				featured: true,
-				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
+				src: 'https://www.youtube.com/embed/vUgMR3BB8ls',
 				name: 'GODS ROBOTS Burn It Up Music Video',
 				thumb: '/media/images/events/burn-it-up-video/video_thumb.jpg'
 			}
@@ -10560,7 +10560,7 @@ var dates = [
 
 
 	{
-		name: 'Gods Robots - Stay Music Video',
+		name: 'Gods Robots Stay Music Video',
 		kind: 'release',
 		startDate: {
 			year: 2011,
@@ -10583,7 +10583,7 @@ var dates = [
 	
 
 	{
-		name: 'Mighty Dub Killaz - Music Video',
+		name: 'Mighty Dub Killaz Music Video',
 		kind: 'release',
 		startDate: {
 			year: 2010,
@@ -10596,7 +10596,7 @@ var dates = [
 			{
 				kind: 'video',
 				src: 'https://www.youtube.com/embed/l_ga0nkYDX4',
-				name: 'Mighty Dub Killaz - Music Video',
+				name: 'Mighty Dub Killaz Music Video',
 				thumb: '/media/images/events/mighty-dub-killaz-video/video_thumb.jpg'
 			}
 		]
@@ -10617,14 +10617,14 @@ var dates = [
 				kind: 'video',
 				featured: true,
 				src: 'https://www.youtube.com/embed/SGF9uV32o78',
-				name: 'Mighty Dub Killaz - Live At Dub Mission - Music Video',
+				name: 'Mighty Dub Killaz Live At Dub Mission - Music Video',
 				thumb: '/media/images/events/mighty-dub-killaz-dub-mission/video_thumb.jpg'
 			}
 		]
 	},
 
 	{
-		name: 'Mighty Dub Killaz - Wisely - Music Video',
+		name: 'Mighty Dub Killaz Wisely Music Video',
 		kind: 'release',
 		startDate: {
 			year: 2009,
@@ -10638,7 +10638,7 @@ var dates = [
 				kind: 'video',
 				featured: true,
 				src: 'https://player.vimeo.com/video/6045432',
-				name: 'Mighty Dub Killaz - Wisely - Music Video',
+				name: 'Mighty Dub Killaz Wisely Music Video',
 				thumb: '/media/images/events/mighty-dub-killaz-wisely-video/video_thumb.jpg'
 			}
 		]
@@ -10679,14 +10679,14 @@ var dates = [
 				kind: 'video',
 				featured: true,
 				src: 'https://www.youtube.com/embed/DEnhZCHh5DE?list=PL8HA1vBrREHrugfGY-XCgxp6UG0yaOmlM',
-				name: 'Harmony Festival - Live',
+				name: 'Harmony Festival Live',
 				thumb: '/media/images/events/harmony-festival/video_thumb.jpg'
 			},
 			{
 				kind: 'video',
 				featured: true,
 				src: 'https://www.youtube.com/embed/VJljtafxz9c?list=PL8HA1vBrREHrugfGY-XCgxp6UG0yaOmlM',
-				name: 'Harmony Festival - Live 2',
+				name: 'Harmony Festival Live 2',
 				thumb: '/media/images/events/harmony-festival/video_thumb_2.jpg'
 			}
 		]
@@ -10706,7 +10706,7 @@ var dates = [
 				kind: 'video',
 				featured: true,
 				src: 'https://www.youtube.com/embed/DEnhZCHh5DE?list=PL8HA1vBrREHrugfGY-XCgxp6UG0yaOmlM',
-				name: 'Worldly, SF - Live',
+				name: 'Worldly, SF Live',
 				thumb: '/media/images/events/worldly-sf/video_thumb.jpg'
 			},
 			{
