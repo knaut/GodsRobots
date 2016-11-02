@@ -10777,7 +10777,7 @@ var dates = [
 			{
 				kind: 'video',
 				featured: true,
-				src: 'https://www.youtube.com/embed/DEnhZCHh5DE?list=PL8HA1vBrREHrugfGY-XCgxp6UG0yaOmlM',
+				src: 'https://www.youtube.com/embed/ocoyYRzYbpA',
 				name: 'Worldly, SF Live',
 				thumb: '/media/images/events/worldly-sf/video_thumb.jpg'
 			},
