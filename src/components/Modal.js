@@ -7,6 +7,7 @@ var services = require('../services.js');
 var RouteChange = require('../actions/RouteChange.js');
 
 var VideoEmbed = require('./Videos/VideoEmbed.js');
+var SoundcloudEmbed = require('./SoundcloudEmbed.js');
 
 var Modal = Ulna.Component.extend({
 	root: '#modal',
@@ -16,7 +17,7 @@ var Modal = Ulna.Component.extend({
 		'click #modal-close': function() {
 			this.mutations.removeActive.call(this);
 
-			if (this.state.kind === 'video') {
+			if (this.state.kind === 'video' || this.state.kind === 'embed') {
 				var $iframe = this.$root.find('iframe');
 				setTimeout(function() {
 					$iframe.remove();
@@ -40,6 +41,36 @@ var Modal = Ulna.Component.extend({
 
 			this.rerender();
 			this.mutations.addActive.call(this);	
+		},
+
+		MODAL_VIEW( payload ) {
+			console.log('MODAL_VIEW', payload);
+			switch(payload.data.kind) {
+				case 'photo':
+					this.state.kind = 'photo';
+					this.data = payload.data;
+					
+					this.rerender();
+					this.mutations.addActive.call(this);
+				break;
+				case 'video':
+					this.state.kind = 'video';
+					this.data = payload.data;
+
+					this.rerender();
+					this.mutations.addActive.call(this);	
+				break;
+				case 'embed':
+					this.state.kind = 'embed';
+					this.data = payload.data;
+
+					this.rerender();
+					this.mutations.addActive.call(this);	
+				break;
+				default:
+					console.log('default', payload)
+				break;
+			}
 		}
 	},
 
@@ -85,6 +116,21 @@ var Modal = Ulna.Component.extend({
 
 					break;
 					case 'video':
+						var video = new VideoEmbed({
+							data: {
+								id: services.utils.hyphenate( this.data.name ),
+								src: this.data.src
+							}
+						});
+
+						kindObj[kindObjKey] = video;
+
+						content = {
+							h1: this.data.name,
+							'.video-content-wrap': kindObj
+						}
+					break;
+					case 'embed':
 						var video = new VideoEmbed({
 							data: {
 								id: services.utils.hyphenate( this.data.name ),

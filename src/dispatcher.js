@@ -11,6 +11,7 @@ var dispatcher = new Ulna.Dispatcher({
 		'PHOTO_CAROUSEL_VIEW',
 		'VIDEO_CAROUSEL_VIEW',
 		'ENTER_TIMELINE',
+		'MODAL_VIEW',
 		{
 			name: 'HISTORY_PUSH',
 			beforeEmit: function(payload, next) {

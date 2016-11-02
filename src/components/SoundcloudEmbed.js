@@ -1,8 +1,8 @@
 var Ulna = require('ulna');
-var hyphenate = require('../../utils.js').hyphenate;
+var hyphenate = require('../utils.js').hyphenate;
 
-var dispatcher = require('../../dispatcher.js');
-var services = require('../../services.js');
+var dispatcher = require('../dispatcher.js');
+var services = require('../services.js');
 
 var SoundcloudEmbed = Ulna.Component.extend({
 	root: '#embed-<<this.data.id>>',
@@ -17,4 +17,4 @@ var SoundcloudEmbed = Ulna.Component.extend({
 	}
 });
 
-module.exports = VideoEmbed;
+module.exports = SoundcloudEmbed;

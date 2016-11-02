@@ -56,11 +56,16 @@ var Card = Ulna.Component.extend({
 	events: {
 		'click a.card': function(e) {
 			e.preventDefault();
-			
-			console.log(this.data);
-			this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
-				timeline: this.data.iso
-			}))
+
+			// this.dispatcher.dispatch('HISTORY_PUSH', new RouteChange({
+			// 	timeline: this.data.iso
+			// }))
+
+			var kind = this.data.kind;
+
+			this.dispatcher.dispatch('MODAL_VIEW', {
+				data: this.data
+			});
 		}
 	},
 
