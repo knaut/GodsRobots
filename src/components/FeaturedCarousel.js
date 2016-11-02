@@ -16,8 +16,6 @@ var FeaturedCarousel = Ulna.Component.extend({
 		dots: true,
 		slidesToShow: 4,
 		infinite: false,
-		// centerMode: true,
-		// variableWidth: true
 		responsive: [
 			{
 				breakpoint: 1091,
@@ -59,7 +57,6 @@ var FeaturedCarousel = Ulna.Component.extend({
 		this.bindSlick();
 		this.bindEvents();
 		
-
 		return this.eventsBound;
 	},
 
@@ -73,16 +70,8 @@ var FeaturedCarousel = Ulna.Component.extend({
 	},
 
 	data: {
-		// title: null,
 		items: [],
 		active: 0
-	},
-
-	events: {
-		// 'click button.slick-arrow': function() {
-		// 	this.unbindEvents();
-		// 	console.log(this.eventsBound)
-		// }
 	},
 
 	template: {

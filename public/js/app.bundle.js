@@ -7967,8 +7967,6 @@ var FeaturedCarousel = Ulna.Component.extend({
 		dots: true,
 		slidesToShow: 4,
 		infinite: false,
-		// centerMode: true,
-		// variableWidth: true
 		responsive: [
 			{
 				breakpoint: 1091,
@@ -8010,7 +8008,6 @@ var FeaturedCarousel = Ulna.Component.extend({
 		this.bindSlick();
 		this.bindEvents();
 		
-
 		return this.eventsBound;
 	},
 
@@ -8024,16 +8021,8 @@ var FeaturedCarousel = Ulna.Component.extend({
 	},
 
 	data: {
-		// title: null,
 		items: [],
 		active: 0
-	},
-
-	events: {
-		// 'click button.slick-arrow': function() {
-		// 	this.unbindEvents();
-		// 	console.log(this.eventsBound)
-		// }
 	},
 
 	template: {
@@ -10001,7 +9990,6 @@ var Moment = require('moment');
 var hyphenate = require('../../utils.js').hyphenate;
 
 var dates = [
-	
 	{
 		name: 'Mui Ne, Vietnam',
 		kind: 'show',
@@ -10035,6 +10023,31 @@ var dates = [
 				kind: 'flier',
 				src: '/media/images/events/vinyl-dreams/flier.jpg',
 				name: 'Vinyl Dreams Flier'
+			}
+		]
+	},
+	{
+		name: 'Good Vibes EP Release',
+		kind: 'show',
+		startDate: {
+			year: 2016,
+			month: 10,
+			day: 1,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			//  more types to add here
+			{
+				kind: 'flier',
+				src: '/media/images/events/dubmission/flier.jpg',
+				name: 'Non-Stop Bhangra Flier'
+			},
+			{
+				kind: 'embed',
+				src: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/149636988&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true',
+				name: 'Good Vibes EP Release Live',
+				thumb: '/media/images/events/dubmission/video_thumb.jpg'
 			}
 		]
 	},
@@ -10093,115 +10106,7 @@ var dates = [
 			}
 		]
 	},
-	{
-		name: 'Dub Mission',
-		kind: 'show',
-		startDate: {
-			year: 2016,
-			month: 8,
-			day: 3,
-			hour: 19,
-			minute: 0
-		},
-		media: [
-			{
-				kind: 'flier',
-				src: '/media/images/events/dubmission/flier.jpg',
-				name: 'Dub Mission Flier'
-			},
-			{
-				kind: 'video',
-				src: 'https://www.youtube.com/embed/H0BalatB7ZU',
-				name: 'Dub Mission Live',
-				thumb: '/media/images/events/dubmission/video_thumb.jpg'
-			}
-		]
-	},
-	{
-		name: 'Good Vibes EP Release',
-		kind: 'show',
-		startDate: {
-			year: 2016,
-			month: 10,
-			day: 1,
-			hour: 19,
-			minute: 0
-		},
-		media: [
-			//  more types to add here
-			{
-				kind: 'flier',
-				src: '/media/images/events/dubmission/flier.jpg',
-				name: 'Non-Stop Bhangra Flier'
-			},
-			{
-				kind: 'embed',
-				src: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/149636988&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true',
-				name: 'Good Vibes EP Release Live',
-				thumb: '/media/images/events/dubmission/video_thumb.jpg'
-			}
-		]
-	},
-	{
-		name: 'Beloved Festival',
-		kind: 'show',
-		startDate: {
-			year: 2014,
-			month: 9,
-			day: 9,
-			hour: 19,
-			minute: 0
-		},
-		media: [
-			{
-				kind: 'video',
-				featured: true,
-				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
-				name: 'Beloved Festival Live',
-				thumb: '/media/images/events/beloved-festival/video_thumb.jpg'
-			}
-		]
-	},
-	{
-		name: 'Gods Robots - Burn It Up Music Video',
-		kind: 'release',
-		startDate: {
-			year: 2013,
-			month: 4,
-			day: 10,
-			hour: 19,
-			minute: 0
-		},
-		media: [
-			{
-				kind: 'video',
-				featured: true,
-				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
-				name: 'GODS ROBOTS Burn It Up Music Video',
-				thumb: '/media/images/events/burn-it-up-video/video_thumb.jpg'
-			}
-		]
-	},
 
-	{
-		name: 'Gods Robots - Stormy Weather Music Video',
-		kind: 'release',
-		startDate: {
-			year: 2013,
-			month: 7,
-			day: 13,
-			hour: 19,
-			minute: 0
-		},
-		media: [
-			{
-				kind: 'video',
-				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
-				name: 'GODS ROBOTS Stormy Weather Music Video',
-				thumb: '/media/images/events/stormy-weather-video/video_thumb.jpg'
-			}
-		]
-	},
 	{
 		name: 'Sizzla Remixes Release',
 		kind: 'release',
@@ -10224,6 +10129,30 @@ var dates = [
 				src: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/241463587&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true',
 				name: 'Sizzla Remixes Release Music',
 				thumb: '/media/images/events/sizzla-remixes/flier.jpg'
+			}
+		]
+	},
+	{
+		name: 'Dub Mission',
+		kind: 'show',
+		startDate: {
+			year: 2016,
+			month: 8,
+			day: 3,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/dubmission/flier.jpg',
+				name: 'Dub Mission Flier'
+			},
+			{
+				kind: 'video',
+				src: 'https://www.youtube.com/embed/H0BalatB7ZU',
+				name: 'Dub Mission Live',
+				thumb: '/media/images/events/dubmission/video_thumb.jpg'
 			}
 		]
 	},
@@ -10344,6 +10273,24 @@ var dates = [
 		]
 	},
 	{
+		name: 'NYE 2016, SF',
+		kind: 'show',
+		startDate: {
+			year: 2015,
+			month: 11,
+			day: 31,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/nye-convent/flier.jpg',
+				name: 'NYE 2016, SF Flier'
+			}
+		]
+	},
+	{
 		name: 'Offbeat Festival, Reno, NV',
 		kind: 'show',
 		startDate: {
@@ -10374,26 +10321,8 @@ var dates = [
 		media: [
 			{
 				kind: 'flier',
-				src: '/media/images/events/treasure-island-2016/flier.jpg',
+				src: '/media/images/events/treasure-island-2015/flier.jpg',
 				name: 'Treasure Island Music Festival Flier'
-			}
-		]
-	},
-	{
-		name: 'NYE 2016, SF',
-		kind: 'show',
-		startDate: {
-			year: 2015,
-			month: 11,
-			day: 31,
-			hour: 19,
-			minute: 0
-		},
-		media: [
-			{
-				kind: 'flier',
-				src: '/media/images/events/nye-convent/flier.jpg',
-				name: 'NYE 2016, SF Flier'
 			}
 		]
 	},
@@ -10565,6 +10494,224 @@ var dates = [
 				src: 'https://www.youtube.com/embed/gfYt2jjikp0',
 				name: 'Janaka Selekta live at Wormhole Wednesday',
 				thumb: '/media/images/events/wormhole-wednesday/video_thumb.png',
+			}
+		]
+	},
+	{
+		name: 'Beloved Festival',
+		kind: 'show',
+		startDate: {
+			year: 2014,
+			month: 9,
+			day: 9,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
+				name: 'Beloved Festival Live',
+				thumb: '/media/images/events/beloved-festival/video_thumb.jpg'
+			}
+		]
+	},
+	{
+		name: 'Gods Robots - Stormy Weather Music Video',
+		kind: 'release',
+		startDate: {
+			year: 2013,
+			month: 7,
+			day: 13,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
+				name: 'GODS ROBOTS Stormy Weather Music Video',
+				thumb: '/media/images/events/stormy-weather-video/video_thumb.jpg'
+			}
+		]
+	},
+	{
+		name: 'Gods Robots - Burn It Up Music Video',
+		kind: 'release',
+		startDate: {
+			year: 2013,
+			month: 4,
+			day: 10,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
+				name: 'GODS ROBOTS Burn It Up Music Video',
+				thumb: '/media/images/events/burn-it-up-video/video_thumb.jpg'
+			}
+		]
+	},
+
+
+	{
+		name: 'Gods Robots - Stay Music Video',
+		kind: 'release',
+		startDate: {
+			year: 2011,
+			month: 11,
+			day: 14,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/5BBYaI1WD-E',
+				name: 'GODS ROBOTS Stay Music Video',
+				thumb: '/media/images/events/stay-video/video_thumb.jpg'
+			}
+		]
+	},
+
+	
+
+	{
+		name: 'Mighty Dub Killaz - Music Video',
+		kind: 'release',
+		startDate: {
+			year: 2010,
+			month: 9,
+			day: 7,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				src: 'https://www.youtube.com/embed/l_ga0nkYDX4',
+				name: 'Mighty Dub Killaz - Music Video',
+				thumb: '/media/images/events/mighty-dub-killaz-video/video_thumb.jpg'
+			}
+		]
+	},
+
+	{
+		name: 'Mighty Dub Killaz at Dub Mission',
+		kind: 'show',
+		startDate: {
+			year: 2009,
+			month: 8,
+			day: 8,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/SGF9uV32o78',
+				name: 'Mighty Dub Killaz - Live At Dub Mission - Music Video',
+				thumb: '/media/images/events/mighty-dub-killaz-dub-mission/video_thumb.jpg'
+			}
+		]
+	},
+
+	{
+		name: 'Mighty Dub Killaz - Wisely - Music Video',
+		kind: 'release',
+		startDate: {
+			year: 2009,
+			month: 8,
+			day: 7,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://player.vimeo.com/video/6045432',
+				name: 'Mighty Dub Killaz - Wisely - Music Video',
+				thumb: '/media/images/events/mighty-dub-killaz-wisely-video/video_thumb.jpg'
+			}
+		]
+	},
+
+	{
+		name: 'How Weird Street Faire',
+		kind: 'show',
+		startDate: {
+			year: 2009,
+			month: 6,
+			day: 10,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/C7ob6Ca-jcM?list=PL8HA1vBrREHrugfGY-XCgxp6UG0yaOmlM',
+				name: 'How Weird Street Faire \'09 Live Video',
+				thumb: '/media/images/events/how-weird-street-faire-09/video_thumb.jpg'
+			}
+		]
+	},
+	{
+		name: 'Harmony Festival',
+		kind: 'show',
+		startDate: {
+			year: 2005,
+			month: 6,
+			day: 11,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/DEnhZCHh5DE?list=PL8HA1vBrREHrugfGY-XCgxp6UG0yaOmlM',
+				name: 'Harmony Festival - Live',
+				thumb: '/media/images/events/harmony-festival/video_thumb.jpg'
+			},
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/VJljtafxz9c?list=PL8HA1vBrREHrugfGY-XCgxp6UG0yaOmlM',
+				name: 'Harmony Festival - Live 2',
+				thumb: '/media/images/events/harmony-festival/video_thumb_2.jpg'
+			}
+		]
+	},
+	{
+		name: 'Worldly, SF',
+		kind: 'show',
+		startDate: {
+			year: 2005,
+			month: 4,
+			day: 20,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/DEnhZCHh5DE?list=PL8HA1vBrREHrugfGY-XCgxp6UG0yaOmlM',
+				name: 'Worldly, SF - Live',
+				thumb: '/media/images/events/worldly-sf/video_thumb.jpg'
+			},
+			{
+				kind: 'flier',
+				src: '/media/images/events/worldly-sf/flier.jpg',
+				name: 'Worldly SF Flier'
 			}
 		]
 	}
