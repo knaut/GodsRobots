@@ -8006,8 +8006,9 @@ var FeaturedCarousel = Ulna.Component.extend({
 
 	bindToDOM() {
 		this.bindRoot();
-		this.bindEvents();
 		this.bindSlick();
+		this.bindEvents();
+		
 
 		return this.eventsBound;
 	},
@@ -8028,7 +8029,7 @@ var FeaturedCarousel = Ulna.Component.extend({
 	},
 
 	events: {
-
+		
 	},
 
 	template: {
@@ -8890,6 +8891,14 @@ var SocialIcons = Ulna.Component.extend({
 					}
 				}
 			},
+			{
+				li: {
+					'a[href="https://open.spotify.com/artist/3DsgLVdK3osXVyeZDWfRQC"]': {
+						'img[src="/media/images/spotify_icon.png"]': ''
+					}
+				}
+			}
+			
 			// {
 			// 	li: {
 			// 		'a[href="https://instagram.com/knautwerk"]': {
@@ -9988,6 +9997,61 @@ var Moment = require('moment');
 var hyphenate = require('../../utils.js').hyphenate;
 
 var dates = [
+	
+	{
+		name: 'Mui Ne, Vietnam',
+		kind: 'show',
+		startDate: {
+			year: 2016,
+			month: 11,
+			day: 5,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/mui-ne/flier.jpg',
+				name: 'Mui Ne, Vietnam Flier'
+			}
+		]
+	},
+	{
+		name: 'Vinyl Dreams',
+		kind: 'show',
+		startDate: {
+			year: 2016,
+			month: 10,
+			day: 7,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/vinyl-dreams/flier.jpg',
+				name: 'Vinyl Dreams Flier'
+			}
+		]
+	},
+	{
+		name: 'Non-Stop Bhangra',
+		kind: 'show',
+		startDate: {
+			year: 2016,
+			month: 9,
+			day: 27,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/nonstop-bhangra/1.jpg',
+				name: 'Non-Stop Bhangra Flier'
+			}
+		]
+	},
 	{
 		name: 'SuperHeroes Street Fair',
 		kind: 'show',
@@ -10001,7 +10065,6 @@ var dates = [
 		media: [
 			{
 				kind: 'flier',
-				featured: true,
 				src: '/media/images/events/superheroes-street-fair/flier.jpg',
 				name: 'SuperHeroes Street Fair Flier'
 			}
@@ -10023,6 +10086,115 @@ var dates = [
 				src: '/media/images/events/temple-of-chaos-la/video.mp4',
 				name: 'Temple of Chaos',
 				thumb: '/media/images/events/temple-of-chaos-la/video_thumb.png'
+			}
+		]
+	},
+	{
+		name: 'Dub Mission',
+		kind: 'show',
+		startDate: {
+			year: 2016,
+			month: 8,
+			day: 3,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/dubmission/flier.jpg',
+				name: 'Dub Mission Flier'
+			},
+			{
+				kind: 'video',
+				src: 'https://www.youtube.com/embed/H0BalatB7ZU',
+				name: 'Dub Mission Live',
+				thumb: '/media/images/events/dubmission/video_thumb.jpg'
+			}
+		]
+	},
+	{
+		name: 'Good Vibes EP Release',
+		kind: 'show',
+		startDate: {
+			year: 2016,
+			month: 10,
+			day: 1,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			//  more types to add here
+			{
+				kind: 'flier',
+				src: '/media/images/events/dubmission/flier.jpg',
+				name: 'Non-Stop Bhangra Flier'
+			},
+			{
+				kind: 'embed',
+				src: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/149636988&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true',
+				name: 'Good Vibes EP Release Live',
+				thumb: '/media/images/events/dubmission/video_thumb.jpg'
+			}
+		]
+	},
+	{
+		name: 'Beloved Festival',
+		kind: 'show',
+		startDate: {
+			year: 2014,
+			month: 9,
+			day: 9,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
+				name: 'Beloved Festival Live',
+				thumb: '/media/images/events/beloved-festival/video_thumb.jpg'
+			}
+		]
+	},
+	{
+		name: 'Gods Robots - Burn It Up Music Video',
+		kind: 'release',
+		startDate: {
+			year: 2013,
+			month: 4,
+			day: 10,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				featured: true,
+				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
+				name: 'GODS ROBOTS Burn It Up Music Video',
+				thumb: '/media/images/events/burn-it-up-video/video_thumb.jpg'
+			}
+		]
+	},
+
+	{
+		name: 'Gods Robots - Stormy Weather Music Video',
+		kind: 'release',
+		startDate: {
+			year: 2013,
+			month: 7,
+			day: 13,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				src: 'https://www.youtube.com/embed/SHp3Sgsy7as?list=PLtNX5LA73hT0lsy_jgOkCiwJvsffTL-zV',
+				name: 'GODS ROBOTS Stormy Weather Music Video',
+				thumb: '/media/images/events/stormy-weather-video/video_thumb.jpg'
 			}
 		]
 	},
@@ -10146,6 +10318,78 @@ var dates = [
 				src: 'https://www.youtube.com/embed/ATlui8zUdjk',
 				name: 'The Chapel, SF Live',
 				thumb: '/media/images/events/the-chapel-sf/video_thumb.png',
+			}
+		]
+	},
+	{
+		name: 'Luminous Movement, LA',
+		kind: 'show',
+		startDate: {
+			year: 2016,
+			month: 1,
+			day: 10,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/luminous-movement/flier.jpg',
+				name: 'Luminous Movement Flier'
+			}
+		]
+	},
+	{
+		name: 'Offbeat Festival, Reno, NV',
+		kind: 'show',
+		startDate: {
+			year: 2015,
+			month: 10,
+			day: 6,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/offbeat-festival/flier.jpg',
+				name: 'Offbeat Festival Flier'
+			}
+		]
+	},
+	{
+		name: 'Treasure Island Music Festival',
+		kind: 'show',
+		startDate: {
+			year: 2015,
+			month: 9,
+			day: 17,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/treasure-island-2016/flier.jpg',
+				name: 'Treasure Island Music Festival Flier'
+			}
+		]
+	},
+	{
+		name: 'NYE 2016, SF',
+		kind: 'show',
+		startDate: {
+			year: 2015,
+			month: 11,
+			day: 31,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'flier',
+				src: '/media/images/events/nye-convent/flier.jpg',
+				name: 'NYE 2016, SF Flier'
 			}
 		]
 	},

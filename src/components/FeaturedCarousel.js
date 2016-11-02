@@ -55,8 +55,9 @@ var FeaturedCarousel = Ulna.Component.extend({
 
 	bindToDOM() {
 		this.bindRoot();
-		this.bindEvents();
 		this.bindSlick();
+		this.bindEvents();
+		
 
 		return this.eventsBound;
 	},
@@ -77,7 +78,7 @@ var FeaturedCarousel = Ulna.Component.extend({
 	},
 
 	events: {
-
+		
 	},
 
 	template: {

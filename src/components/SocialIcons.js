@@ -36,6 +36,14 @@ var SocialIcons = Ulna.Component.extend({
 					}
 				}
 			},
+			{
+				li: {
+					'a[href="https://open.spotify.com/artist/3DsgLVdK3osXVyeZDWfRQC"]': {
+						'img[src="/media/images/spotify_icon.png"]': ''
+					}
+				}
+			}
+			
 			// {
 			// 	li: {
 			// 		'a[href="https://instagram.com/knautwerk"]': {
