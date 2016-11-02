@@ -20,6 +20,7 @@ var SlickCarousel = Ulna.Component.extend({
 
 	bindSlick() {
 		this.$root.children('div').slick({
+			infinite: false,
 			dots: true,
 			slidesToShow: 1,
 			// centerMode: true,
