@@ -839,6 +839,9 @@
   max-height: 300px;
   cursor: pointer; }
 
+.slick-gallery div[id*='embed-thumb'] {
+  text-align: center; }
+
 #photo-gallery.tile-gallery {
   padding: 45px 25px; }
   #photo-gallery.tile-gallery h1 {

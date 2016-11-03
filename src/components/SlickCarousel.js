@@ -4,6 +4,7 @@ var dispatcher = require('../dispatcher.js');
 
 var Photo = require('./Photos/Photo.js');
 var VideoThumb = require('./Videos/VideoThumb.js');
+var SoundcloudEmbed = require('./SoundcloudEmbed.js');
 
 var SlickCarousel = Ulna.Component.extend({
 	root: '#slick-carousel-<<this.data.id>>',
@@ -75,6 +76,17 @@ var SlickCarousel = Ulna.Component.extend({
 						var data = this.data.items[i];
 
 						li[liKey] = new VideoThumb({
+							data: data
+						});
+
+						items.push(li);
+					break;
+					case 'embed':
+						var li = {};
+						var liKey = 'div#embed-thumb-' + hyphenate(this.data.items[i].name);					
+						var data = this.data.items[i];
+
+						li[liKey] = new SoundcloudEmbed({
 							data: data
 						});
 

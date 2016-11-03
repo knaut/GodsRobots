@@ -5,11 +5,15 @@ var dispatcher = require('../dispatcher.js');
 var services = require('../services.js');
 
 var SoundcloudEmbed = Ulna.Component.extend({
-	root: '#embed-<<this.data.id>>',
+	root: '#embed-thumb-<<this.data.id>>',
+	dispatcher: dispatcher,
 
-	data: {
-		id: null,
-		src: null
+	events: {
+		'click root': function(e) {
+			this.dispatcher.dispatch('VIDEO_CAROUSEL_VIEW', {
+				data: this.data
+			});
+		}
 	},
 
 	template: {

@@ -52,14 +52,14 @@ var dates = [
 			//  more types to add here
 			{
 				kind: 'flier',
-				src: '/media/images/events/dubmission/flier.jpg',
-				name: 'Non-Stop Bhangra Flier'
+				src: '/media/images/events/good-vibes-ep/flier.jpg',
+				name: 'Good Vibes EP Release'
 			},
 			{
 				kind: 'embed',
 				src: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/149636988&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true',
-				name: 'Good Vibes EP Release Live',
-				thumb: '/media/images/events/dubmission/video_thumb.jpg'
+				name: 'Good Vibes EP Soundcloud',
+				thumb: '/media/images/events/good-vibes-ep/video_thumb.jpg'
 			}
 		]
 	},

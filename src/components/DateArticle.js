@@ -64,6 +64,25 @@ var DateArticle = Ulna.Component.extend({
 				});
 			}
 
+			var embeds = [];
+			for (var i = 0; this.data.media.length > i; i++) {
+				if (this.data.media[i].kind === 'embed') {
+					embeds.push(this.data.media[i]);
+				}
+			}
+
+			if (embeds.length) {
+				content['#embeds.slick-gallery'] = new SlickCarousel({
+					root: '#embeds',
+					data: {
+						name: 'Soundcloud',
+						items: embeds
+					}
+				});
+			}
+
+			console.log(content)
+
 			return content;
 		}
 	}

@@ -7797,6 +7797,25 @@ var DateArticle = Ulna.Component.extend({
 				});
 			}
 
+			var embeds = [];
+			for (var i = 0; this.data.media.length > i; i++) {
+				if (this.data.media[i].kind === 'embed') {
+					embeds.push(this.data.media[i]);
+				}
+			}
+
+			if (embeds.length) {
+				content['#embeds.slick-gallery'] = new SlickCarousel({
+					root: '#embeds',
+					data: {
+						name: 'Soundcloud',
+						items: embeds
+					}
+				});
+			}
+
+			console.log(content)
+
 			return content;
 		}
 	}
@@ -8811,6 +8830,7 @@ var dispatcher = require('../dispatcher.js');
 
 var Photo = require('./Photos/Photo.js');
 var VideoThumb = require('./Videos/VideoThumb.js');
+var SoundcloudEmbed = require('./SoundcloudEmbed.js');
 
 var SlickCarousel = Ulna.Component.extend({
 	root: '#slick-carousel-<<this.data.id>>',
@@ -8887,6 +8907,17 @@ var SlickCarousel = Ulna.Component.extend({
 
 						items.push(li);
 					break;
+					case 'embed':
+						var li = {};
+						var liKey = 'div#embed-thumb-' + hyphenate(this.data.items[i].name);					
+						var data = this.data.items[i];
+
+						li[liKey] = new SoundcloudEmbed({
+							data: data
+						});
+
+						items.push(li);
+					break;
 				}
 				
 			}
@@ -8897,7 +8928,7 @@ var SlickCarousel = Ulna.Component.extend({
 });
 
 module.exports = SlickCarousel;
-},{"../dispatcher.js":61,"../utils.js":64,"./Photos/Photo.js":36,"./Videos/VideoThumb.js":55,"ulna":8}],40:[function(require,module,exports){
+},{"../dispatcher.js":61,"../utils.js":64,"./Photos/Photo.js":36,"./SoundcloudEmbed.js":41,"./Videos/VideoThumb.js":55,"ulna":8}],40:[function(require,module,exports){
 var Ulna = require('ulna');
 
 var dispatcher = require('../dispatcher.js');
@@ -8950,11 +8981,15 @@ var dispatcher = require('../dispatcher.js');
 var services = require('../services.js');
 
 var SoundcloudEmbed = Ulna.Component.extend({
-	root: '#embed-<<this.data.id>>',
+	root: '#embed-thumb-<<this.data.id>>',
+	dispatcher: dispatcher,
 
-	data: {
-		id: null,
-		src: null
+	events: {
+		'click root': function(e) {
+			this.dispatcher.dispatch('VIDEO_CAROUSEL_VIEW', {
+				data: this.data
+			});
+		}
 	},
 
 	template: {
@@ -10099,14 +10134,14 @@ var dates = [
 			//  more types to add here
 			{
 				kind: 'flier',
-				src: '/media/images/events/dubmission/flier.jpg',
-				name: 'Non-Stop Bhangra Flier'
+				src: '/media/images/events/good-vibes-ep/flier.jpg',
+				name: 'Good Vibes EP Release'
 			},
 			{
 				kind: 'embed',
 				src: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/149636988&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true',
-				name: 'Good Vibes EP Release Live',
-				thumb: '/media/images/events/dubmission/video_thumb.jpg'
+				name: 'Good Vibes EP Soundcloud',
+				thumb: '/media/images/events/good-vibes-ep/video_thumb.jpg'
 			}
 		]
 	},

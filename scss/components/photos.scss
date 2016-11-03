@@ -270,6 +270,10 @@
 			cursor: pointer;
 		}
 	}
+	// embeds
+	div[id*='embed-thumb'] {
+		text-align: center;
+	}
 }
 
 #photo-gallery.tile-gallery {
