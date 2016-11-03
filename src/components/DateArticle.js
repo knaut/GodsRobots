@@ -81,8 +81,6 @@ var DateArticle = Ulna.Component.extend({
 				});
 			}
 
-			console.log(content)
-
 			return content;
 		}
 	}
