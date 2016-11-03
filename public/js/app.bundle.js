@@ -11124,7 +11124,7 @@ var services = new Ulna.Services({
 			delimiter: ' - ',
 		},
 		brand: {
-			logo: '/media/images/logos/gr_logo_typeface.png'
+			logo: '/media/images/logos/janaka_selekta_logo.png'
 		},
 		index: require('./data/index.js'),
 		about: require('./data/about/index.js'),
