@@ -7814,8 +7814,6 @@ var DateArticle = Ulna.Component.extend({
 				});
 			}
 
-			console.log(content)
-
 			return content;
 		}
 	}
@@ -8113,11 +8111,8 @@ var Footer = Ulna.Component.extend({
 				'.row': {
 					'.col-lg-12': [
 						{
-							p: 'All work herein copyright © 2016 GODS ROBOTS.'
+							// p: 'All work herein copyright © 2016 GODS ROBOTS.'
 						},
-						{
-							p: 'Lorem ipsum Consequat proident aute quis ex sunt dolore in sint in non labore magna aliquip dolore magna commodo in est sint veniam culpa sed.'
-						}
 					]
 				}
 			},
@@ -8965,6 +8960,13 @@ var SocialIcons = Ulna.Component.extend({
 				li: {
 					'a[href="https://open.spotify.com/artist/3DsgLVdK3osXVyeZDWfRQC"]': {
 						'img[src="/media/images/spotify_icon.png"]': ''
+					}
+				}
+			},
+			{
+				li: {
+					'a[href="https://www.instagram.com/janakaselekta/"]': {
+						'img[src="/media/images/instagram_icon.png"]': ''
 					}
 				}
 			}

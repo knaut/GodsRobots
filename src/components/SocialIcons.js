@@ -36,6 +36,13 @@ var SocialIcons = Ulna.Component.extend({
 						'img[src="/media/images/spotify_icon.png"]': ''
 					}
 				}
+			},
+			{
+				li: {
+					'a[href="https://www.instagram.com/janakaselekta/"]': {
+						'img[src="/media/images/instagram_icon.png"]': ''
+					}
+				}
 			}
 		]
 	}
