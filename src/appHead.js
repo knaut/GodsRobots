@@ -4,8 +4,12 @@ var appHead = function( state, initializer ) {
 	var templStart = '<!DOCTYPE html>' +
 		'<html>' +
 			'<head>' +
-				'<title>GODS ROBOTS</title>' +
+				'<title>Janaka Selekta</title>' +
 				'<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">' +
+				'<meta charset="UTF-8">' +
+				'<meta name="description" content="Janaka Selekta is a world EDM producer who also works under the names GODS ROBOTS and Might Dub Killaz, with other performers.">' +
+				'<meta name="keywords" content="music,world,fusion,indian,EDM,producer,musician,performer,reggae,dub,dnb">' +
+				'<meta name="author" content="Janaka Selekta">' +
 				'<link href=\'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300|Roboto:400,100&subset=latin,latin-ext\' rel=\'stylesheet\' type=\'text/css\'>' +
 				'<link rel="stylesheet" href="/css/theme.min.css"/>' +
 				'<link rel="stylesheet" href="/css/app.css"/>' +

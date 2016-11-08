@@ -11,7 +11,7 @@ var services = new Ulna.Services({
 
 	data: {
 		header: {
-			title: 'GODS ROBOTS',
+			title: 'Janaka Selekta',
 			delimiter: ' - ',
 		},
 		brand: {
