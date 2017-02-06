@@ -3,6 +3,26 @@ var hyphenate = require('../../utils.js').hyphenate;
 
 var dates = [
 	{
+		name: 'Revolution Lyrics video',
+		kind: 'release',
+		startDate: {
+			year: 2017,
+			month: 2,
+			day: 3,
+			hour: 19,
+			minute: 0
+		},
+		media: [
+			{
+				kind: 'video',
+				src: 'https://www.youtube.com/embed/g5Guy4WDR7k',
+				name: 'Revolution Lyrics Video',
+				featured: true,
+				thumb: '/media/images/events/revolution-lyrics-video/video_thumb.png'
+			}
+		]
+	},
+	{
 		name: 'Mui Ne, Vietnam',
 		kind: 'show',
 		startDate: {
