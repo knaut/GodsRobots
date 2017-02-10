@@ -10099,7 +10099,7 @@ var dates = [
 		media: [
 			{
 				kind: 'video',
-				src: 'https://www.youtube.com/embed/g5Guy4WDR7k',
+				src: 'https://www.youtube.com/embed/1WHybRaE4Q0',
 				name: 'Revolution Lyrics Video',
 				featured: true,
 				thumb: '/media/images/events/revolution-lyrics-video/video_thumb.png'
